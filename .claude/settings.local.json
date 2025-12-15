@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source .venv/bin/activate)",
+      "Bash(alembic revision:*)",
+      "Bash(alembic current:*)",
+      "Bash(alembic heads:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(alembic stamp:*)",
+      "Bash(curl:*)",
+      "Bash(psql:*)",
+      "Bash(PGPASSWORD='Ubuntu57!' psql -h localhost -U mathd -d ai_content_polisher -c \"ALTER TABLE usage_analytics ADD COLUMN IF NOT EXISTS platform VARCHAR;\")",
+      "Bash(python3:*)",
+      "Bash(npm install:*)",
+      "Bash(echo \"PGPASSWORD=''Ubuntu57!'' psql -h localhost -U mathd -d ai_content_polisher -c \"\"UPDATE users SET is_admin = 1 WHERE email = ''VOTRE_EMAIL'';\"\"\")",
+      "Bash(PGPASSWORD='Ubuntu57!' psql -h localhost -U mathd -d ai_content_polisher -c \"UPDATE users SET is_admin = 1 WHERE email = ''mathdu0609@gmail.com'';\")",
+      "Bash(sudo -u postgres psql -d ai_content_polisher -c \"UPDATE users SET is_admin = 1 WHERE email = ''mathdu0609@gmail.com'';\")",
+      "Bash(pkill:*)",
+      "Bash(uvicorn:*)",
+      "Bash(python:*)",
+      "Bash(npm run build:*)",
+      "Bash(pip install:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
