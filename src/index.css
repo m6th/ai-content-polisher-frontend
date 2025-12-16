@@ -225,15 +225,17 @@
     left: 50%;
     transform: translateX(-50%) translateY(-8px);
     padding: 8px 12px;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
+    background-color: rgba(0, 0, 0, 0.95);
+    color: #ffffff;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s, transform 0.3s;
-    z-index: 1000;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   .tooltip::after {
@@ -243,11 +245,11 @@
     left: 50%;
     transform: translateX(-50%);
     border: 6px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border-top-color: rgba(0, 0, 0, 0.95);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
-    z-index: 1000;
+    z-index: 10000;
   }
 
   .tooltip:hover::before,
