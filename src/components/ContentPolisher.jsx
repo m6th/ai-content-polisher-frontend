@@ -511,7 +511,7 @@ function ContentPolisher({ user, onUpdateUser }) {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto relative">
+    <div className="max-w-full px-4 mx-auto relative">
       {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-10 left-10 w-32 h-32 bg-purple-200 rounded-full opacity-20 blur-3xl float-particle"></div>
@@ -725,7 +725,7 @@ function ContentPolisher({ user, onUpdateUser }) {
             <p className="text-gray-600 dark:text-slate-400 text-lg mb-8">
               {t.polisher.emptyState.subtitle}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {t.polisher.emptyState.examples.map((example, idx) => (
                 <button
                   key={idx}
@@ -804,7 +804,7 @@ function ContentPolisher({ user, onUpdateUser }) {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-8">
               {generatedFormats.map((format, index) => {
                 const formatInfo = formatLabels[format.format] || {
                   name: format.format,
@@ -834,7 +834,7 @@ function ContentPolisher({ user, onUpdateUser }) {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-3 flex-wrap">
                         <button
                           onClick={() => setShowOriginal(prev => ({ ...prev, [index]: !prev[index] }))}
                           className="bg-white dark:bg-slate-800/20 hover:bg-white dark:bg-slate-800/30 text-white px-3 py-2 rounded-lg transition-all text-xs font-medium backdrop-blur-sm tooltip"
@@ -909,8 +909,8 @@ function ContentPolisher({ user, onUpdateUser }) {
                       </div>
                     )}
 
-                    <div className="p-6">
-                      <p className="text-gray-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                    <div className="p-8">
+                      <p className="text-gray-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed text-lg">
                         {format.content}
                       </p>
                     </div>
