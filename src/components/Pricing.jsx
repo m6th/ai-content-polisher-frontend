@@ -31,14 +31,14 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratuit',
           features: [
-            '3 plateformes (LinkedIn, Instagram, TikTok)',
+            '5 formats (LinkedIn, TikTok, Email, Humour, Instagram Story)',
             '3 tons (Professionnel, Casual, Engageant)',
             '3 langues (FR, EN, ES)',
             'Historique (7 derniers jours)',
             'Export des contenus',
-            'Analytics',
-            'Variantes multiples',
-            'Support'
+            'Analytics de base',
+            '1 variante par format',
+            'Support communautaire'
           ]
         },
         starter: {
@@ -100,14 +100,14 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Free',
           features: [
-            '3 platforms (LinkedIn, Instagram, TikTok)',
+            '5 formats (LinkedIn, TikTok, Email, Humor, Instagram Story)',
             '3 tones (Professional, Casual, Engaging)',
             '3 languages (FR, EN, ES)',
             'History (last 7 days)',
             'Content export',
-            'Analytics',
-            'Multiple variants',
-            'Support'
+            'Basic analytics',
+            '1 variant per format',
+            'Community support'
           ]
         },
         starter: {
@@ -169,14 +169,14 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratis',
           features: [
-            '3 plataformas (LinkedIn, Instagram, TikTok)',
+            '5 formatos (LinkedIn, TikTok, Email, Humor, Instagram Story)',
             '3 tonos (Profesional, Casual, Atractivo)',
             '3 idiomas (FR, EN, ES)',
             'Historial (últimos 7 días)',
             'Exportar contenidos',
-            'Analytics',
-            'Variantes múltiples',
-            'Soporte'
+            'Analytics básicos',
+            '1 variante por formato',
+            'Soporte comunitario'
           ]
         },
         starter: {
@@ -231,7 +231,7 @@ function Pricing({ user, onUpdateUser }) {
       name: t.plans.free.name,
       icon: Sparkles,
       price: '0',
-      credits: '5',
+      credits: '3',
       color: 'from-slate-500 to-slate-600',
       popular: false,
       features: t.plans.free.features.map((text, idx) => ({
