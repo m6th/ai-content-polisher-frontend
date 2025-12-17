@@ -820,7 +820,7 @@ function ContentPolisher({ user, onUpdateUser }) {
                   <div
                     key={index}
                     id={`card-${index}`}
-                    className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 overflow-hidden hover:shadow-xl transition-all fade-in-up ${staggerClass}`}
+                    className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all fade-in-up ${staggerClass}`}
                   >
                     <div className={`bg-gradient-to-r ${formatInfo.color} px-6 py-4 flex items-center justify-between`}>
                       <div className="flex items-center space-x-3">
@@ -837,21 +837,21 @@ function ContentPolisher({ user, onUpdateUser }) {
                       <div className="flex items-center gap-3 flex-wrap">
                         <button
                           onClick={() => setShowOriginal(prev => ({ ...prev, [index]: !prev[index] }))}
-                          className="bg-white dark:bg-slate-800/20 hover:bg-white dark:bg-slate-800/30 text-white px-3 py-2 rounded-lg transition-all text-xs font-medium backdrop-blur-sm tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all text-xs font-medium shadow-md tooltip"
                           data-tooltip={showOriginal[index] ? t.polisher.formatCard.hideOriginal : t.polisher.formatCard.showOriginal}
                         >
                           {showOriginal[index] ? '👁️‍🗨️' : '👁️'}
                         </button>
                         <button
                           onClick={() => setPreviewModal({ isOpen: true, format: format.format, content: format.content })}
-                          className="bg-white dark:bg-slate-800/20 hover:bg-white dark:bg-slate-800/30 text-white px-3 py-2 rounded-lg transition-all tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
                           data-tooltip={t.polisher.preview.viewPreview}
                         >
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleCopy(format.content, index)}
-                          className="bg-white dark:bg-slate-800/20 hover:bg-white dark:bg-slate-800/30 text-white px-4 py-2 rounded-lg transition-all flex items-center space-x-2 backdrop-blur-sm"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-4 py-2 rounded-lg transition-all flex items-center space-x-2 shadow-md"
                         >
                           {copiedId === index ? (
                             <>
@@ -871,21 +871,21 @@ function ContentPolisher({ user, onUpdateUser }) {
                         </button>
                         <button
                           onClick={() => handleDownloadTxt(format.content, formatInfo.name)}
-                          className="bg-white/90 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800/60 text-white px-3 py-2 rounded-lg transition-all tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
                           data-tooltip={uiLanguage === 'fr' ? 'Télécharger TXT' : uiLanguage === 'en' ? 'Download TXT' : 'Descargar TXT'}
                         >
                           <FileText className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDownloadPdf(format.content, format.format)}
-                          className="bg-white/90 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800/60 text-white px-3 py-2 rounded-lg transition-all tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
                           data-tooltip={uiLanguage === 'fr' ? 'Exporter PDF' : uiLanguage === 'en' ? 'Export PDF' : 'Exportar PDF'}
                         >
                           <Download className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleShare(format.content, format.format.toLowerCase())}
-                          className="bg-white/90 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800/60 text-white px-3 py-2 rounded-lg transition-all tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
                           data-tooltip={uiLanguage === 'fr' ? 'Partager' : uiLanguage === 'en' ? 'Share' : 'Compartir'}
                         >
                           <Share2 className="h-4 w-4" />
