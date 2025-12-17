@@ -29,11 +29,15 @@ export const register = (email, name, password, plan = 'free') => {
   return api.post('/users/register', { email, name, password, plan });
 };
 
+export const googleLogin = (token) => {
+  return api.post('/users/auth/google', { token });
+};
+
 export const login = async (email, password) => {
   const formData = new URLSearchParams();
   formData.append('username', email);
   formData.append('password', password);
-  
+
   const response = await axios.post(`${API_URL}/users/token`, formData, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { login } from '../services/api';
-import axios from 'axios';
+import { login, googleLogin } from '../services/api';
 import { LogIn, Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
@@ -37,14 +36,13 @@ function Login({ onLogin }) {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/auth/google', {
-        token: credentialResponse.credential
-      });
-      
+      const response = await googleLogin(credentialResponse.credential);
+
       localStorage.setItem('token', response.data.access_token);
       onLogin();
       navigate('/dashboard');
     } catch (err) {
+      console.error('Google login error:', err);
       setError('Erreur lors de la connexion avec Google');
     }
   };
