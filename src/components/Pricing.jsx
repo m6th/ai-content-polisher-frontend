@@ -9,6 +9,7 @@ function Pricing({ user, onUpdateUser }) {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const toast = useToast();
+  const [loading, setLoading] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [paymentModal, setPaymentModal] = useState({ isOpen: false, plan: null, planName: '' });
