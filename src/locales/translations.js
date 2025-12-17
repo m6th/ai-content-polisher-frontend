@@ -18,7 +18,7 @@ export const translations = {
         badge: 'Gagne 10h par semaine sur ta création de contenu',
         title1: 'Un texte.',
         title2: '15 formats viraux.',
-        title3: '15 secondes.',
+        title3: '30 secondes.',
         subtitle: 'Transforme tes idées en contenu optimisé pour LinkedIn, Instagram, TikTok et plus.',
         subtitleBold: ' Sans effort. Sans syndrome de la page blanche.',
         cta: 'Commencer gratuitement',
@@ -28,7 +28,7 @@ export const translations = {
         formatsDesc: 'Tous les réseaux sociaux couverts',
         languages: '3 langues',
         languagesDesc: 'Français, Anglais, Espagnol',
-        speed: '15 secondes',
+        speed: '30 secondes',
         speedDesc: 'Génération ultra-rapide',
       },
       formats: {
@@ -58,12 +58,12 @@ export const translations = {
         step2Title: 'Personnalise le ton',
         step2Desc: 'Professionnel, décontracté, inspirant... 8 tons disponibles',
         step3Title: 'Publie partout',
-        step3Desc: '15 versions optimisées prêtes en 15 secondes',
+        step3Desc: '15 versions optimisées prêtes en 30 secondes',
       },
       features: {
         title: 'Pourquoi AI Content Polisher ?',
         subtitle: 'L\'outil le plus puissant pour créer du contenu engageant',
-        feature1Title: 'Génération en 15 secondes',
+        feature1Title: 'Génération en 30 secondes',
         feature1Desc: 'L\'IA la plus rapide du marché. Du brouillon au post publié en quelques secondes.',
         feature2Title: 'Ton unique préservé',
         feature2Desc: 'L\'IA analyse ton style pour créer du contenu qui te ressemble vraiment.',
@@ -76,7 +76,7 @@ export const translations = {
         title: 'Crée du contenu qui engage vraiment',
         subtitle: 'Rejoins des milliers de créateurs qui transforment leurs idées en posts viraux',
         cta: 'Commencer gratuitement',
-        feature1: '10 crédits gratuits',
+        feature1: '3 crédits gratuits',
         feature2: 'Sans carte bancaire',
         feature3: 'Annulation facile',
       },
@@ -85,7 +85,7 @@ export const translations = {
     // Content Polisher
     polisher: {
       title: 'Transformez votre contenu',
-      subtitle: 'Un seul texte → 15 formats optimisés → 15 secondes ⚡',
+      subtitle: 'Un seul texte → 15 formats optimisés → 30 secondes ⚡',
       toneLabel: 'Ton du contenu',
       languageLabel: 'Langue',
       inputLabel: 'Votre texte original',
@@ -204,7 +204,7 @@ export const translations = {
       errorGeneric: 'Une erreur est survenue',
       errorPasswordMismatch: 'Les mots de passe ne correspondent pas',
       errorPasswordLength: 'Le mot de passe doit contenir au moins 6 caractères',
-      bonus: '🎁 10 crédits gratuits offerts',
+      bonus: '🎁 3 crédits gratuits offerts',
     },
 
     // Dashboard
@@ -300,7 +300,7 @@ export const translations = {
         badge: 'Save 10 hours per week on content creation',
         title1: 'One text.',
         title2: '15 viral formats.',
-        title3: '15 seconds.',
+        title3: '30 seconds.',
         subtitle: 'Transform your ideas into optimized content for LinkedIn, Instagram, TikTok and more.',
         subtitleBold: ' Effortlessly. No more blank page syndrome.',
         cta: 'Get Started Free',
@@ -310,7 +310,7 @@ export const translations = {
         formatsDesc: 'All social networks covered',
         languages: '3 languages',
         languagesDesc: 'French, English, Spanish',
-        speed: '15 seconds',
+        speed: '30 seconds',
         speedDesc: 'Ultra-fast generation',
       },
       formats: {
@@ -340,7 +340,7 @@ export const translations = {
         step2Title: 'Customize the tone',
         step2Desc: 'Professional, casual, inspiring... 8 tones available',
         step3Title: 'Publish everywhere',
-        step3Desc: '15 optimized versions ready in 15 seconds',
+        step3Desc: '15 optimized versions ready in 30 seconds',
       },
       features: {
         title: 'Why AI Content Polisher?',
@@ -358,7 +358,7 @@ export const translations = {
         title: 'Create content that truly engages',
         subtitle: 'Join thousands of creators transforming their ideas into viral posts',
         cta: 'Get Started Free',
-        feature1: '10 free credits',
+        feature1: '3 free credits',
         feature2: 'No credit card required',
         feature3: 'Easy cancellation',
       },
@@ -367,7 +367,7 @@ export const translations = {
     // Content Polisher
     polisher: {
       title: 'Transform your content',
-      subtitle: 'One text → 15 optimized formats → 15 seconds ⚡',
+      subtitle: 'One text → 15 optimized formats → 30 seconds ⚡',
       toneLabel: 'Content tone',
       languageLabel: 'Language',
       inputLabel: 'Your original text',
@@ -486,7 +486,7 @@ export const translations = {
       errorGeneric: 'An error occurred',
       errorPasswordMismatch: 'Passwords do not match',
       errorPasswordLength: 'Password must be at least 6 characters',
-      bonus: '🎁 10 free credits included',
+      bonus: '🎁 3 free credits included',
     },
 
     // Dashboard
