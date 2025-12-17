@@ -9,6 +9,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 // Lazy load components for code splitting
 const LandingPage = lazy(() => import('./components/LandingPage'));
 const Pricing = lazy(() => import('./components/Pricing'));
+const Checkout = lazy(() => import('./components/Checkout'));
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const VerifyEmail = lazy(() => import('./components/VerifyEmail'));
@@ -92,6 +93,16 @@ function App() {
             <Route
               path="/pricing"
               element={<Pricing user={user} onUpdateUser={checkAuth} />}
+            />
+            <Route
+              path="/checkout"
+              element={
+                user ? (
+                  <Checkout />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/dashboard"

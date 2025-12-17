@@ -3,16 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
-import PaymentModal from './PaymentModal';
 
 function Pricing({ user, onUpdateUser }) {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const toast = useToast();
-  const [loading, setLoading] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [paymentModal, setPaymentModal] = useState({ isOpen: false, plan: null, planName: '' });
 
   const translations = {
     fr: {
@@ -301,16 +298,12 @@ function Pricing({ user, onUpdateUser }) {
     setError('');
     setSuccess('');
 
-    // Get plan name for display
+    // Get plan details
     const plan = plans.find(p => p.key === planValue);
-    const planName = plan ? `${plan.name} - ${plan.price}€/mois` : planValue;
+    if (!plan) return;
 
-    // Open payment modal
-    setPaymentModal({
-      isOpen: true,
-      plan: planValue,
-      planName: planName
-    });
+    // Redirect to checkout page
+    navigate(`/checkout?plan=${planValue}&planName=${encodeURIComponent(plan.name)}&price=${plan.price}`);
   };
 
   return (
@@ -397,19 +390,14 @@ function Pricing({ user, onUpdateUser }) {
                   {/* Button */}
                   <button
                     onClick={() => handleChoosePlan(plan.key)}
-                    disabled={loading === plan.key || isCurrentPlan}
+                    disabled={isCurrentPlan}
                     className={`w-full py-4 px-6 rounded-xl font-bold transition-all text-white shadow-lg ${
                       isCurrentPlan
                         ? 'bg-slate-400 cursor-not-allowed'
                         : `bg-gradient-to-r ${plan.color} hover:shadow-2xl hover:scale-105`
                     }`}
                   >
-                    {loading === plan.key ? (
-                      <span className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                        {t.loading}
-                      </span>
-                    ) : isCurrentPlan ? (
+                    {isCurrentPlan ? (
                       t.currentPlan
                     ) : user ? (
                       t.changePlan
@@ -433,15 +421,6 @@ function Pricing({ user, onUpdateUser }) {
           </p>
         </div>
       </div>
-
-      {/* Payment Modal */}
-      <PaymentModal
-        isOpen={paymentModal.isOpen}
-        onClose={() => setPaymentModal({ isOpen: false, plan: null, planName: '' })}
-        plan={paymentModal.plan}
-        planName={paymentModal.planName}
-        language={language}
-      />
     </section>
   );
 }
