@@ -21,6 +21,7 @@ const Account = lazy(() => import('./components/Account'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const LegalNotice = lazy(() => import('./components/LegalNotice'));
+const FAQ = lazy(() => import('./components/FAQ'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -159,6 +160,10 @@ function App() {
             <Route
               path="/legal"
               element={<LegalNotice />}
+            />
+            <Route
+              path="/faq"
+              element={<FAQ />}
             />
               </Routes>
               </Suspense>

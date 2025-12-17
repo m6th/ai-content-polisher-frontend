@@ -89,6 +89,11 @@ export default function Footer() {
                   {t.features}
                 </Link>
               </li>
+              <li>
+                <Link to="/faq" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
