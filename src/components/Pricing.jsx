@@ -280,7 +280,7 @@ function Pricing({ user, onUpdateUser }) {
     }
   ];
 
-  const handlePlanChange = async (planValue) => {
+  const handleChoosePlan = async (planValue) => {
     // Free plan - no payment required
     if (planValue === 'free') {
       toast.info(

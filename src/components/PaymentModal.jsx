@@ -120,6 +120,11 @@ export default function PaymentModal({ isOpen, onClose, plan, planName, language
   }, [isOpen, plan]);
 
   const initializePayment = async () => {
+    if (!plan) {
+      console.error('No plan specified');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -127,14 +132,23 @@ export default function PaymentModal({ isOpen, onClose, plan, planName, language
       // Créer le payment intent
       const response = await createPaymentIntent(plan);
 
+      if (!response.data.publishable_key) {
+        throw new Error('No publishable key received');
+      }
+
       // Charger Stripe avec la clé publique
       const stripe = await loadStripe(response.data.publishable_key);
+
+      if (!stripe) {
+        throw new Error('Failed to load Stripe');
+      }
+
       setStripePromise(stripe);
       setClientSecret(response.data.client_secret);
       setLoading(false);
     } catch (err) {
       console.error('Error initializing payment:', err);
-      setError(err.response?.data?.detail || 'Erreur lors de l\'initialisation du paiement');
+      setError(err.response?.data?.detail || err.message || 'Erreur lors de l\'initialisation du paiement');
       setLoading(false);
     }
   };
