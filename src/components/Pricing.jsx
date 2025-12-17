@@ -302,20 +302,11 @@ function Pricing({ user, onUpdateUser }) {
     setLoading(planValue);
 
     try {
-      // Map plan keys to Stripe plan names
-      const stripePlanMap = {
-        'starter': 'standard',
-        'pro': 'premium',
-        'business': 'agency'
-      };
-
-      const stripePlan = stripePlanMap[planValue] || planValue;
-
       // Create Stripe checkout session
       const successUrl = `${window.location.origin}/pricing?success=true`;
       const cancelUrl = `${window.location.origin}/pricing?canceled=true`;
 
-      const response = await createCheckoutSession(stripePlan, successUrl, cancelUrl);
+      const response = await createCheckoutSession(planValue, successUrl, cancelUrl);
 
       // Redirect to Stripe Checkout
       if (response.data.url) {
