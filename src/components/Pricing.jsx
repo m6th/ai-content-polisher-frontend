@@ -1,17 +1,17 @@
 import { Check, X, Sparkles, Rocket, Briefcase, Building2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { createCheckoutSession } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
+import PaymentModal from './PaymentModal';
 
 function Pricing({ user, onUpdateUser }) {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const toast = useToast();
-  const [loading, setLoading] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [paymentModal, setPaymentModal] = useState({ isOpen: false, plan: null, planName: '' });
 
   const translations = {
     fr: {
@@ -299,34 +299,17 @@ function Pricing({ user, onUpdateUser }) {
 
     setError('');
     setSuccess('');
-    setLoading(planValue);
 
-    try {
-      // Create Stripe checkout session
-      const successUrl = `${window.location.origin}/pricing?success=true`;
-      const cancelUrl = `${window.location.origin}/pricing?canceled=true`;
+    // Get plan name for display
+    const plan = plans.find(p => p.key === planValue);
+    const planName = plan ? `${plan.name} - ${plan.price}€/mois` : planValue;
 
-      const response = await createCheckoutSession(planValue, successUrl, cancelUrl);
-
-      // Redirect to Stripe Checkout
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (err) {
-      console.error('Error creating checkout session:', err);
-      setError(
-        language === 'fr' ? 'Erreur lors du démarrage du paiement. Réessayez.' :
-        language === 'en' ? 'Error starting payment. Try again.' :
-        'Error al iniciar el pago. Intente nuevamente.'
-      );
-      toast.error(
-        language === 'fr' ? 'Erreur de paiement' :
-        language === 'en' ? 'Payment error' :
-        'Error de pago'
-      );
-    } finally {
-      setLoading(null);
-    }
+    // Open payment modal
+    setPaymentModal({
+      isOpen: true,
+      plan: planValue,
+      planName: planName
+    });
   };
 
   return (
@@ -449,6 +432,15 @@ function Pricing({ user, onUpdateUser }) {
           </p>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={paymentModal.isOpen}
+        onClose={() => setPaymentModal({ isOpen: false, plan: null, planName: '' })}
+        plan={paymentModal.plan}
+        planName={paymentModal.planName}
+        language={language}
+      />
     </section>
   );
 }

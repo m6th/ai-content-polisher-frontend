@@ -31,7 +31,8 @@
       "Bash(nslookup:*)",
       "Bash(dig:*)",
       "Bash(host:*)",
-      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"UPDATE users SET is_admin = 1 WHERE email = ''mathdu0609@gmail.com'';\")"
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"UPDATE users SET is_admin = 1 WHERE email = ''mathdu0609@gmail.com'';\")",
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"UPDATE users SET stripe_customer_id = NULL, stripe_subscription_id = NULL WHERE stripe_customer_id LIKE ''cus_%'';\")"
     ]
   }
 }
