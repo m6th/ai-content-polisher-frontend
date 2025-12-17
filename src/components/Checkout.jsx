@@ -7,7 +7,7 @@ import { createPaymentIntent } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // Composant interne pour le formulaire de paiement
-function CheckoutForm({ planName, planPrice, onBack, language }) {
+function CheckoutForm({ planPrice, language }) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -70,10 +70,17 @@ function CheckoutForm({ planName, planPrice, onBack, language }) {
   const t = translations[language] || translations.fr;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Payment Element */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <PaymentElement />
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700">
+        <PaymentElement
+          options={{
+            layout: {
+              type: 'tabs',
+              defaultCollapsed: false,
+            }
+          }}
+        />
       </div>
 
       {/* Error message */}
@@ -87,13 +94,13 @@ function CheckoutForm({ planName, planPrice, onBack, language }) {
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+        className="w-full bg-[#635BFF] hover:bg-[#5851ea] text-white font-semibold py-4 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-base"
       >
-        {processing ? t.processing : `${t.pay} - ${planPrice}€/mois`}
+        {processing ? t.processing : `${t.pay} ${planPrice}€/mois`}
       </button>
 
       {/* Security badges */}
-      <div className="flex items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
         <div className="flex items-center gap-2">
           <Lock className="w-4 h-4" />
           <span>{t.secure}</span>
@@ -197,14 +204,49 @@ export default function Checkout() {
   const options = {
     clientSecret,
     appearance: {
-      theme: 'stripe',
+      theme: 'flat',
       variables: {
-        colorPrimary: '#9333ea',
+        colorPrimary: '#635BFF',
         colorBackground: '#ffffff',
-        colorText: '#1f2937',
-        colorDanger: '#ef4444',
-        fontFamily: 'system-ui, sans-serif',
-        borderRadius: '12px',
+        colorText: '#30313d',
+        colorDanger: '#df1b41',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif',
+        spacingUnit: '4px',
+        borderRadius: '8px',
+        fontSizeBase: '16px',
+        fontWeightNormal: '400',
+        fontWeightMedium: '500',
+        fontWeightBold: '600',
+      },
+      rules: {
+        '.Input': {
+          border: '1.5px solid #e0e0e0',
+          boxShadow: 'none',
+          padding: '14px 12px',
+          fontSize: '16px',
+        },
+        '.Input:focus': {
+          border: '1.5px solid #635BFF',
+          boxShadow: '0 0 0 3px rgba(99, 91, 255, 0.1)',
+          outline: 'none',
+        },
+        '.Label': {
+          fontSize: '14px',
+          fontWeight: '500',
+          marginBottom: '8px',
+          color: '#30313d',
+        },
+        '.Tab': {
+          border: '1.5px solid #e0e0e0',
+          boxShadow: 'none',
+        },
+        '.Tab:hover': {
+          border: '1.5px solid #635BFF',
+        },
+        '.Tab--selected': {
+          border: '1.5px solid #635BFF',
+          boxShadow: '0 0 0 3px rgba(99, 91, 255, 0.1)',
+        },
       },
     },
   };
@@ -281,9 +323,7 @@ export default function Checkout() {
               {!loading && !error && stripePromise && clientSecret && (
                 <Elements stripe={stripePromise} options={options}>
                   <CheckoutForm
-                    planName={planName}
                     planPrice={planPrice}
-                    onBack={handleBack}
                     language={language}
                   />
                 </Elements>
