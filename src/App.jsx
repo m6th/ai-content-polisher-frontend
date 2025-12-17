@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import { getCurrentUser } from './services/api';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ToastProvider } from './contexts/ToastContext';
@@ -17,6 +18,9 @@ const Dashboard = lazy(() => import('./components/Dashboard'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const History = lazy(() => import('./components/History'));
 const Account = lazy(() => import('./components/Account'));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./components/TermsOfService'));
+const LegalNotice = lazy(() => import('./components/LegalNotice'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -144,8 +148,21 @@ function App() {
                 )
               }
             />
+            <Route
+              path="/privacy"
+              element={<PrivacyPolicy />}
+            />
+            <Route
+              path="/terms"
+              element={<TermsOfService />}
+            />
+            <Route
+              path="/legal"
+              element={<LegalNotice />}
+            />
               </Routes>
               </Suspense>
+              <Footer />
             </div>
           </Router>
         </ToastProvider>
