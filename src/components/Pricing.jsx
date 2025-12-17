@@ -396,7 +396,7 @@ function Pricing({ user, onUpdateUser }) {
 
                   {/* Button */}
                   <button
-                    onClick={() => handlePlanChange(plan.key)}
+                    onClick={() => handleChoosePlan(plan.key)}
                     disabled={loading === plan.key || isCurrentPlan}
                     className={`w-full py-4 px-6 rounded-xl font-bold transition-all text-white shadow-lg ${
                       isCurrentPlan
