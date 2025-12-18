@@ -29,24 +29,24 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratuit',
           features: [
-            '3 formats (LinkedIn, Instagram, TikTok)',
-            '3 tons (Professionnel, Engageant, Storytelling)',
-            '3 langues (FR, EN, ES)',
-            'Historique (7 derniers jours)',
-            '1 variante par format',
-            'Support communautaire'
+            '📝 3 formats (LinkedIn, Instagram, TikTok)',
+            '🎨 3 tons (Professionnel, Engageant, Storytelling)',
+            '🌍 3 langues (FR, EN, ES)',
+            '📅 Historique (7 derniers jours)',
+            '🎯 1 variante par format',
+            '💬 Support communautaire'
           ]
         },
         starter: {
           name: 'Starter',
           features: [
-            'Tous les 6 formats',
-            '3 tons disponibles',
-            '3 langues (FR, EN, ES)',
-            'Historique complet (illimité)',
-            '1 variante par format',
-            'Export des contenus',
-            'Support email (48h)'
+            '📝 Tous les 6 formats',
+            '🎨 3 tons disponibles',
+            '🌍 3 langues (FR, EN, ES)',
+            '📅 Historique complet (illimité)',
+            '🎯 1 variante par format',
+            '💾 Export des contenus',
+            '📧 Support email (48h)'
           ]
         },
         pro: {
@@ -58,22 +58,22 @@ function Pricing({ user, onUpdateUser }) {
             '💡 Suggestions d\'amélioration IA',
             '📅 Calendrier éditorial',
             '📦 Export en masse (tous formats)',
-            'Tous les 6 formats',
-            '3 tons disponibles',
-            '2 utilisateurs',
-            'Support email (24h)'
+            '📝 Tous les 6 formats',
+            '🎨 3 tons disponibles',
+            '👥 2 utilisateurs',
+            '⚡ Support email (24h)'
           ]
         },
         business: {
           name: 'Business',
           features: [
-            'Tout du plan Pro +',
-            '5 utilisateurs par compte',
-            'API access',
-            'Crédits supplémentaires (0.08€/crédit)',
-            'Personnalisation des tons',
-            'Export en masse (CSV, JSON)',
-            'Support prioritaire (12h) + chat'
+            '🚀 Tout du plan Pro +',
+            '👥 5 utilisateurs par compte',
+            '🔌 API access',
+            '💰 Crédits supplémentaires (0.08€/crédit)',
+            '🎨 Personnalisation des tons',
+            '📦 Export en masse (CSV, JSON)',
+            '⭐ Support prioritaire (12h) + chat'
           ]
         }
       }
@@ -95,24 +95,24 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Free',
           features: [
-            '3 formats (LinkedIn, Instagram, TikTok)',
-            '3 tones (Professional, Engaging, Storytelling)',
-            '3 languages (FR, EN, ES)',
-            'History (last 7 days)',
-            '1 variant per format',
-            'Community support'
+            '📝 3 formats (LinkedIn, Instagram, TikTok)',
+            '🎨 3 tones (Professional, Engaging, Storytelling)',
+            '🌍 3 languages (FR, EN, ES)',
+            '📅 History (last 7 days)',
+            '🎯 1 variant per format',
+            '💬 Community support'
           ]
         },
         starter: {
           name: 'Starter',
           features: [
-            'All 6 formats',
-            '3 tones available',
-            '3 languages (FR, EN, ES)',
-            'Complete history (unlimited)',
-            '1 variant per format',
-            'Content export',
-            'Email support (48h)'
+            '📝 All 6 formats',
+            '🎨 3 tones available',
+            '🌍 3 languages (FR, EN, ES)',
+            '📅 Complete history (unlimited)',
+            '🎯 1 variant per format',
+            '💾 Content export',
+            '📧 Email support (48h)'
           ]
         },
         pro: {
@@ -124,22 +124,22 @@ function Pricing({ user, onUpdateUser }) {
             '💡 AI improvement suggestions',
             '📅 Editorial calendar',
             '📦 Bulk export (all formats)',
-            'All 6 formats',
-            '3 tones available',
-            '2 users',
-            'Email support (24h)'
+            '📝 All 6 formats',
+            '🎨 3 tones available',
+            '👥 2 users',
+            '⚡ Email support (24h)'
           ]
         },
         business: {
           name: 'Business',
           features: [
-            'Everything in Pro +',
-            '5 users per account',
-            'API access',
-            'Additional credits (€0.08/credit)',
-            'Tone customization',
-            'Bulk export (CSV, JSON)',
-            'Priority support (12h) + chat'
+            '🚀 Everything in Pro +',
+            '👥 5 users per account',
+            '🔌 API access',
+            '💰 Additional credits (€0.08/credit)',
+            '🎨 Tone customization',
+            '📦 Bulk export (CSV, JSON)',
+            '⭐ Priority support (12h) + chat'
           ]
         }
       }
@@ -161,24 +161,24 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratis',
           features: [
-            '3 formatos (LinkedIn, Instagram, TikTok)',
-            '3 tonos (Profesional, Atractivo, Storytelling)',
-            '3 idiomas (FR, EN, ES)',
-            'Historial (últimos 7 días)',
-            '1 variante por formato',
-            'Soporte comunitario'
+            '📝 3 formatos (LinkedIn, Instagram, TikTok)',
+            '🎨 3 tonos (Profesional, Atractivo, Storytelling)',
+            '🌍 3 idiomas (FR, EN, ES)',
+            '📅 Historial (últimos 7 días)',
+            '🎯 1 variante por formato',
+            '💬 Soporte comunitario'
           ]
         },
         starter: {
           name: 'Starter',
           features: [
-            'Todos los 6 formatos',
-            '3 tonos disponibles',
-            '3 idiomas (FR, EN, ES)',
-            'Historial completo (ilimitado)',
-            '1 variante por formato',
-            'Exportar contenidos',
-            'Soporte por email (48h)'
+            '📝 Todos los 6 formatos',
+            '🎨 3 tonos disponibles',
+            '🌍 3 idiomas (FR, EN, ES)',
+            '📅 Historial completo (ilimitado)',
+            '🎯 1 variante por formato',
+            '💾 Exportar contenidos',
+            '📧 Soporte por email (48h)'
           ]
         },
         pro: {
@@ -190,22 +190,22 @@ function Pricing({ user, onUpdateUser }) {
             '💡 Sugerencias de mejora IA',
             '📅 Calendario editorial',
             '📦 Exportación masiva (todos los formatos)',
-            'Todos los 6 formatos',
-            '3 tonos disponibles',
-            '2 usuarios',
-            'Soporte por email (24h)'
+            '📝 Todos los 6 formatos',
+            '🎨 3 tonos disponibles',
+            '👥 2 usuarios',
+            '⚡ Soporte por email (24h)'
           ]
         },
         business: {
           name: 'Business',
           features: [
-            'Todo del plan Pro +',
-            '5 usuarios por cuenta',
-            'Acceso API',
-            'Créditos adicionales (0.08€/crédito)',
-            'Personalización de tonos',
-            'Exportación masiva (CSV, JSON)',
-            'Soporte prioritario (12h) + chat'
+            '🚀 Todo del plan Pro +',
+            '👥 5 usuarios por cuenta',
+            '🔌 Acceso API',
+            '💰 Créditos adicionales (0.08€/crédito)',
+            '🎨 Personalización de tonos',
+            '📦 Exportación masiva (CSV, JSON)',
+            '⭐ Soporte prioritario (12h) + chat'
           ]
         }
       }
