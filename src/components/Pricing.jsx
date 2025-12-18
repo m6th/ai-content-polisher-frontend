@@ -30,9 +30,10 @@ function Pricing({ user, onUpdateUser }) {
           name: 'Gratuit',
           features: [
             '3 formats (LinkedIn, Instagram, TikTok)',
-            '4 tons (Professionnel, Casual, Engageant, Storytelling)',
+            '3 tons (Professionnel, Engageant, Storytelling)',
             '3 langues (FR, EN, ES)',
             'Historique (7 derniers jours)',
+            '1 variante par format',
             'Support communautaire'
           ]
         },
@@ -40,9 +41,10 @@ function Pricing({ user, onUpdateUser }) {
           name: 'Starter',
           features: [
             'Tous les 6 formats',
-            '4 tons disponibles',
+            '3 tons disponibles',
             '3 langues (FR, EN, ES)',
             'Historique complet (illimité)',
+            '1 variante par format',
             'Export des contenus',
             'Support email (48h)'
           ]
@@ -50,15 +52,15 @@ function Pricing({ user, onUpdateUser }) {
         pro: {
           name: 'Pro',
           features: [
+            '✨ 3 variantes par format (A/B testing)',
+            '📊 Analytics détaillés + performance tracking',
+            '🏷️ Hashtags AI intelligents',
+            '💡 Suggestions d\'amélioration IA',
+            '📅 Calendrier éditorial',
+            '📦 Export en masse (tous formats)',
             'Tous les 6 formats',
-            '4 tons disponibles',
-            '3 langues (FR, EN, ES)',
-            'Historique complet',
-            'Export des contenus',
-            'Analytics détaillées',
-            '3 variantes par requête',
-            'Suggestions de hashtags',
-            '2 utilisateurs par compte',
+            '3 tons disponibles',
+            '2 utilisateurs',
             'Support email (24h)'
           ]
         },
@@ -94,9 +96,10 @@ function Pricing({ user, onUpdateUser }) {
           name: 'Free',
           features: [
             '3 formats (LinkedIn, Instagram, TikTok)',
-            '4 tones (Professional, Casual, Engaging, Storytelling)',
+            '3 tones (Professional, Engaging, Storytelling)',
             '3 languages (FR, EN, ES)',
             'History (last 7 days)',
+            '1 variant per format',
             'Community support'
           ]
         },
@@ -104,9 +107,10 @@ function Pricing({ user, onUpdateUser }) {
           name: 'Starter',
           features: [
             'All 6 formats',
-            '4 tones available',
+            '3 tones available',
             '3 languages (FR, EN, ES)',
             'Complete history (unlimited)',
+            '1 variant per format',
             'Content export',
             'Email support (48h)'
           ]
@@ -114,15 +118,15 @@ function Pricing({ user, onUpdateUser }) {
         pro: {
           name: 'Pro',
           features: [
+            '✨ 3 variants per format (A/B testing)',
+            '📊 Detailed analytics + performance tracking',
+            '🏷️ Smart AI hashtags',
+            '💡 AI improvement suggestions',
+            '📅 Editorial calendar',
+            '📦 Bulk export (all formats)',
             'All 6 formats',
-            '4 tones available',
-            '3 languages (FR, EN, ES)',
-            'Complete history',
-            'Content export',
-            'Detailed analytics',
-            '3 variants per request',
-            'Hashtag suggestions',
-            '2 users per account',
+            '3 tones available',
+            '2 users',
             'Email support (24h)'
           ]
         },
@@ -157,12 +161,10 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratis',
           features: [
-            '5 formatos (LinkedIn, TikTok, Email, Humor, Instagram Story)',
-            '3 tonos (Profesional, Casual, Atractivo)',
+            '3 formatos (LinkedIn, Instagram, TikTok)',
+            '3 tonos (Profesional, Atractivo, Storytelling)',
             '3 idiomas (FR, EN, ES)',
             'Historial (últimos 7 días)',
-            'Exportar contenidos',
-            'Analytics básicos',
             '1 variante por formato',
             'Soporte comunitario'
           ]
@@ -170,28 +172,27 @@ function Pricing({ user, onUpdateUser }) {
         starter: {
           name: 'Starter',
           features: [
-            'Todas las plataformas',
-            'Mismos 3 tonos que Free',
+            'Todos los 6 formatos',
+            '3 tonos disponibles',
             '3 idiomas (FR, EN, ES)',
             'Historial completo (ilimitado)',
+            '1 variante por formato',
             'Exportar contenidos',
-            'Soporte por email (48h)',
-            'Analytics',
-            'Variantes múltiples'
+            'Soporte por email (48h)'
           ]
         },
         pro: {
           name: 'Pro',
           features: [
-            'Todas las plataformas',
-            'Todos los tonos disponibles',
-            '3 idiomas (FR, EN, ES)',
-            'Historial completo',
-            'Exportar contenidos',
-            'Analytics detalladas',
-            '3 variantes por solicitud',
-            'Sugerencias de hashtags',
-            '2 usuarios por cuenta',
+            '✨ 3 variantes por formato (A/B testing)',
+            '📊 Analytics detalladas + seguimiento de rendimiento',
+            '🏷️ Hashtags IA inteligentes',
+            '💡 Sugerencias de mejora IA',
+            '📅 Calendario editorial',
+            '📦 Exportación masiva (todos los formatos)',
+            'Todos los 6 formatos',
+            '3 tonos disponibles',
+            '2 usuarios',
             'Soporte por email (24h)'
           ]
         },
@@ -244,8 +245,8 @@ function Pricing({ user, onUpdateUser }) {
       key: 'pro',
       name: t.plans.pro.name,
       icon: Briefcase,
-      price: '17.99',
-      credits: '150',
+      price: '19.99',
+      credits: '200',
       color: 'from-blue-500 to-blue-600',
       popular: true,
       features: t.plans.pro.features.map((text) => ({
