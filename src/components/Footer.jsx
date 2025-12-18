@@ -14,11 +14,8 @@ export default function Footer() {
       terms: 'CGU',
       legalNotice: 'Mentions légales',
       contact: 'Contact',
-      email: 'Email',
       support: 'Support',
-      rights: '© 2024 AI Content Polisher. Tous droits réservés.',
-      madeWith: 'Créé avec',
-      by: 'par'
+      rights: '© 2024 AI Content Polisher. Tous droits réservés.'
     },
     en: {
       product: 'Product',
@@ -29,11 +26,8 @@ export default function Footer() {
       terms: 'Terms',
       legalNotice: 'Legal Notice',
       contact: 'Contact',
-      email: 'Email',
       support: 'Support',
-      rights: '© 2024 AI Content Polisher. All rights reserved.',
-      madeWith: 'Made with',
-      by: 'by'
+      rights: '© 2024 AI Content Polisher. All rights reserved.'
     },
     es: {
       product: 'Producto',
@@ -44,11 +38,8 @@ export default function Footer() {
       terms: 'Términos',
       legalNotice: 'Aviso Legal',
       contact: 'Contacto',
-      email: 'Email',
       support: 'Soporte',
-      rights: '© 2024 AI Content Polisher. Todos los derechos reservados.',
-      madeWith: 'Hecho con',
-      by: 'por'
+      rights: '© 2024 AI Content Polisher. Todos los derechos reservados.'
     }
   };
 
@@ -60,7 +51,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1">
-            <Link to="/" className="flex items-center space-x-2 mb-4">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">AI</span>
               </div>
@@ -68,9 +59,6 @@ export default function Footer() {
                 Content Polisher
               </span>
             </Link>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {t.madeWith} ❤️ {t.by} Mathieu Durand
-            </p>
           </div>
 
           {/* Product */}
@@ -87,11 +75,6 @@ export default function Footer() {
               <li>
                 <Link to="/#features" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                   {t.features}
-                </Link>
-              </li>
-              <li>
-                <Link to="/#faq" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                  FAQ
                 </Link>
               </li>
             </ul>
