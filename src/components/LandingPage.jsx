@@ -5,7 +5,7 @@ import {
   Sparkles, Zap, Target, ArrowRight, Check,
   FileText, Mail, Video, Linkedin, Instagram,
   Twitter, BookOpen, Megaphone, GraduationCap,
-  Smile, Drama, Facebook, Image, Send
+  Smile, Drama, Facebook, Image, Send, ChevronDown
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -13,12 +13,80 @@ function LandingPage() {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const [scrollY, setScrollY] = useState(0);
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const faqContent = {
+    fr: {
+      title: "Questions Fréquentes",
+      questions: [
+        {
+          q: "Qu'est-ce qu'AI Content Polisher ?",
+          a: "AI Content Polisher est un outil SaaS qui utilise l'intelligence artificielle pour générer et optimiser votre contenu pour différentes plateformes (LinkedIn, TikTok, Email, etc.). Il adapte automatiquement le ton, le format et le style selon vos besoins."
+        },
+        {
+          q: "Quels sont les différents plans disponibles ?",
+          a: "Nous proposons 4 plans : Gratuit (3 crédits, 5 formats), Starter à 7,99€/mois (40 crédits), Pro à 17,99€/mois (150 crédits) et Business à 44,99€/mois (500 crédits). Tous les plans payants ont accès à tous les formats et fonctionnalités."
+        },
+        {
+          q: "Qu'est-ce qu'un crédit ?",
+          a: "Un crédit = une génération complète de contenu. Par exemple, si vous générez du contenu LinkedIn + TikTok + Email à partir d'un texte, cela consomme 1 crédit et vous recevez les 3 (ou plus) formats optimisés."
+        },
+        {
+          q: "Puis-je annuler mon abonnement ?",
+          a: "Oui, vous pouvez annuler votre abonnement à tout moment sans frais. Votre accès reste actif jusqu'à la fin de la période payée, puis vous repassez automatiquement au plan gratuit."
+        },
+        {
+          q: "Mes données sont-elles sécurisées ?",
+          a: "Oui, absolument. Nous utilisons le chiffrement SSL/TLS pour toutes les communications. Les paiements sont gérés par Stripe (certifié PCI-DSS niveau 1). Nous ne stockons jamais vos coordonnées bancaires."
+        },
+        {
+          q: "Comment puis-je obtenir de l'aide ?",
+          a: "Vous pouvez nous contacter par email à mathdu0609@gmail.com. Nous répondons généralement sous 48h maximum. Pour les questions urgentes, précisez-le dans l'objet de votre email."
+        }
+      ]
+    },
+    en: {
+      title: "Frequently Asked Questions",
+      questions: [
+        {
+          q: "What is AI Content Polisher?",
+          a: "AI Content Polisher is a SaaS tool that uses artificial intelligence to generate and optimize your content for different platforms (LinkedIn, TikTok, Email, etc.). It automatically adapts tone, format and style according to your needs."
+        },
+        {
+          q: "What are the different plans available?",
+          a: "We offer 4 plans: Free (3 credits, 5 formats), Starter at €7.99/month (40 credits), Pro at €17.99/month (150 credits) and Business at €44.99/month (500 credits). All paid plans have access to all formats and features."
+        },
+        {
+          q: "What is a credit?",
+          a: "A credit = one complete content generation. For example, if you generate LinkedIn + TikTok + Email content from one text, it consumes 1 credit and you receive 3 (or more) optimized formats."
+        },
+        {
+          q: "Can I cancel my subscription?",
+          a: "Yes, you can cancel your subscription at any time without fees. Your access remains active until the end of the paid period, then you automatically return to the free plan."
+        },
+        {
+          q: "Is my data secure?",
+          a: "Yes, absolutely. We use SSL/TLS encryption for all communications. Payments are handled by Stripe (PCI-DSS Level 1 certified). We never store your bank details."
+        },
+        {
+          q: "How can I get help?",
+          a: "You can contact us by email at mathdu0609@gmail.com. We usually respond within 48h maximum. For urgent questions, specify it in the email subject."
+        }
+      ]
+    }
+  };
+
+  const faq = faqContent[language] || faqContent.fr;
 
   const formats = [
     {
@@ -417,6 +485,56 @@ function LandingPage() {
                 <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">
+              {faq.title}
+            </h2>
+          </div>
+
+          {/* Questions */}
+          <div className="space-y-4">
+            {faq.questions.map((item, index) => {
+              const isOpen = openFaq === index;
+
+              return (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-all"
+                >
+                  <button
+                    onClick={() => toggleFaq(index)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                  >
+                    <span className="text-lg font-semibold text-slate-900 dark:text-white pr-8">
+                      {item.q}
+                    </span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0 transition-transform ${
+                        isOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  <div
+                    className={`overflow-hidden transition-all ${
+                      isOpen ? 'max-h-96' : 'max-h-0'
+                    }`}
+                  >
+                    <div className="px-6 pb-5 pt-2 text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {item.a}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
