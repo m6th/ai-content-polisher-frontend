@@ -45,10 +45,7 @@ function ContentPolisher({ user, onUpdateUser }) {
     { value: 'professional', label: t.polisher.tones.professional },
     { value: 'casual', label: t.polisher.tones.casual },
     { value: 'engaging', label: t.polisher.tones.engaging },
-    { value: 'friendly', label: 'Amical' },
-    { value: 'authoritative', label: 'Autoritaire' },
-    { value: 'inspirational', label: t.polisher.tones.inspirational },
-    { value: 'humorous', label: t.polisher.tones.humorous },
+    { value: 'storytelling', label: 'Storytelling' },
   ];
 
   const languages = [
@@ -59,20 +56,11 @@ function ContentPolisher({ user, onUpdateUser }) {
 
   const formatLabels = {
     linkedin: { name: 'LinkedIn Post', icon: '💼', color: 'from-blue-500 to-blue-600', recommended: true },
-    tiktok: { name: 'Script TikTok', icon: '🎵', color: 'from-pink-500 to-pink-600' },
-    youtube_short: { name: 'YouTube Short', icon: '📹', color: 'from-red-500 to-red-600' },
-    twitter: { name: 'Tweet / Thread', icon: '🐦', color: 'from-sky-500 to-sky-600' },
     instagram: { name: 'Instagram Caption', icon: '📸', color: 'from-purple-500 to-pink-500', recommended: true },
+    tiktok: { name: 'Script TikTok', icon: '🎵', color: 'from-pink-500 to-pink-600' },
+    twitter: { name: 'Tweet / Thread', icon: '🐦', color: 'from-sky-500 to-sky-600' },
     email: { name: 'Email Pro', icon: '📧', color: 'from-green-500 to-green-600' },
-    article: { name: 'Mini-Article', icon: '📄', color: 'from-gray-600 to-gray-700', recommended: true },
-    storytelling: { name: 'Storytelling', icon: '📖', color: 'from-amber-500 to-amber-600' },
-    persuasive: { name: 'Copywriting', icon: '🎯', color: 'from-orange-500 to-orange-600' },
-    educational: { name: 'Version Simple', icon: '🎓', color: 'from-indigo-500 to-indigo-600' },
-    humorous: { name: 'Version Humour', icon: '😄', color: 'from-yellow-500 to-yellow-600' },
-    dramatic: { name: 'Version Dramatique', icon: '🎭', color: 'from-violet-500 to-violet-600' },
-    facebook: { name: 'Facebook Post', icon: '👥', color: 'from-blue-600 to-blue-700' },
-    instagram_story: { name: 'Instagram Story', icon: '📱', color: 'from-purple-600 to-orange-600' },
-    newsletter: { name: 'Newsletter', icon: '📬', color: 'from-teal-500 to-teal-600' },
+    persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', recommended: true },
   };
 
   // Helper functions for new features

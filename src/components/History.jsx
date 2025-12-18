@@ -99,20 +99,11 @@ function History() {
 
   const formatLabels = {
     linkedin: { name: 'LinkedIn', icon: '💼', color: 'bg-blue-500' },
-    tiktok: { name: 'TikTok', icon: '🎵', color: 'bg-pink-500' },
-    youtube_short: { name: 'YouTube', icon: '📹', color: 'bg-red-500' },
-    twitter: { name: 'Twitter', icon: '🐦', color: 'bg-sky-500' },
     instagram: { name: 'Instagram', icon: '📸', color: 'bg-purple-500' },
-    facebook: { name: 'Facebook', icon: '👥', color: 'bg-blue-600' },
-    instagram_story: { name: 'Story', icon: '📱', color: 'bg-purple-600' },
+    tiktok: { name: 'TikTok', icon: '🎵', color: 'bg-pink-500' },
+    twitter: { name: 'Twitter', icon: '🐦', color: 'bg-sky-500' },
     email: { name: 'Email', icon: '📧', color: 'bg-green-500' },
-    newsletter: { name: 'Newsletter', icon: '📬', color: 'bg-teal-500' },
-    article: { name: 'Article', icon: '📄', color: 'bg-gray-600' },
-    storytelling: { name: 'Story', icon: '📖', color: 'bg-amber-500' },
-    persuasive: { name: 'Copy', icon: '🎯', color: 'bg-orange-500' },
-    educational: { name: 'Éducatif', icon: '🎓', color: 'bg-indigo-500' },
-    humorous: { name: 'Humour', icon: '😄', color: 'bg-yellow-500' },
-    dramatic: { name: 'Dramatique', icon: '🎭', color: 'bg-violet-500' },
+    persuasive: { name: 'Publicité', icon: '🎯', color: 'bg-orange-500' },
   };
 
   return (

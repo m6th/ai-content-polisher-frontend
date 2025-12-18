@@ -114,70 +114,16 @@ function LandingPage() {
       desc: t.landing.formats.twitter
     },
     {
-      name: 'YouTube Short',
-      icon: Video,
-      color: 'bg-red-600',
-      desc: t.landing.formats.youtube
-    },
-    {
       name: 'Email Pro',
       icon: Mail,
       color: 'bg-orange-500',
       desc: t.landing.formats.email
     },
     {
-      name: 'Mini-Article',
-      icon: FileText,
-      color: 'bg-green-600',
-      desc: t.landing.formats.article
-    },
-    {
-      name: 'Storytelling',
-      icon: BookOpen,
-      color: 'bg-amber-600',
-      desc: t.landing.formats.storytelling
-    },
-    {
-      name: 'Copywriting',
+      name: 'Publicité',
       icon: Megaphone,
       color: 'bg-orange-600',
       desc: t.landing.formats.copywriting
-    },
-    {
-      name: 'Version Simple',
-      icon: GraduationCap,
-      color: 'bg-indigo-600',
-      desc: t.landing.formats.educational
-    },
-    {
-      name: 'Version Humour',
-      icon: Smile,
-      color: 'bg-yellow-500',
-      desc: t.landing.formats.humorous
-    },
-    {
-      name: 'Version Dramatique',
-      icon: Drama,
-      color: 'bg-violet-600',
-      desc: t.landing.formats.dramatic
-    },
-    {
-      name: 'Facebook Post',
-      icon: Facebook,
-      color: 'bg-blue-700',
-      desc: t.landing.formats.facebook
-    },
-    {
-      name: 'Instagram Story',
-      icon: Image,
-      color: 'bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600',
-      desc: t.landing.formats.instagram_story
-    },
-    {
-      name: 'Newsletter',
-      icon: Send,
-      color: 'bg-teal-600',
-      desc: t.landing.formats.newsletter
     }
   ];
 

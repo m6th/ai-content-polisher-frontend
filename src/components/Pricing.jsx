@@ -29,34 +29,29 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Gratuit',
           features: [
-            '5 formats (LinkedIn, TikTok, Email, Humour, Instagram Story)',
-            '3 tons (Professionnel, Casual, Engageant)',
+            '3 formats (LinkedIn, Instagram, TikTok)',
+            '4 tons (Professionnel, Casual, Engageant, Storytelling)',
             '3 langues (FR, EN, ES)',
             'Historique (7 derniers jours)',
-            'Export des contenus',
-            'Analytics de base',
-            '1 variante par format',
             'Support communautaire'
           ]
         },
         starter: {
           name: 'Starter',
           features: [
-            'Toutes les plateformes',
-            'Mêmes 3 tons que Free',
+            'Tous les 6 formats',
+            '4 tons disponibles',
             '3 langues (FR, EN, ES)',
             'Historique complet (illimité)',
             'Export des contenus',
-            'Support email (48h)',
-            'Analytics',
-            'Variantes multiples'
+            'Support email (48h)'
           ]
         },
         pro: {
           name: 'Pro',
           features: [
-            'Toutes les plateformes',
-            'Tous les tons disponibles',
+            'Tous les 6 formats',
+            '4 tons disponibles',
             '3 langues (FR, EN, ES)',
             'Historique complet',
             'Export des contenus',
@@ -98,34 +93,29 @@ function Pricing({ user, onUpdateUser }) {
         free: {
           name: 'Free',
           features: [
-            '5 formats (LinkedIn, TikTok, Email, Humor, Instagram Story)',
-            '3 tones (Professional, Casual, Engaging)',
+            '3 formats (LinkedIn, Instagram, TikTok)',
+            '4 tones (Professional, Casual, Engaging, Storytelling)',
             '3 languages (FR, EN, ES)',
             'History (last 7 days)',
-            'Content export',
-            'Basic analytics',
-            '1 variant per format',
             'Community support'
           ]
         },
         starter: {
           name: 'Starter',
           features: [
-            'All platforms',
-            'Same 3 tones as Free',
+            'All 6 formats',
+            '4 tones available',
             '3 languages (FR, EN, ES)',
             'Complete history (unlimited)',
             'Content export',
-            'Email support (48h)',
-            'Analytics',
-            'Multiple variants'
+            'Email support (48h)'
           ]
         },
         pro: {
           name: 'Pro',
           features: [
-            'All platforms',
-            'All tones available',
+            'All 6 formats',
+            '4 tones available',
             '3 languages (FR, EN, ES)',
             'Complete history',
             'Content export',
