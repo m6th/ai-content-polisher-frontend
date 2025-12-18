@@ -17,14 +17,14 @@ export const translations = {
       hero: {
         badge: 'Gagne 10h par semaine sur ta création de contenu',
         title1: 'Un texte.',
-        title2: '15 formats viraux.',
+        title2: '6 formats viraux.',
         title3: '30 secondes.',
         subtitle: 'Transforme tes idées en contenu optimisé pour LinkedIn, Instagram, TikTok et plus.',
         subtitleBold: ' Sans effort. Sans syndrome de la page blanche.',
         cta: 'Commencer gratuitement',
       },
       stats: {
-        formats: '15 formats',
+        formats: '6 formats',
         formatsDesc: 'Tous les réseaux sociaux couverts',
         languages: '3 langues',
         languagesDesc: 'Français, Anglais, Espagnol',
@@ -56,9 +56,9 @@ export const translations = {
         step1Title: 'Colle ton idée',
         step1Desc: 'Un texte, un lien, une note... Tout fonctionne',
         step2Title: 'Personnalise le ton',
-        step2Desc: 'Professionnel, décontracté, inspirant... 8 tons disponibles',
+        step2Desc: 'Professionnel, engageant, storytelling... 3 tons disponibles',
         step3Title: 'Publie partout',
-        step3Desc: '15 versions optimisées prêtes en 30 secondes',
+        step3Desc: '6 versions optimisées prêtes en 30 secondes',
       },
       features: {
         title: 'Pourquoi AI Content Polisher ?',
@@ -68,7 +68,7 @@ export const translations = {
         feature2Title: 'Ton unique préservé',
         feature2Desc: 'L\'IA analyse ton style pour créer du contenu qui te ressemble vraiment.',
         feature3Title: 'Multi-langue & multi-plateforme',
-        feature3Desc: 'Français, anglais, espagnol. 15 formats optimisés pour chaque réseau.',
+        feature3Desc: 'Français, anglais, espagnol. 6 formats optimisés pour chaque réseau.',
         feature4Title: 'Optimisé pour l\'engagement',
         feature4Desc: 'Contenu basé sur les meilleures pratiques de chaque plateforme.',
       },
@@ -85,11 +85,11 @@ export const translations = {
     // Content Polisher
     polisher: {
       title: 'Transformez votre contenu',
-      subtitle: 'Un seul texte → 15 formats optimisés → 30 secondes ⚡',
+      subtitle: 'Un seul texte → 6 formats optimisés → 30 secondes ⚡',
       toneLabel: 'Ton du contenu',
       languageLabel: 'Langue',
       inputLabel: 'Votre texte original',
-      inputPlaceholder: 'Collez votre texte ici... Il sera transformé en 15 formats différents !',
+      inputPlaceholder: 'Collez votre texte ici... Il sera transformé en 6 formats différents !',
       generateButton: 'Générer les formats',
       generating: 'Génération en cours...',
       resultsTitle: 'Vos contenus sont prêts !',
@@ -117,11 +117,11 @@ export const translations = {
       },
       progress: {
         analyzing: 'Analyse de votre contenu...',
-        generating: 'Génération des 15 formats...',
+        generating: 'Génération des 6 formats...',
         finalizing: 'Optimisation et finalisation...'
       },
       success: {
-        title: '15 formats générés avec succès !',
+        title: '6 formats générés avec succès !',
         creditsUsed: 'crédit utilisé',
         creditsRemaining: 'crédits restants',
         timeSaved: 'Temps économisé : ~3 heures',
@@ -160,13 +160,8 @@ export const translations = {
       },
       tones: {
         professional: '💼 Professionnel',
-        casual: '😊 Décontracté',
         engaging: '🔥 Engageant',
-        inspirational: '✨ Inspirant',
-        educational: '📚 Éducatif',
-        humorous: '😄 Humoristique',
-        dramatic: '🎭 Dramatique',
-        persuasive: '🎯 Persuasif',
+        storytelling: '📖 Storytelling',
       },
       languages: {
         fr: 'Français 🇫🇷',
@@ -227,7 +222,7 @@ export const translations = {
           description: 'Pour essayer sans engagement',
           features: [
             '10 crédits/mois',
-            '12 formats disponibles',
+            '6 formats disponibles',
             'Support par email',
             'Génération basique'
           ],
@@ -238,7 +233,7 @@ export const translations = {
           description: 'Pour les créateurs réguliers',
           features: [
             '100 crédits/mois',
-            '12 formats disponibles',
+            '6 formats disponibles',
             'Historique illimité',
             'Support prioritaire',
             'Export avancé'
@@ -250,7 +245,7 @@ export const translations = {
           description: 'Pour les équipes et agences',
           features: [
             '300 crédits/mois',
-            '12 formats + templates',
+            '6 formats + templates',
             "Jusqu'à 3 membres",
             'Analytics avancés',
             'Accès API',
@@ -299,14 +294,14 @@ export const translations = {
       hero: {
         badge: 'Save 10 hours per week on content creation',
         title1: 'One text.',
-        title2: '15 viral formats.',
+        title2: '6 viral formats.',
         title3: '30 seconds.',
         subtitle: 'Transform your ideas into optimized content for LinkedIn, Instagram, TikTok and more.',
         subtitleBold: ' Effortlessly. No more blank page syndrome.',
         cta: 'Get Started Free',
       },
       stats: {
-        formats: '15 formats',
+        formats: '6 formats',
         formatsDesc: 'All social networks covered',
         languages: '3 languages',
         languagesDesc: 'French, English, Spanish',
@@ -326,7 +321,7 @@ export const translations = {
         storytelling: 'Captivating stories with narrative structure',
         copywriting: 'Persuasive marketing-style texts',
         educational: 'Simplified and educational content',
-        humorous: 'Humorous and casual tone',
+        humorous: 'Humorous and light tone',
         dramatic: 'Intense and impactful style',
         facebook: 'Engaging posts for Facebook communities',
         instagram_story: 'Interactive and captivating Instagram Stories',
@@ -338,9 +333,9 @@ export const translations = {
         step1Title: 'Paste your idea',
         step1Desc: 'A text, a link, a note... Everything works',
         step2Title: 'Customize the tone',
-        step2Desc: 'Professional, casual, inspiring... 8 tones available',
+        step2Desc: 'Professional, engaging, storytelling... 3 tones available',
         step3Title: 'Publish everywhere',
-        step3Desc: '15 optimized versions ready in 30 seconds',
+        step3Desc: '6 optimized versions ready in 30 seconds',
       },
       features: {
         title: 'Why AI Content Polisher?',
@@ -350,7 +345,7 @@ export const translations = {
         feature2Title: 'Unique tone preserved',
         feature2Desc: 'AI analyzes your style to create content that truly sounds like you.',
         feature3Title: 'Multi-language & multi-platform',
-        feature3Desc: 'French, English, Spanish. 15 formats optimized for each network.',
+        feature3Desc: 'French, English, Spanish. 6 formats optimized for each network.',
         feature4Title: 'Optimized for engagement',
         feature4Desc: 'Content based on best practices for each platform.',
       },
@@ -367,11 +362,11 @@ export const translations = {
     // Content Polisher
     polisher: {
       title: 'Transform your content',
-      subtitle: 'One text → 15 optimized formats → 30 seconds ⚡',
+      subtitle: 'One text → 6 optimized formats → 30 seconds ⚡',
       toneLabel: 'Content tone',
       languageLabel: 'Language',
       inputLabel: 'Your original text',
-      inputPlaceholder: 'Paste your text here... It will be transformed into 15 different formats!',
+      inputPlaceholder: 'Paste your text here... It will be transformed into 6 different formats!',
       generateButton: 'Generate formats',
       generating: 'Generating...',
       resultsTitle: 'Your content is ready!',
@@ -399,11 +394,11 @@ export const translations = {
       },
       progress: {
         analyzing: 'Analyzing your content...',
-        generating: 'Generating 15 formats...',
+        generating: 'Generating 6 formats...',
         finalizing: 'Optimization and finalization...'
       },
       success: {
-        title: '15 formats generated successfully!',
+        title: '6 formats generated successfully!',
         creditsUsed: 'credit used',
         creditsRemaining: 'credits remaining',
         timeSaved: 'Time saved: ~3 hours',
@@ -442,13 +437,8 @@ export const translations = {
       },
       tones: {
         professional: '💼 Professional',
-        casual: '😊 Casual',
         engaging: '🔥 Engaging',
-        inspirational: '✨ Inspirational',
-        educational: '📚 Educational',
-        humorous: '😄 Humorous',
-        dramatic: '🎭 Dramatic',
-        persuasive: '🎯 Persuasive',
+        storytelling: '📖 Storytelling',
       },
       languages: {
         fr: 'Français 🇫🇷',
@@ -509,7 +499,7 @@ export const translations = {
           description: 'To try without commitment',
           features: [
             '10 credits/month',
-            '12 formats available',
+            '6 formats available',
             'Email support',
             'Basic generation'
           ],
@@ -520,7 +510,7 @@ export const translations = {
           description: 'For regular creators',
           features: [
             '100 credits/month',
-            '12 formats available',
+            '6 formats available',
             'Unlimited history',
             'Priority support',
             'Advanced export'
@@ -532,7 +522,7 @@ export const translations = {
           description: 'For teams and agencies',
           features: [
             '300 credits/month',
-            '12 formats + templates',
+            '6 formats + templates',
             'Up to 3 members',
             'Advanced analytics',
             'API access',
@@ -581,18 +571,18 @@ export const translations = {
       hero: {
         badge: 'Ahorra 10 horas por semana en creación de contenido',
         title1: 'Un texto.',
-        title2: '15 formatos virales.',
-        title3: '15 segundos.',
+        title2: '6 formatos virales.',
+        title3: '30 segundos.',
         subtitle: 'Transforma tus ideas en contenido optimizado para LinkedIn, Instagram, TikTok y más.',
         subtitleBold: ' Sin esfuerzo. Sin síndrome de la página en blanco.',
         cta: 'Comenzar gratis',
       },
       stats: {
-        formats: '15 formatos',
+        formats: '6 formatos',
         formatsDesc: 'Todas las redes sociales cubiertas',
         languages: '3 idiomas',
         languagesDesc: 'Francés, Inglés, Español',
-        speed: '15 segundos',
+        speed: '30 segundos',
         speedDesc: 'Generación ultra rápida',
       },
       formats: {
@@ -620,9 +610,9 @@ export const translations = {
         step1Title: 'Pega tu idea',
         step1Desc: 'Un texto, un enlace, una nota... Todo funciona',
         step2Title: 'Personaliza el tono',
-        step2Desc: 'Profesional, casual, inspirador... 8 tonos disponibles',
+        step2Desc: 'Profesional, atractivo, storytelling... 3 tonos disponibles',
         step3Title: 'Publica en todas partes',
-        step3Desc: '15 versiones optimizadas listas en 15 segundos',
+        step3Desc: '6 versiones optimizadas listas en 30 segundos',
       },
       features: {
         title: '¿Por qué AI Content Polisher?',
@@ -632,7 +622,7 @@ export const translations = {
         feature2Title: 'Tono único preservado',
         feature2Desc: 'La IA analiza tu estilo para crear contenido que realmente suena como tú.',
         feature3Title: 'Multi-idioma y multiplataforma',
-        feature3Desc: 'Francés, inglés, español. 15 formatos optimizados para cada red.',
+        feature3Desc: 'Francés, inglés, español. 6 formatos optimizados para cada red.',
         feature4Title: 'Optimizado para engagement',
         feature4Desc: 'Contenido basado en las mejores prácticas de cada plataforma.',
       },
@@ -649,11 +639,11 @@ export const translations = {
     // Content Polisher
     polisher: {
       title: 'Transforma tu contenido',
-      subtitle: 'Un texto → 15 formatos optimizados → 15 segundos ⚡',
+      subtitle: 'Un texto → 6 formatos optimizados → 30 segundos ⚡',
       toneLabel: 'Tono del contenido',
       languageLabel: 'Idioma',
       inputLabel: 'Tu texto original',
-      inputPlaceholder: '¡Pega tu texto aquí... Se transformará en 15 formatos diferentes!',
+      inputPlaceholder: '¡Pega tu texto aquí... Se transformará en 6 formatos diferentes!',
       generateButton: 'Generar formatos',
       generating: 'Generando...',
       resultsTitle: '¡Tu contenido está listo!',
@@ -681,11 +671,11 @@ export const translations = {
       },
       progress: {
         analyzing: 'Analizando tu contenido...',
-        generating: 'Generando 15 formatos...',
+        generating: 'Generando 6 formatos...',
         finalizing: 'Optimización y finalización...'
       },
       success: {
-        title: '¡15 formatos generados con éxito!',
+        title: '¡6 formatos generados con éxito!',
         creditsUsed: 'crédito usado',
         creditsRemaining: 'créditos restantes',
         timeSaved: 'Tiempo ahorrado: ~3 horas',
@@ -724,13 +714,8 @@ export const translations = {
       },
       tones: {
         professional: '💼 Profesional',
-        casual: '😊 Casual',
         engaging: '🔥 Atractivo',
-        inspirational: '✨ Inspirador',
-        educational: '📚 Educativo',
-        humorous: '😄 Humorístico',
-        dramatic: '🎭 Dramático',
-        persuasive: '🎯 Persuasivo',
+        storytelling: '📖 Storytelling',
       },
       languages: {
         fr: 'Français 🇫🇷',
@@ -791,7 +776,7 @@ export const translations = {
           description: 'Para probar sin compromiso',
           features: [
             '10 créditos/mes',
-            '12 formatos disponibles',
+            '6 formatos disponibles',
             'Soporte por email',
             'Generación básica'
           ],
@@ -802,7 +787,7 @@ export const translations = {
           description: 'Para creadores regulares',
           features: [
             '100 créditos/mes',
-            '12 formatos disponibles',
+            '6 formatos disponibles',
             'Historial ilimitado',
             'Soporte prioritario',
             'Exportación avanzada'
@@ -814,7 +799,7 @@ export const translations = {
           description: 'Para equipos y agencias',
           features: [
             '300 créditos/mes',
-            '12 formatos + plantillas',
+            '6 formatos + plantillas',
             'Hasta 3 miembros',
             'Analytics avanzados',
             'Acceso API',

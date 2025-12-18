@@ -43,7 +43,6 @@ function ContentPolisher({ user, onUpdateUser }) {
   // Tous les tons disponibles dans l'application
   const allTones = [
     { value: 'professional', label: t.polisher.tones.professional },
-    { value: 'casual', label: t.polisher.tones.casual },
     { value: 'engaging', label: t.polisher.tones.engaging },
     { value: 'storytelling', label: 'Storytelling' },
   ];
