@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '../contexts/ToastContext';
 import AIInsights from './AIInsights';
 import HashtagButton from './HashtagButton';
+import VariantSelector from './VariantSelector';
+import AIFeatures from './AIFeatures';
 
 function ContentPolisher({ user, onUpdateUser }) {
   const { language: uiLanguage } = useLanguage();
@@ -39,6 +41,11 @@ function ContentPolisher({ user, onUpdateUser }) {
   // Tier 2: Preview modal & confetti
   const [previewModal, setPreviewModal] = useState({ isOpen: false, format: null, content: '' });
   const [showConfetti, setShowConfetti] = useState(false);
+
+  // Pro/Business features
+  const [hashtags, setHashtags] = useState(null);
+  const [aiSuggestions, setAiSuggestions] = useState(null);
+  const [requestId, setRequestId] = useState(null);
 
   // Tous les tons disponibles dans l'application
   const allTones = [
@@ -283,7 +290,32 @@ function ContentPolisher({ user, onUpdateUser }) {
       const response = await polishContent(originalText, tone, contentLanguage);
       clearInterval(progressInterval);
       setGenerationStep(100);
-      setGeneratedFormats(response.data.formats);
+
+      // Group formats by format name and collect variants
+      const formatsMap = {};
+      response.data.formats.forEach(item => {
+        if (!formatsMap[item.format]) {
+          formatsMap[item.format] = {
+            format: item.format,
+            variants: [],
+            id: item.id,
+            created_at: item.created_at
+          };
+        }
+        formatsMap[item.format].variants.push(item.content);
+      });
+
+      // Convert to array and simplify if only one variant
+      const processedFormats = Object.values(formatsMap).map(f => ({
+        ...f,
+        content: f.variants.length === 1 ? f.variants[0] : f.variants[0], // Keep first variant as default content
+        variants: f.variants.length > 1 ? f.variants : null
+      }));
+
+      setGeneratedFormats(processedFormats);
+      setHashtags(response.data.hashtags || null);
+      setAiSuggestions(response.data.ai_suggestions || null);
+      setRequestId(response.data.request_id);
       setShowSuccessFeedback(true);
       onUpdateUser();
 
@@ -782,14 +814,34 @@ function ContentPolisher({ user, onUpdateUser }) {
               <h3 className="text-3xl font-bold text-gray-800 dark:text-white">
                 {t.polisher.generatedContent}
               </h3>
-              <button
-                onClick={handleDownloadAll}
-                className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg font-semibold"
-              >
-                <Download className="h-5 w-5" />
-                <span>Tout télécharger</span>
-              </button>
+              <div className="flex items-center gap-3">
+                {requestId && (user.current_plan === 'pro' || user.current_plan === 'business') && (
+                  <a
+                    href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/content/export/${requestId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg font-semibold"
+                  >
+                    <Download className="h-5 w-5" />
+                    <span>Export ZIP (Pro)</span>
+                  </a>
+                )}
+                <button
+                  onClick={handleDownloadAll}
+                  className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg font-semibold"
+                >
+                  <Download className="h-5 w-5" />
+                  <span>Tout télécharger</span>
+                </button>
+              </div>
             </div>
+
+            {/* AI Features for Pro/Business */}
+            {(hashtags || aiSuggestions) && (
+              <div className="mb-8">
+                <AIFeatures hashtags={hashtags} aiSuggestions={aiSuggestions} />
+              </div>
+            )}
 
             <div className="grid grid-cols-1 gap-8">
               {generatedFormats.map((format, index) => {
@@ -896,11 +948,14 @@ function ContentPolisher({ user, onUpdateUser }) {
                       </div>
                     )}
 
-                    <div className="p-8">
-                      <p className="text-gray-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed text-lg">
-                        {format.content}
-                      </p>
-                    </div>
+                    {/* Use VariantSelector for multi-variant or single content */}
+                    <VariantSelector
+                      variants={format.variants || [format.content]}
+                      format={format.format}
+                      onCopy={handleCopy}
+                      copiedVariant={copiedId}
+                      formatInfo={formatInfo}
+                    />
 
                     {/* Stats & Actions Footer */}
                     <div className="px-6 py-3 bg-gray-50 dark:bg-slate-900border-t border-gray-100 dark:border-slate-700 flex items-center justify-between">
