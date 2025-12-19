@@ -21,6 +21,9 @@ const Account = lazy(() => import('./components/Account'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const LegalNotice = lazy(() => import('./components/LegalNotice'));
+const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard'));
+const EditorialCalendar = lazy(() => import('./components/EditorialCalendar'));
+const TeamManagement = lazy(() => import('./components/TeamManagement'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -133,6 +136,36 @@ function App() {
               element={
                 user ? (
                   <History />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                user ? (
+                  <AnalyticsDashboard user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                user ? (
+                  <EditorialCalendar user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/team"
+              element={
+                user ? (
+                  <TeamManagement user={user} />
                 ) : (
                   <Navigate to="/login" />
                 )

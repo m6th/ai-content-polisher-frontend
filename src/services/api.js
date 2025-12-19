@@ -236,4 +236,67 @@ export const getSubscriptionInfo = () => {
   return api.get('/stripe/subscription-info');
 };
 
+// Pro/Business Analytics
+export const getFormatAnalytics = () => {
+  return api.get('/analytics/format-analytics');
+};
+
+export const getPerformanceSummary = (days = 30) => {
+  return api.get(`/analytics/performance-summary?days=${days}`);
+};
+
+// Calendar
+export const scheduleContent = (data) => {
+  return api.post('/calendar/schedule', data);
+};
+
+export const getCalendarView = (startDate, endDate, platform = null) => {
+  const params = new URLSearchParams();
+  if (startDate) params.append('start_date', startDate);
+  if (endDate) params.append('end_date', endDate);
+  if (platform) params.append('platform', platform);
+  return api.get(`/calendar/view?${params.toString()}`);
+};
+
+export const updateScheduledContent = (scheduleId, data) => {
+  return api.put(`/calendar/${scheduleId}`, data);
+};
+
+export const deleteScheduledContent = (scheduleId) => {
+  return api.delete(`/calendar/${scheduleId}`);
+};
+
+export const getUpcomingContent = (days = 7) => {
+  return api.get(`/calendar/upcoming?days=${days}`);
+};
+
+// Teams
+export const createTeam = (name) => {
+  return api.post('/teams/create', { name });
+};
+
+export const getMyTeam = () => {
+  return api.get('/teams/my-team');
+};
+
+export const inviteTeamMember = (email) => {
+  return api.post('/teams/invite', { email });
+};
+
+export const acceptTeamInvitation = (token) => {
+  return api.post(`/teams/accept-invitation?token=${token}`);
+};
+
+export const removeTeamMember = (memberId) => {
+  return api.delete(`/teams/members/${memberId}`);
+};
+
+export const leaveTeam = () => {
+  return api.post('/teams/leave');
+};
+
+export const updateTeam = (name) => {
+  return api.put('/teams/update', null, { params: { name } });
+};
+
 export default api;

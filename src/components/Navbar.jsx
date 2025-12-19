@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Sparkles, Globe, Shield, History, User } from 'lucide-react';
+import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 import ThemeToggle from './ThemeToggle';
@@ -47,6 +47,29 @@ function Navbar({ user, onLogout }) {
                 <History className="h-4 w-4" />
                 <span>{t.navbar.history || 'Historique'}</span>
               </Link>
+              <Link
+                to="/analytics"
+                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
+              >
+                <BarChart3 className="h-4 w-4" />
+                <span>{t.navbar.analytics || 'Analytics'}</span>
+              </Link>
+              <Link
+                to="/calendar"
+                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
+              >
+                <Calendar className="h-4 w-4" />
+                <span>{t.navbar.calendar || 'Calendrier'}</span>
+              </Link>
+              {(user.current_plan === 'pro' || user.current_plan === 'business') && (
+                <Link
+                  to="/team"
+                  className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
+                >
+                  <Users className="h-4 w-4" />
+                  <span>{t.navbar.team || 'Équipe'}</span>
+                </Link>
+              )}
               <Link
                 to="/account"
                 className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
