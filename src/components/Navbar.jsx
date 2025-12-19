@@ -23,76 +23,83 @@ function Navbar({ user, onLogout }) {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2 group">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
               <Sparkles className="h-6 w-6 text-white" />
             </div>
-            <span className="font-black text-xl text-slate-900 dark:text-white hidden sm:block">
+            <span className="font-black text-lg xl:text-xl text-slate-900 dark:text-white hidden lg:block">
               AI Content Polisher
             </span>
           </Link>
-          
+
           {user ? (
-            <div className="flex items-center space-x-6">
-              <ThemeToggle />
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                {user.name} • <span className="font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining} {t.navbar.credits}</span>
-              </span>
-              <Link
-                to="/history"
-                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-              >
-                <History className="h-4 w-4" />
-                <span>{t.navbar.history || 'Historique'}</span>
-              </Link>
-              <Link
-                to="/analytics"
-                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-              >
-                <BarChart3 className="h-4 w-4" />
-                <span>{t.navbar.analytics || 'Analytics'}</span>
-              </Link>
-              <Link
-                to="/calendar"
-                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-              >
-                <Calendar className="h-4 w-4" />
-                <span>{t.navbar.calendar || 'Calendrier'}</span>
-              </Link>
-              {(user.current_plan === 'pro' || user.current_plan === 'business') && (
-                <Link
-                  to="/team"
-                  className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-                >
-                  <Users className="h-4 w-4" />
-                  <span>{t.navbar.team || 'Équipe'}</span>
+            <div className="flex items-center gap-2 xl:gap-3 flex-1 justify-end">
+              {/* Navigation Links - compact on smaller screens */}
+              <div className="hidden xl:flex items-center gap-2">
+                <Link to="/history" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
+                  <History className="h-4 w-4" />
+                  <span>{t.navbar.history || 'Historique'}</span>
                 </Link>
-              )}
-              <Link
-                to="/account"
-                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-              >
-                <User className="h-4 w-4" />
-                <span>{t.navbar.account || 'Compte'}</span>
-              </Link>
-              {user.is_admin === 1 && (
-                <Link
-                  to="/admin"
-                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all font-medium shadow-lg"
-                >
-                  <Shield className="h-4 w-4" />
-                  <span>Admin</span>
+                <Link to="/analytics" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
+                  <BarChart3 className="h-4 w-4" />
+                  <span>{t.navbar.analytics || 'Analytics'}</span>
                 </Link>
-              )}
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-all font-medium"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>{t.navbar.logout}</span>
-              </button>
+                <Link to="/calendar" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
+                  <Calendar className="h-4 w-4" />
+                  <span>{t.navbar.calendar || 'Calendrier'}</span>
+                </Link>
+                {(user.current_plan === 'pro' || user.current_plan === 'business') && (
+                  <Link to="/team" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
+                    <Users className="h-4 w-4" />
+                    <span>{t.navbar.team || 'Équipe'}</span>
+                  </Link>
+                )}
+              </div>
+
+              {/* Mobile: Icons only */}
+              <div className="flex xl:hidden items-center gap-1">
+                <Link to="/history" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Historique">
+                  <History className="h-4 w-4" />
+                </Link>
+                <Link to="/analytics" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Analytics">
+                  <BarChart3 className="h-4 w-4" />
+                </Link>
+                <Link to="/calendar" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Calendrier">
+                  <Calendar className="h-4 w-4" />
+                </Link>
+                {(user.current_plan === 'pro' || user.current_plan === 'business') && (
+                  <Link to="/team" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Équipe">
+                    <Users className="h-4 w-4" />
+                  </Link>
+                )}
+              </div>
+
+              {/* User info - responsive */}
+              <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-2 xl:pl-3">
+                <ThemeToggle />
+                <div className="hidden md:flex flex-col items-end">
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-200">{user.name}</span>
+                  <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining} {t.navbar.credits}</span>
+                </div>
+                <div className="flex md:hidden">
+                  <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining}</span>
+                </div>
+                <Link to="/account" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Compte">
+                  <User className="h-4 w-4" />
+                </Link>
+                {user.is_admin === 1 && (
+                  <Link to="/admin" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all text-sm font-medium shadow-lg">
+                    <Shield className="h-4 w-4" />
+                    <span className="hidden lg:inline">Admin</span>
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Déconnexion">
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex items-center space-x-4">
