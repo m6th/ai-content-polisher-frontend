@@ -6,7 +6,7 @@ import {
   updateScheduledContent,
   deleteScheduledContent,
   getUpcomingContent,
-  getUserHistory
+  getContentHistory
 } from '../services/api';
 
 function EditorialCalendar({ user }) {
@@ -84,7 +84,7 @@ function EditorialCalendar({ user }) {
 
   const loadAvailableContent = async () => {
     try {
-      const response = await getUserHistory();
+      const response = await getContentHistory();
       // Get all generated content from history
       const content = response.data.flatMap(request =>
         request.generated_contents.map(gc => ({
