@@ -5,9 +5,10 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { ArrowLeft, Lock, CreditCard } from 'lucide-react';
 import { createPaymentIntent } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import axios from 'axios';
 
 // Composant interne pour le formulaire de paiement
-function CheckoutForm({ planPrice, language }) {
+function CheckoutForm({ planPrice, language, email, plan }) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -25,10 +26,15 @@ function CheckoutForm({ planPrice, language }) {
     setError(null);
 
     try {
+      // Build return URL based on whether this is a guest checkout
+      const successUrl = email
+        ? `${window.location.origin}/login?success=true&email=${encodeURIComponent(email)}&plan=${plan}`
+        : `${window.location.origin}/pricing?success=true`;
+
       const { error: submitError } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/pricing?success=true`,
+          return_url: successUrl,
         },
         redirect: 'if_required',
       });
@@ -38,7 +44,7 @@ function CheckoutForm({ planPrice, language }) {
         setProcessing(false);
       } else {
         // Payment réussi - redirection
-        navigate('/pricing?success=true');
+        navigate(email ? `/login?success=true&email=${encodeURIComponent(email)}&plan=${plan}` : '/pricing?success=true');
       }
     } catch (err) {
       setError(err.message);
@@ -123,6 +129,7 @@ export default function Checkout() {
   const plan = searchParams.get('plan');
   const planName = searchParams.get('planName');
   const planPrice = searchParams.get('price');
+  const email = searchParams.get('email'); // Guest checkout support
 
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
@@ -142,8 +149,18 @@ export default function Checkout() {
       setLoading(true);
       setError(null);
 
-      // Créer le payment intent
-      const response = await createPaymentIntent(plan);
+      let response;
+
+      if (email) {
+        // Guest checkout - unauthenticated payment
+        response = await axios.post('http://127.0.0.1:8000/stripe/create-payment-intent-guest',
+          { plan },
+          { params: { email } }
+        );
+      } else {
+        // Authenticated checkout
+        response = await createPaymentIntent(plan);
+      }
 
       if (!response.data.publishable_key) {
         throw new Error('Configuration Stripe manquante');
@@ -325,6 +342,8 @@ export default function Checkout() {
                   <CheckoutForm
                     planPrice={planPrice}
                     language={language}
+                    email={email}
+                    plan={plan}
                   />
                 </Elements>
               )}

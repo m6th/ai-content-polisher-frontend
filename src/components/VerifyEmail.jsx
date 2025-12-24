@@ -77,9 +77,9 @@ function VerifyEmail() {
       setSuccess(true);
 
       setTimeout(() => {
-        // Si un plan payant a été sélectionné, rediriger vers le login avec le plan
+        // Si un plan payant a été sélectionné, rediriger vers checkout AVANT login
         if (plan !== 'free') {
-          navigate(`/login?plan=${plan}&message=verify_success`);
+          navigate(`/checkout?plan=${plan}&email=${encodeURIComponent(email)}`);
         } else {
           navigate('/login');
         }
