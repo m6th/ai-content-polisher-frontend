@@ -23,6 +23,7 @@ function Register() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showEmailRegister, setShowEmailRegister] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState({ score: 0, message: '', color: '' });
   const navigate = useNavigate();
 
   // Display plan name in UI
@@ -40,11 +41,54 @@ function Register() {
     'agency': '1000'
   };
 
+  const checkPasswordStrength = (password) => {
+    if (password.length === 0) {
+      return { score: 0, message: '', color: '' };
+    }
+
+    let score = 0;
+    let message = '';
+    let color = '';
+
+    // Minimum 8 caractères
+    if (password.length >= 8) score++;
+
+    // Au moins 1 chiffre
+    if (/[0-9]/.test(password)) score++;
+
+    // Au moins 1 lettre
+    if (/[a-zA-Z]/.test(password)) score++;
+
+    // Bonus pour majuscules et minuscules
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+
+    // Évaluation
+    if (score < 3) {
+      message = language === 'fr' ? 'Mot de passe faible' : language === 'en' ? 'Weak password' : 'Contraseña débil';
+      color = 'red';
+    } else if (score === 3) {
+      message = language === 'fr' ? 'Mot de passe moyen' : language === 'en' ? 'Medium password' : 'Contraseña media';
+      color = 'orange';
+    } else {
+      message = language === 'fr' ? 'Mot de passe fort' : language === 'en' ? 'Strong password' : 'Contraseña fuerte';
+      color = 'green';
+    }
+
+    return { score, message, color };
+  };
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Vérifier la force du mot de passe en temps réel
+    if (name === 'password') {
+      setPasswordStrength(checkPasswordStrength(value));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -56,8 +100,25 @@ function Register() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError(t.register.errorPasswordLength || 'Le mot de passe doit contenir au moins 6 caractères');
+    // Validation de la force du mot de passe
+    if (formData.password.length < 8) {
+      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 8 caractères' :
+               language === 'en' ? 'Password must be at least 8 characters' :
+               'La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 1 chiffre' :
+               language === 'en' ? 'Password must contain at least 1 number' :
+               'La contraseña debe contener al menos 1 número');
+      return;
+    }
+
+    if (!/[a-zA-Z]/.test(formData.password)) {
+      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 1 lettre' :
+               language === 'en' ? 'Password must contain at least 1 letter' :
+               'La contraseña debe contener al menos 1 letra');
       return;
     }
 
@@ -65,7 +126,11 @@ function Register() {
 
     try {
       await register(formData.email, formData.name, formData.password, formData.plan);
-      navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+      // Si un plan payant a été sélectionné, on le garde pour rediriger vers le paiement après vérification
+      const redirectUrl = formData.plan !== 'free'
+        ? `/verify-email?email=${encodeURIComponent(formData.email)}&plan=${formData.plan}`
+        : `/verify-email?email=${encodeURIComponent(formData.email)}`;
+      navigate(redirectUrl);
     } catch (err) {
       if (err.response?.status === 400) {
         setError(t.register.errorEmailExists);
@@ -85,7 +150,14 @@ function Register() {
       });
 
       localStorage.setItem('token', response.data.access_token);
-      navigate('/dashboard');
+
+      // Si un plan payant a été sélectionné, rediriger vers la page de paiement
+      if (formData.plan !== 'free') {
+        navigate(`/checkout?plan=${formData.plan}`);
+      } else {
+        navigate('/dashboard');
+      }
+
       window.location.reload();
     } catch (err) {
       setError(t.register.errorGeneric);
@@ -243,6 +315,47 @@ function Register() {
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
+                  {/* Indicateur de force du mot de passe */}
+                  {formData.password && (
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className={`text-sm font-semibold ${
+                          passwordStrength.color === 'red' ? 'text-red-600' :
+                          passwordStrength.color === 'orange' ? 'text-orange-600' :
+                          'text-green-600'
+                        }`}>
+                          {passwordStrength.message}
+                        </span>
+                      </div>
+                      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full transition-all duration-300 ${
+                            passwordStrength.color === 'red' ? 'bg-red-500' :
+                            passwordStrength.color === 'orange' ? 'bg-orange-500' :
+                            'bg-green-500'
+                          }`}
+                          style={{ width: `${(passwordStrength.score / 4) * 100}%` }}
+                        ></div>
+                      </div>
+                      <div className="mt-2 text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                        <div className="flex items-center">
+                          <span className={formData.password.length >= 8 ? 'text-green-600' : 'text-slate-400'}>
+                            {formData.password.length >= 8 ? '✓' : '○'} {language === 'fr' ? 'Au moins 8 caractères' : language === 'en' ? 'At least 8 characters' : 'Al menos 8 caracteres'}
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className={/[0-9]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
+                            {/[0-9]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Au moins 1 chiffre' : language === 'en' ? 'At least 1 number' : 'Al menos 1 número'}
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className={/[a-zA-Z]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
+                            {/[a-zA-Z]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Au moins 1 lettre' : language === 'en' ? 'At least 1 letter' : 'Al menos 1 letra'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div>

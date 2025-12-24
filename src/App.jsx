@@ -24,6 +24,7 @@ const LegalNotice = lazy(() => import('./components/LegalNotice'));
 const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard'));
 const EditorialCalendar = lazy(() => import('./components/EditorialCalendar'));
 const TeamManagement = lazy(() => import('./components/TeamManagement'));
+const AcceptInvitation = lazy(() => import('./components/AcceptInvitation'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -170,6 +171,10 @@ function App() {
                   <Navigate to="/login" />
                 )
               }
+            />
+            <Route
+              path="/accept-invitation"
+              element={<AcceptInvitation />}
             />
             <Route
               path="/account"

@@ -12,6 +12,7 @@ function VerifyEmail() {
   const [resending, setResending] = useState(false);
   const navigate = useNavigate();
   const email = searchParams.get('email') || '';
+  const plan = searchParams.get('plan') || 'free';
 
   useEffect(() => {
     if (!email) {
@@ -76,7 +77,12 @@ function VerifyEmail() {
       setSuccess(true);
 
       setTimeout(() => {
-        navigate('/login');
+        // Si un plan payant a été sélectionné, rediriger vers le login avec le plan
+        if (plan !== 'free') {
+          navigate(`/login?plan=${plan}&message=verify_success`);
+        } else {
+          navigate('/login');
+        }
       }, 2000);
     } catch (err) {
       if (err.response?.status === 400) {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { login, googleLogin } from '../services/api';
 import { LogIn, Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 
 function Login({ onLogin }) {
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,7 @@ function Login({ onLogin }) {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = useTranslation(language);
+  const plan = searchParams.get('plan') || 'free';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +28,13 @@ function Login({ onLogin }) {
       const response = await login(email, password);
       localStorage.setItem('token', response.data.access_token);
       onLogin();
-      navigate('/dashboard');
+
+      // Si un plan payant a été sélectionné, rediriger vers le paiement
+      if (plan !== 'free') {
+        navigate(`/checkout?plan=${plan}`);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(t.login.errorInvalidCredentials);
     } finally {
@@ -40,7 +48,13 @@ function Login({ onLogin }) {
 
       localStorage.setItem('token', response.data.access_token);
       onLogin();
-      navigate('/dashboard');
+
+      // Si un plan payant a été sélectionné, rediriger vers le paiement
+      if (plan !== 'free') {
+        navigate(`/checkout?plan=${plan}`);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       console.error('Google login error:', err);
       setError('Erreur lors de la connexion avec Google');
