@@ -46,32 +46,33 @@ function Register() {
       return { score: 0, message: '', color: '' };
     }
 
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasDigit = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};:'"",.<>?/\\|`~]/.test(password);
+    const hasMinLength = password.length >= 8;
+
     let score = 0;
     let message = '';
     let color = '';
 
-    // Minimum 8 caractères
-    if (password.length >= 8) score++;
-
-    // Au moins 1 chiffre
-    if (/[0-9]/.test(password)) score++;
-
-    // Au moins 1 lettre
-    if (/[a-zA-Z]/.test(password)) score++;
-
-    // Bonus pour majuscules et minuscules
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-
-    // Évaluation
-    if (score < 3) {
+    // Faible : manque critères minimum
+    if (!hasLowercase || !hasDigit || !hasMinLength) {
+      score = 0;
       message = language === 'fr' ? 'Mot de passe faible' : language === 'en' ? 'Weak password' : 'Contraseña débil';
       color = 'red';
-    } else if (score === 3) {
-      message = language === 'fr' ? 'Mot de passe moyen' : language === 'en' ? 'Medium password' : 'Contraseña media';
-      color = 'orange';
-    } else {
+    }
+    // Fort : tous les critères (minuscule + majuscule + chiffre + spécial)
+    else if (hasLowercase && hasUppercase && hasDigit && hasSpecial && hasMinLength) {
+      score = 2;
       message = language === 'fr' ? 'Mot de passe fort' : language === 'en' ? 'Strong password' : 'Contraseña fuerte';
       color = 'green';
+    }
+    // Moyen : minimum requis mais sans majuscule ni spécial
+    else {
+      score = 1;
+      message = language === 'fr' ? 'Mot de passe moyen' : language === 'en' ? 'Medium password' : 'Contraseña media';
+      color = 'orange';
     }
 
     return { score, message, color };
@@ -100,25 +101,29 @@ function Register() {
       return;
     }
 
-    // Validation de la force du mot de passe
-    if (formData.password.length < 8) {
-      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 8 caractères' :
-               language === 'en' ? 'Password must be at least 8 characters' :
-               'La contraseña debe tener al menos 8 caracteres');
+    // Validation de la force du mot de passe - Minimum requis: MOYEN
+    const hasLowercase = /[a-z]/.test(formData.password);
+    const hasDigit = /[0-9]/.test(formData.password);
+    const hasMinLength = formData.password.length >= 8;
+
+    if (!hasLowercase) {
+      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins une lettre minuscule' :
+               language === 'en' ? 'Password must contain at least one lowercase letter' :
+               'La contraseña debe contener al menos una letra minúscula');
       return;
     }
 
-    if (!/[0-9]/.test(formData.password)) {
+    if (!hasDigit) {
       setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 1 chiffre' :
                language === 'en' ? 'Password must contain at least 1 number' :
                'La contraseña debe contener al menos 1 número');
       return;
     }
 
-    if (!/[a-zA-Z]/.test(formData.password)) {
-      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 1 lettre' :
-               language === 'en' ? 'Password must contain at least 1 letter' :
-               'La contraseña debe contener al menos 1 letra');
+    if (!hasMinLength) {
+      setError(language === 'fr' ? 'Le mot de passe doit contenir au moins 8 caractères' :
+               language === 'en' ? 'Password must be at least 8 characters' :
+               'La contraseña debe tener al menos 8 caracteres');
       return;
     }
 
@@ -334,13 +339,14 @@ function Register() {
                             passwordStrength.color === 'orange' ? 'bg-orange-500' :
                             'bg-green-500'
                           }`}
-                          style={{ width: `${(passwordStrength.score / 4) * 100}%` }}
+                          style={{ width: `${(passwordStrength.score / 2) * 100}%` }}
                         ></div>
                       </div>
                       <div className="mt-2 text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                        <p className="font-semibold mb-2">{language === 'fr' ? 'Critères requis :' : language === 'en' ? 'Required criteria:' : 'Criterios requeridos:'}</p>
                         <div className="flex items-center">
-                          <span className={formData.password.length >= 8 ? 'text-green-600' : 'text-slate-400'}>
-                            {formData.password.length >= 8 ? '✓' : '○'} {language === 'fr' ? 'Au moins 8 caractères' : language === 'en' ? 'At least 8 characters' : 'Al menos 8 caracteres'}
+                          <span className={/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
+                            {/[a-z]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Lettre minuscule' : language === 'en' ? 'Lowercase letter' : 'Letra minúscula'}
                           </span>
                         </div>
                         <div className="flex items-center">
@@ -349,8 +355,19 @@ function Register() {
                           </span>
                         </div>
                         <div className="flex items-center">
-                          <span className={/[a-zA-Z]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
-                            {/[a-zA-Z]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Au moins 1 lettre' : language === 'en' ? 'At least 1 letter' : 'Al menos 1 letra'}
+                          <span className={formData.password.length >= 8 ? 'text-green-600' : 'text-slate-400'}>
+                            {formData.password.length >= 8 ? '✓' : '○'} {language === 'fr' ? 'Au moins 8 caractères' : language === 'en' ? 'At least 8 characters' : 'Al menos 8 caracteres'}
+                          </span>
+                        </div>
+                        <p className="font-semibold mt-3 mb-2">{language === 'fr' ? 'Pour plus de sécurité :' : language === 'en' ? 'For stronger password:' : 'Para contraseña más fuerte:'}</p>
+                        <div className="flex items-center">
+                          <span className={/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
+                            {/[A-Z]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Lettre majuscule' : language === 'en' ? 'Uppercase letter' : 'Letra mayúscula'}
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className={/[!@#$%^&*()_+\-=\[\]{};:'"",.<>?/\\|`~]/.test(formData.password) ? 'text-green-600' : 'text-slate-400'}>
+                            {/[!@#$%^&*()_+\-=\[\]{};:'"",.<>?/\\|`~]/.test(formData.password) ? '✓' : '○'} {language === 'fr' ? 'Caractère spécial' : language === 'en' ? 'Special character' : 'Carácter especial'}
                           </span>
                         </div>
                       </div>

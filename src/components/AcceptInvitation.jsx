@@ -41,7 +41,7 @@ function AcceptInvitation() {
         );
 
         setStatus('success');
-        setTeamName(response.data.team_name || 'l\'équipe');
+        setTeamName(response.data.team.name || 'l\'équipe');
         setMessage('Vous avez rejoint l\'équipe avec succès !');
 
         // Rediriger vers la page équipe après 2 secondes
