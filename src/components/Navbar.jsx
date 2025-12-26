@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users } from 'lucide-react';
+import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users, UserPlus } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 import ThemeToggle from './ThemeToggle';
@@ -57,6 +57,10 @@ function Navbar({ user, onLogout }) {
                     <span>{t.navbar.team || 'Équipe'}</span>
                   </Link>
                 )}
+                <Link to="/join-team" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all text-sm font-medium shadow-md">
+                  <UserPlus className="h-4 w-4" />
+                  <span>Rejoindre une équipe</span>
+                </Link>
               </div>
 
               {/* Mobile: Icons only */}
@@ -75,6 +79,9 @@ function Navbar({ user, onLogout }) {
                     <Users className="h-4 w-4" />
                   </Link>
                 )}
+                <Link to="/join-team" className="p-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all shadow-md" title="Rejoindre une équipe">
+                  <UserPlus className="h-4 w-4" />
+                </Link>
               </div>
 
               {/* User info - responsive */}
@@ -102,7 +109,7 @@ function Navbar({ user, onLogout }) {
               </div>
             </div>
           ) : (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <ThemeToggle />
               <Link
                 to="/pricing"
@@ -132,6 +139,14 @@ function Navbar({ user, onLogout }) {
               </div>
 
               <Link
+                to="/join-team"
+                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hidden sm:flex"
+              >
+                <UserPlus className="h-4 w-4" />
+                <span className="hidden lg:inline">Rejoindre une équipe</span>
+              </Link>
+
+              <Link
                 to="/login"
                 className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden sm:block"
               >
@@ -140,7 +155,7 @@ function Navbar({ user, onLogout }) {
 
               <Link
                 to="/register"
-                className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="px-4 sm:px-6 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 {t.navbar.getStarted}
               </Link>

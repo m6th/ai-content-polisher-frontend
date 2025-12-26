@@ -37,7 +37,9 @@
       "Bash(grep:*)",
       "Bash(PGPASSWORD='Ubuntu57!' psql -h localhost -U mathd -d ai_content_polisher -c \"ALTER TABLE generated_contents ADD COLUMN IF NOT EXISTS format_name VARCHAR;\")",
       "Bash(sudo -u postgres psql:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(source:*)",
+      "Bash(chmod:*)"
     ]
   }
 }

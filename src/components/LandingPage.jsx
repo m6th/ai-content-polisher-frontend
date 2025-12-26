@@ -5,7 +5,7 @@ import {
   Sparkles, Zap, Target, ArrowRight, Check,
   FileText, Mail, Video, Linkedin, Instagram,
   Twitter, BookOpen, Megaphone, GraduationCap,
-  Smile, Drama, Facebook, Image, Send, ChevronDown
+  Smile, Drama, Facebook, Image, Send, ChevronDown, UserPlus
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -199,8 +199,8 @@ function LandingPage() {
               </p>
             </div>
 
-            {/* CTA Button */}
-            <div>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/register"
                 className="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
@@ -208,6 +208,15 @@ function LandingPage() {
                 <span className="relative z-10 flex items-center">
                   {t.landing.hero.cta}
                   <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
+                </span>
+              </Link>
+              <Link
+                to="/join-team"
+                className="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-2xl shadow-xl hover:shadow-2xl hover:border-green-500 dark:hover:border-green-500 transform hover:scale-105 transition-all duration-300"
+              >
+                <span className="relative z-10 flex items-center">
+                  <UserPlus className="mr-3 h-5 w-5" />
+                  Rejoindre une équipe
                 </span>
               </Link>
             </div>
