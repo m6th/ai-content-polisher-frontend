@@ -25,6 +25,7 @@ const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard'))
 const EditorialCalendar = lazy(() => import('./components/EditorialCalendar'));
 const TeamManagement = lazy(() => import('./components/TeamManagement'));
 const AcceptInvitation = lazy(() => import('./components/AcceptInvitation'));
+const JoinTeam = lazy(() => import('./components/JoinTeam'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -175,6 +176,10 @@ function App() {
             <Route
               path="/accept-invitation"
               element={<AcceptInvitation />}
+            />
+            <Route
+              path="/join-team"
+              element={<JoinTeam />}
             />
             <Route
               path="/account"

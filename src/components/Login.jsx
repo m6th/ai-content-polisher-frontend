@@ -20,6 +20,7 @@ function Login({ onLogin }) {
   const t = useTranslation(language);
   const plan = searchParams.get('plan') || 'free';
   const invitationToken = searchParams.get('invitation');
+  const joinCode = searchParams.get('join_code');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +31,28 @@ function Login({ onLogin }) {
       const response = await login(email, password);
       localStorage.setItem('token', response.data.access_token);
       onLogin();
+
+      // Si un code pour rejoindre une équipe est présent
+      if (joinCode) {
+        try {
+          await axios.post(
+            'http://127.0.0.1:8000/teams/join',
+            { code: joinCode },
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`
+              }
+            }
+          );
+          // Rediriger vers la page équipe après avoir rejoint
+          navigate('/team');
+          return;
+        } catch (joinErr) {
+          console.error('Error joining team:', joinErr);
+          setError('Code d\'invitation invalide ou expiré');
+          return;
+        }
+      }
 
       // Si une invitation est en attente, l'accepter automatiquement
       if (invitationToken) {

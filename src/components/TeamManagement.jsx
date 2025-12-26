@@ -127,10 +127,9 @@ function TeamManagement({ user }) {
     }
   };
 
-  const copyInvitationLink = () => {
+  const copyInvitationCode = () => {
     if (lastInvitation) {
-      const inviteUrl = `${window.location.origin}/accept-invitation?token=${lastInvitation.token}`;
-      navigator.clipboard.writeText(inviteUrl);
+      navigator.clipboard.writeText(lastInvitation.token);
       setCopiedToken(true);
       setTimeout(() => setCopiedToken(false), 2000);
     }
@@ -527,30 +526,36 @@ function TeamManagement({ user }) {
                     <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    Invitation envoyée à <strong>{lastInvitation.email}</strong>
+                    Invitation créée pour <strong>{lastInvitation.email}</strong>
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500">
-                    Partagez ce lien d'invitation :
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mb-2">
+                    Partagez ce code d'invitation :
                   </p>
-                  <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg break-all text-sm text-gray-700 dark:text-gray-300">
-                    {window.location.origin}/accept-invitation?token={lastInvitation.token}
+                  <div className="mt-3 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border-2 border-purple-200 dark:border-purple-800">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Code d'invitation</p>
+                    <p className="text-lg font-mono font-bold text-purple-600 dark:text-purple-400 break-all">
+                      {lastInvitation.token}
+                    </p>
                   </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                    💡 La personne invitée doit aller sur "Rejoindre une équipe" et entrer ce code
+                  </p>
                 </div>
 
                 <div className="flex items-center space-x-3">
                   <button
-                    onClick={copyInvitationLink}
+                    onClick={copyInvitationCode}
                     className="flex-1 flex items-center justify-center space-x-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-6 py-3 rounded-xl font-bold hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-all"
                   >
                     {copiedToken ? (
                       <>
                         <Check className="h-5 w-5" />
-                        <span>Copié!</span>
+                        <span>Code copié!</span>
                       </>
                     ) : (
                       <>
                         <Copy className="h-5 w-5" />
-                        <span>Copier le lien</span>
+                        <span>Copier le code</span>
                       </>
                     )}
                   </button>
