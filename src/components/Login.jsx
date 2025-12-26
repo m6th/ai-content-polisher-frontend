@@ -5,6 +5,7 @@ import { login, googleLogin } from '../services/api';
 import { LogIn, Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
+import axios from 'axios';
 
 function Login({ onLogin }) {
   const [searchParams] = useSearchParams();
@@ -18,6 +19,7 @@ function Login({ onLogin }) {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const plan = searchParams.get('plan') || 'free';
+  const invitationToken = searchParams.get('invitation');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +30,28 @@ function Login({ onLogin }) {
       const response = await login(email, password);
       localStorage.setItem('token', response.data.access_token);
       onLogin();
+
+      // Si une invitation est en attente, l'accepter automatiquement
+      if (invitationToken) {
+        try {
+          await axios.post(
+            'http://127.0.0.1:8000/teams/accept-invitation',
+            null,
+            {
+              params: { token: invitationToken },
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`
+              }
+            }
+          );
+          // Rediriger vers la page équipe après acceptation
+          navigate('/team');
+          return;
+        } catch (inviteErr) {
+          console.error('Error accepting invitation:', inviteErr);
+          // Continue vers le flow normal si l'invitation échoue
+        }
+      }
 
       // Si un plan payant a été sélectionné, rediriger vers le paiement
       if (plan !== 'free') {
@@ -48,6 +72,28 @@ function Login({ onLogin }) {
 
       localStorage.setItem('token', response.data.access_token);
       onLogin();
+
+      // Si une invitation est en attente, l'accepter automatiquement
+      if (invitationToken) {
+        try {
+          await axios.post(
+            'http://127.0.0.1:8000/teams/accept-invitation',
+            null,
+            {
+              params: { token: invitationToken },
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`
+              }
+            }
+          );
+          // Rediriger vers la page équipe après acceptation
+          navigate('/team');
+          return;
+        } catch (inviteErr) {
+          console.error('Error accepting invitation:', inviteErr);
+          // Continue vers le flow normal si l'invitation échoue
+        }
+      }
 
       // Si un plan payant a été sélectionné, rediriger vers le paiement
       if (plan !== 'free') {

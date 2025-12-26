@@ -11,6 +11,7 @@ function Register() {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const [searchParams] = useSearchParams();
+  const invitationToken = searchParams.get('invitation');
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -131,11 +132,13 @@ function Register() {
 
     try {
       await register(formData.email, formData.name, formData.password, formData.plan);
-      // Si un plan payant a été sélectionné, on le garde pour rediriger vers le paiement après vérification
-      const redirectUrl = formData.plan !== 'free'
-        ? `/verify-email?email=${encodeURIComponent(formData.email)}&plan=${formData.plan}`
-        : `/verify-email?email=${encodeURIComponent(formData.email)}`;
-      navigate(redirectUrl);
+
+      // Construire l'URL de vérification avec les paramètres nécessaires
+      const params = new URLSearchParams({ email: formData.email });
+      if (formData.plan !== 'free') params.append('plan', formData.plan);
+      if (invitationToken) params.append('invitation', invitationToken);
+
+      navigate(`/verify-email?${params.toString()}`);
     } catch (err) {
       if (err.response?.status === 400) {
         setError(t.register.errorEmailExists);

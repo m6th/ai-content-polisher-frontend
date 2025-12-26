@@ -13,6 +13,7 @@ function VerifyEmail() {
   const navigate = useNavigate();
   const email = searchParams.get('email') || '';
   const plan = searchParams.get('plan') || 'free';
+  const invitationToken = searchParams.get('invitation');
 
   useEffect(() => {
     if (!email) {
@@ -77,10 +78,15 @@ function VerifyEmail() {
       setSuccess(true);
 
       setTimeout(() => {
-        // Si un plan payant a été sélectionné, rediriger vers checkout AVANT login
+        // Construire l'URL de redirection avec les paramètres appropriés
         if (plan !== 'free') {
+          // Plan payant : rediriger vers checkout
           navigate(`/checkout?plan=${plan}&email=${encodeURIComponent(email)}`);
+        } else if (invitationToken) {
+          // Invitation en attente : rediriger vers login avec le token
+          navigate(`/login?invitation=${invitationToken}`);
         } else {
+          // Cas normal : rediriger vers login
           navigate('/login');
         }
       }, 2000);
