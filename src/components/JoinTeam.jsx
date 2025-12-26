@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Users, Key, Sparkles, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+import { joinTeamWithCode } from '../services/api';
 
 function JoinTeam() {
   const [code, setCode] = useState('');
@@ -29,15 +29,7 @@ function JoinTeam() {
         return;
       }
 
-      const response = await axios.post(
-        'http://127.0.0.1:8000/teams/join',
-        { code },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+      await joinTeamWithCode(code);
 
       // Success - redirect to team page
       navigate('/team');

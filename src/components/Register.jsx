@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { register } from '../services/api';
+import { register, joinTeamWithCode, API_URL } from '../services/api';
 import axios from 'axios';
 import { UserPlus, Mail, Lock, User, Eye, EyeOff, Sparkles, Check } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -154,7 +154,7 @@ function Register() {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/auth/google', {
+      const response = await axios.post(`${API_URL}/users/auth/google`, {
         token: credentialResponse.credential,
         plan: formData.plan
       });
@@ -164,15 +164,7 @@ function Register() {
       // Si un code pour rejoindre une équipe est présent
       if (joinCode) {
         try {
-          await axios.post(
-            'http://127.0.0.1:8000/teams/join',
-            { code: joinCode },
-            {
-              headers: {
-                Authorization: `Bearer ${response.data.access_token}`
-              }
-            }
-          );
+          await joinTeamWithCode(joinCode);
           // Rediriger vers la page équipe après avoir rejoint
           navigate('/team');
           window.location.reload();

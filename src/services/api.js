@@ -299,4 +299,10 @@ export const updateTeam = (name) => {
   return api.put('/teams/update', null, { params: { name } });
 };
 
+export const joinTeamWithCode = (code) => {
+  return api.post('/teams/join', { code });
+};
+
+export { API_URL };
+
 export default api;

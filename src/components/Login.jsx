@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { login, googleLogin } from '../services/api';
+import { login, googleLogin, joinTeamWithCode } from '../services/api';
 import { LogIn, Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
-import axios from 'axios';
 
 function Login({ onLogin }) {
   const [searchParams] = useSearchParams();
@@ -35,15 +34,7 @@ function Login({ onLogin }) {
       // Si un code pour rejoindre une équipe est présent
       if (joinCode) {
         try {
-          await axios.post(
-            'http://127.0.0.1:8000/teams/join',
-            { code: joinCode },
-            {
-              headers: {
-                Authorization: `Bearer ${response.data.access_token}`
-              }
-            }
-          );
+          await joinTeamWithCode(joinCode);
           // Rediriger vers la page équipe après avoir rejoint
           navigate('/team');
           return;
