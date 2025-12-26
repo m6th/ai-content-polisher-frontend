@@ -164,6 +164,11 @@ function History() {
                         <Calendar className="h-4 w-4 mr-1" />
                         {getRelativeTime(item.created_at)}
                       </span>
+                      {item.created_by && !item.is_own && (
+                        <span className="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full text-xs font-semibold">
+                          👤 {item.created_by.name}
+                        </span>
+                      )}
                       <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full text-xs font-semibold">
                         {item.formats_count} formats
                       </span>
