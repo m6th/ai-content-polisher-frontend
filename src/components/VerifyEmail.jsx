@@ -14,6 +14,7 @@ function VerifyEmail() {
   const email = searchParams.get('email') || '';
   const plan = searchParams.get('plan') || 'free';
   const invitationToken = searchParams.get('invitation');
+  const joinCode = searchParams.get('join_code');
 
   useEffect(() => {
     if (!email) {
@@ -82,6 +83,9 @@ function VerifyEmail() {
         if (plan !== 'free') {
           // Plan payant : rediriger vers checkout
           navigate(`/checkout?plan=${plan}&email=${encodeURIComponent(email)}`);
+        } else if (joinCode) {
+          // Code d'invitation en attente : rediriger vers login avec le code
+          navigate(`/login?join_code=${encodeURIComponent(joinCode)}`);
         } else if (invitationToken) {
           // Invitation en attente : rediriger vers login avec le token
           navigate(`/login?invitation=${invitationToken}`);

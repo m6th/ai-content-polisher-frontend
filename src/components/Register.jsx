@@ -12,6 +12,7 @@ function Register() {
   const t = useTranslation(language);
   const [searchParams] = useSearchParams();
   const invitationToken = searchParams.get('invitation');
+  const joinCode = searchParams.get('join_code');
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -137,6 +138,7 @@ function Register() {
       const params = new URLSearchParams({ email: formData.email });
       if (formData.plan !== 'free') params.append('plan', formData.plan);
       if (invitationToken) params.append('invitation', invitationToken);
+      if (joinCode) params.append('join_code', joinCode);
 
       navigate(`/verify-email?${params.toString()}`);
     } catch (err) {
@@ -158,6 +160,29 @@ function Register() {
       });
 
       localStorage.setItem('token', response.data.access_token);
+
+      // Si un code pour rejoindre une équipe est présent
+      if (joinCode) {
+        try {
+          await axios.post(
+            'http://127.0.0.1:8000/teams/join',
+            { code: joinCode },
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`
+              }
+            }
+          );
+          // Rediriger vers la page équipe après avoir rejoint
+          navigate('/team');
+          window.location.reload();
+          return;
+        } catch (joinErr) {
+          console.error('Error joining team:', joinErr);
+          setError('Code d\'invitation invalide ou expiré');
+          return;
+        }
+      }
 
       // Si un plan payant a été sélectionné, rediriger vers la page de paiement
       if (formData.plan !== 'free') {
