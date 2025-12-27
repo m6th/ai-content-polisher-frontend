@@ -84,19 +84,29 @@ function EditorialCalendar({ user }) {
 
   const loadAvailableContent = async () => {
     try {
-      const response = await getContentHistory();
-      // Get all generated content from history
-      const content = response.data.flatMap(request =>
-        request.generated_contents.map(gc => ({
-          id: gc.id,
-          text: gc.polished_text,
-          format: gc.format_name || 'Format',
-          created_at: gc.created_at
-        }))
+      // Use same approach as History.jsx - call with default parameters
+      const response = await getContentHistory(0, 100);
+
+      // Extract items from response (same as History.jsx line 32)
+      const historyItems = response.data?.items || [];
+
+      // Get all generated content from history, filtering out errors
+      const content = historyItems.flatMap(request =>
+        (request.generated_contents || [])
+          .filter(gc => gc.content && !gc.content.startsWith('[Erreur'))
+          .map(gc => ({
+            id: gc.id,
+            text: gc.content,
+            format: request.tone || 'Contenu',
+            created_at: request.created_at
+          }))
       );
+
+      console.log('Loaded content for calendar:', content.length, 'items');
       setAvailableContent(content);
     } catch (err) {
       console.error('Error loading available content:', err);
+      setAvailableContent([]);
     }
   };
 
@@ -482,10 +492,20 @@ function EditorialCalendar({ user }) {
                     <option value="">Sélectionner un contenu</option>
                     {availableContent.map(content => (
                       <option key={content.id} value={content.id}>
-                        {content.format} - {new Date(content.created_at).toLocaleDateString()}
+                        [{content.format}] {content.text.substring(0, 80)}{content.text.length > 80 ? '...' : ''} - {new Date(content.created_at).toLocaleDateString()}
                       </option>
                     ))}
                   </select>
+                  {scheduleForm.generated_content_id && (
+                    <div className="mt-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+                      <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                        Aperçu du contenu sélectionné
+                      </label>
+                      <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap max-h-40 overflow-y-auto">
+                        {availableContent.find(c => c.id === parseInt(scheduleForm.generated_content_id))?.text}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
