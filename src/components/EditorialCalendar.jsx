@@ -135,7 +135,12 @@ function EditorialCalendar({ user }) {
 
   const handleSchedule = async () => {
     try {
-      const scheduledDateTime = new Date(`${scheduleForm.scheduled_date}T${scheduleForm.scheduled_time}`);
+      // Parse date and time separately to avoid timezone issues
+      const [year, month, day] = scheduleForm.scheduled_date.split('-').map(Number);
+      const [hours, minutes] = scheduleForm.scheduled_time.split(':').map(Number);
+
+      // Create date in UTC to avoid timezone conversion
+      const scheduledDateTime = new Date(Date.UTC(year, month - 1, day, hours, minutes));
 
       await scheduleContent({
         generated_content_id: parseInt(scheduleForm.generated_content_id),
@@ -191,6 +196,8 @@ function EditorialCalendar({ user }) {
 
     try {
       await deleteScheduledContent(itemId);
+      setShowEditModal(false);
+      setEditingItem(null);
       loadCalendarData();
       loadUpcoming();
     } catch (err) {
@@ -491,27 +498,64 @@ function EditorialCalendar({ user }) {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     Contenu à publier
                   </label>
-                  <select
-                    value={scheduleForm.generated_content_id}
-                    onChange={(e) => setScheduleForm({...scheduleForm, generated_content_id: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 dark:bg-slate-700 dark:text-white"
-                  >
-                    <option value="">Sélectionner un contenu</option>
-                    {availableContent.map(content => (
-                      <option key={content.id} value={content.id}>
-                        [{content.format}] {content.text.substring(0, 80)}{content.text.length > 80 ? '...' : ''} - {new Date(content.created_at).toLocaleDateString()}
-                      </option>
-                    ))}
-                  </select>
+
+                  {/* Custom content selector with cards */}
+                  <div className="space-y-3 max-h-96 overflow-y-auto border border-gray-300 dark:border-slate-600 rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
+                    {availableContent.length === 0 ? (
+                      <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                        Aucun contenu disponible. Générez du contenu d'abord.
+                      </p>
+                    ) : (
+                      availableContent.map(content => {
+                        const isSelected = scheduleForm.generated_content_id === content.id.toString();
+                        return (
+                          <button
+                            key={content.id}
+                            type="button"
+                            onClick={() => setScheduleForm({...scheduleForm, generated_content_id: content.id.toString()})}
+                            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                              isSelected
+                                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                                : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-300 dark:hover:border-purple-600'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <span className={`px-2 py-1 rounded-md text-xs font-semibold ${
+                                isSelected
+                                  ? 'bg-purple-500 text-white'
+                                  : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
+                              }`}>
+                                {content.format}
+                              </span>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                {new Date(content.created_at).toLocaleDateString('fr-FR')}
+                              </span>
+                            </div>
+                            <p className={`text-sm line-clamp-2 ${
+                              isSelected
+                                ? 'text-gray-900 dark:text-white font-medium'
+                                : 'text-gray-600 dark:text-gray-300'
+                            }`}>
+                              {content.text}
+                            </p>
+                          </button>
+                        );
+                      })
+                    )}
+                  </div>
+
                   {scheduleForm.generated_content_id && (
-                    <div className="mt-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                      <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
-                        Aperçu du contenu sélectionné
-                      </label>
-                      <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap max-h-40 overflow-y-auto">
+                    <div className="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                        <label className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+                          Aperçu du contenu sélectionné
+                        </label>
+                      </div>
+                      <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap max-h-40 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-lg">
                         {availableContent.find(c => c.id === parseInt(scheduleForm.generated_content_id))?.text}
                       </div>
                     </div>
