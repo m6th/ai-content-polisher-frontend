@@ -30,7 +30,22 @@ function EditorialCalendar({ user }) {
     notes: ''
   });
 
+  const [selectedVariant, setSelectedVariant] = useState(0); // 0 = Équilibrée, 1 = Audacieuse, 2 = Alternative
+
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
+
+  // Helper to format UTC date without timezone conversion
+  const formatScheduledDate = (dateString, options = {}) => {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+
+    const localDate = new Date(year, month, day, hours, minutes);
+    return localDate.toLocaleDateString('fr-FR', options);
+  };
 
   const platforms = [
     { value: 'linkedin', label: 'LinkedIn', color: 'bg-blue-500' },
@@ -97,7 +112,8 @@ function EditorialCalendar({ user }) {
           .map(gc => ({
             id: gc.id,
             text: gc.content,
-            format: request.tone || 'Contenu',
+            format_name: gc.format_name || 'Contenu',
+            variant_number: gc.variant_number || 1,
             created_at: request.created_at
           }))
       );
@@ -217,11 +233,18 @@ function EditorialCalendar({ user }) {
 
   const openEditModal = (item) => {
     const itemDate = new Date(item.scheduled_date);
+    // Extract UTC components to avoid timezone shift
+    const year = itemDate.getUTCFullYear();
+    const month = String(itemDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(itemDate.getUTCDate()).padStart(2, '0');
+    const hours = String(itemDate.getUTCHours()).padStart(2, '0');
+    const minutes = String(itemDate.getUTCMinutes()).padStart(2, '0');
+
     setEditingItem(item);
     setScheduleForm({
       generated_content_id: item.generated_content_id,
-      scheduled_date: itemDate.toISOString().split('T')[0],
-      scheduled_time: itemDate.toTimeString().slice(0, 5),
+      scheduled_date: `${year}-${month}-${day}`,
+      scheduled_time: `${hours}:${minutes}`,
       platform: item.platform,
       title: item.title || '',
       notes: item.notes || ''
@@ -447,7 +470,7 @@ function EditorialCalendar({ user }) {
                         {item.title || 'Sans titre'}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {new Date(item.scheduled_date).toLocaleDateString('fr-FR', {
+                        {formatScheduledDate(item.scheduled_date, {
                           day: 'numeric',
                           month: 'short',
                           hour: '2-digit',
@@ -502,50 +525,122 @@ function EditorialCalendar({ user }) {
                     Contenu à publier
                   </label>
 
-                  {/* Custom content selector with cards */}
-                  <div className="space-y-3 max-h-96 overflow-y-auto border border-gray-300 dark:border-slate-600 rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
-                    {availableContent.length === 0 ? (
-                      <p className="text-gray-500 dark:text-gray-400 text-center py-8">
-                        Aucun contenu disponible. Générez du contenu d'abord.
-                      </p>
-                    ) : (
-                      availableContent.map(content => {
-                        const isSelected = scheduleForm.generated_content_id === content.id.toString();
-                        return (
+                  {isPro ? (
+                    <>
+                      {/* Variant Tabs for Pro/Business */}
+                      <div className="flex gap-2 mb-3">
+                        {['Équilibrée', 'Audacieuse', 'Alternative'].map((label, index) => (
                           <button
-                            key={content.id}
+                            key={index}
                             type="button"
-                            onClick={() => setScheduleForm({...scheduleForm, generated_content_id: content.id.toString()})}
-                            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-                              isSelected
-                                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                                : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-300 dark:hover:border-purple-600'
+                            onClick={() => setSelectedVariant(index)}
+                            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                              selectedVariant === index
+                                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md'
+                                : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
                             }`}
                           >
-                            <div className="flex items-start justify-between mb-2">
-                              <span className={`px-2 py-1 rounded-md text-xs font-semibold ${
-                                isSelected
-                                  ? 'bg-purple-500 text-white'
-                                  : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
-                              }`}>
-                                {content.format}
-                              </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {new Date(content.created_at).toLocaleDateString('fr-FR')}
-                              </span>
-                            </div>
-                            <p className={`text-sm line-clamp-2 ${
-                              isSelected
-                                ? 'text-gray-900 dark:text-white font-medium'
-                                : 'text-gray-600 dark:text-gray-300'
-                            }`}>
-                              {content.text}
-                            </p>
+                            {['⚖️', '🚀', '✨'][index]} {label}
                           </button>
-                        );
-                      })
-                    )}
-                  </div>
+                        ))}
+                      </div>
+
+                      {/* Content cards filtered by variant */}
+                      <div className="space-y-3 max-h-96 overflow-y-auto border border-gray-300 dark:border-slate-600 rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
+                        {availableContent.filter(c => c.variant_number === selectedVariant + 1).length === 0 ? (
+                          <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                            Aucun contenu disponible pour cette variante.
+                          </p>
+                        ) : (
+                          availableContent
+                            .filter(c => c.variant_number === selectedVariant + 1)
+                            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                            .map(content => {
+                              const isSelected = scheduleForm.generated_content_id === content.id.toString();
+                              return (
+                                <button
+                                  key={content.id}
+                                  type="button"
+                                  onClick={() => setScheduleForm({...scheduleForm, generated_content_id: content.id.toString()})}
+                                  className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                                    isSelected
+                                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                                      : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-300 dark:hover:border-purple-600'
+                                  }`}
+                                >
+                                  <div className="flex items-start justify-between mb-2">
+                                    <span className={`px-2 py-1 rounded-md text-xs font-semibold ${
+                                      isSelected
+                                        ? 'bg-purple-500 text-white'
+                                        : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
+                                    }`}>
+                                      {content.format_name}
+                                    </span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                      {new Date(content.created_at).toLocaleDateString('fr-FR')}
+                                    </span>
+                                  </div>
+                                  <p className={`text-sm line-clamp-2 ${
+                                    isSelected
+                                      ? 'text-gray-900 dark:text-white font-medium'
+                                      : 'text-gray-600 dark:text-gray-300'
+                                  }`}>
+                                    {content.text}
+                                  </p>
+                                </button>
+                              );
+                            })
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    /* Simple list for Free/Starter */
+                    <div className="space-y-3 max-h-96 overflow-y-auto border border-gray-300 dark:border-slate-600 rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
+                      {availableContent.length === 0 ? (
+                        <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                          Aucun contenu disponible. Générez du contenu d'abord.
+                        </p>
+                      ) : (
+                        availableContent
+                          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                          .map(content => {
+                            const isSelected = scheduleForm.generated_content_id === content.id.toString();
+                            return (
+                              <button
+                                key={content.id}
+                                type="button"
+                                onClick={() => setScheduleForm({...scheduleForm, generated_content_id: content.id.toString()})}
+                                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                                  isSelected
+                                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                                    : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-300 dark:hover:border-purple-600'
+                                }`}
+                              >
+                                <div className="flex items-start justify-between mb-2">
+                                  <span className={`px-2 py-1 rounded-md text-xs font-semibold ${
+                                    isSelected
+                                      ? 'bg-purple-500 text-white'
+                                      : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300'
+                                  }`}>
+                                    {content.format_name}
+                                  </span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                    {new Date(content.created_at).toLocaleDateString('fr-FR')}
+                                  </span>
+                                </div>
+                                <p className={`text-sm line-clamp-2 ${
+                                  isSelected
+                                    ? 'text-gray-900 dark:text-white font-medium'
+                                    : 'text-gray-600 dark:text-gray-300'
+                                }`}>
+                                  {content.text}
+                                </p>
+                              </button>
+                            );
+                          })
+                      )}
+                    </div>
+                  )}
 
                   {scheduleForm.generated_content_id && (
                     <div className="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
