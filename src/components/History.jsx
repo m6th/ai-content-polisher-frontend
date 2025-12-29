@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getContentHistory, deleteContentRequest } from '../services/api';
-import { History as HistoryIcon, Search, Trash2, Eye, Copy, Check, ChevronLeft, ChevronRight, Calendar, FileText, X } from 'lucide-react';
+import { History as HistoryIcon, Search, Trash2, Eye, Copy, Check, ChevronLeft, ChevronRight, Calendar, FileText, X, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 import { useToast } from '../contexts/ToastContext';
+import VariantSelector from './VariantSelector';
 
 function History() {
   const { language } = useLanguage();
@@ -98,12 +99,37 @@ function History() {
   };
 
   const formatLabels = {
-    linkedin: { name: 'LinkedIn', icon: '💼', color: 'bg-blue-500' },
-    instagram: { name: 'Instagram', icon: '📸', color: 'bg-purple-500' },
-    tiktok: { name: 'TikTok', icon: '🎵', color: 'bg-pink-500' },
-    twitter: { name: 'Twitter', icon: '🐦', color: 'bg-sky-500' },
-    email: { name: 'Email', icon: '📧', color: 'bg-green-500' },
-    persuasive: { name: 'Publicité', icon: '🎯', color: 'bg-orange-500' },
+    persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', order: 1 },
+    linkedin: { name: 'LinkedIn Post', icon: '💼', color: 'from-blue-500 to-blue-600', order: 2 },
+    instagram: { name: 'Instagram Caption', icon: '📸', color: 'from-purple-500 to-pink-500', order: 3 },
+    tiktok: { name: 'Script TikTok', icon: '🎵', color: 'from-pink-500 to-pink-600', order: 4 },
+    twitter: { name: 'Tweet / Thread', icon: '🐦', color: 'from-sky-500 to-sky-600', order: 5 },
+    email: { name: 'Email Pro', icon: '📧', color: 'from-green-500 to-green-600', order: 6 },
+  };
+
+  // Group generated contents by format
+  const groupContentsByFormat = (generatedContents) => {
+    const grouped = {};
+
+    generatedContents.forEach((content) => {
+      const formatName = content.format_name || 'unknown';
+      if (!grouped[formatName]) {
+        grouped[formatName] = [];
+      }
+      grouped[formatName].push(content);
+    });
+
+    // Convert to array and sort by format order
+    return Object.entries(grouped)
+      .map(([formatName, variants]) => ({
+        format: formatName,
+        variants: variants.sort((a, b) => a.variant_number - b.variant_number).map(v => v.content)
+      }))
+      .sort((a, b) => {
+        const orderA = formatLabels[a.format]?.order || 999;
+        const orderB = formatLabels[b.format]?.order || 999;
+        return orderA - orderB;
+      });
   };
 
   return (
@@ -187,23 +213,27 @@ function History() {
 
                     {/* Format Badges */}
                     <div className="flex flex-wrap gap-2">
-                      {item.generated_contents.slice(0, 8).map((content, idx) => {
-                        // Extract format name from generated content (we need to map variant_number to format)
-                        // For now, show variant numbers
+                      {groupContentsByFormat(item.generated_contents).map((formatGroup) => {
+                        const formatInfo = formatLabels[formatGroup.format] || {
+                          name: formatGroup.format,
+                          icon: '📝',
+                          color: 'from-gray-500 to-gray-600'
+                        };
                         return (
                           <span
-                            key={content.id}
-                            className="px-2 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-xs font-medium"
+                            key={formatGroup.format}
+                            className={`px-3 py-1 bg-gradient-to-r ${formatInfo.color} text-white rounded-lg text-xs font-medium flex items-center gap-1.5`}
                           >
-                            Format #{content.variant_number}
+                            <span>{formatInfo.icon}</span>
+                            <span>{formatInfo.name}</span>
+                            {formatGroup.variants.length > 1 && (
+                              <span className="bg-white/30 px-1.5 py-0.5 rounded">
+                                ×{formatGroup.variants.length}
+                              </span>
+                            )}
                           </span>
                         );
                       })}
-                      {item.generated_contents.length > 8 && (
-                        <span className="px-2 py-1 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg text-xs font-medium">
-                          +{item.generated_contents.length - 8} more
-                        </span>
-                      )}
                     </div>
                   </div>
 
@@ -319,41 +349,48 @@ function History() {
               </div>
 
               {/* Generated Formats */}
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <h4 className="font-semibold text-gray-800 dark:text-white text-lg mb-4">
-                  {selectedItem.formats_count} formats générés
+                  Formats générés
                 </h4>
-                {selectedItem.generated_contents.map((content) => (
-                  <div
-                    key={content.id}
-                    className="p-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-700 rounded-xl hover:border-purple-200 dark:hover:border-purple-600 transition-all"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-sm font-semibold">
-                        Format #{content.variant_number}
-                      </span>
-                      <button
-                        onClick={() => handleCopy(content.content, content.id)}
-                        className="flex items-center space-x-2 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/50 hover:bg-purple-200 dark:hover:bg-purple-900/70 text-purple-700 dark:text-purple-300 rounded-lg transition-colors text-sm font-medium"
-                      >
-                        {copiedId === content.id ? (
-                          <>
-                            <Check className="h-4 w-4" />
-                            <span>Copié !</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="h-4 w-4" />
-                            <span>Copier</span>
-                          </>
-                        )}
-                      </button>
+                {groupContentsByFormat(selectedItem.generated_contents).map((formatGroup) => {
+                  const formatInfo = formatLabels[formatGroup.format] || {
+                    name: formatGroup.format,
+                    icon: '📝',
+                    color: 'from-gray-500 to-gray-600'
+                  };
+
+                  return (
+                    <div
+                      key={formatGroup.format}
+                      className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 overflow-hidden"
+                    >
+                      {/* Format Header */}
+                      <div className={`bg-gradient-to-r ${formatInfo.color} px-6 py-4 flex items-center justify-between`}>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-3xl">{formatInfo.icon}</span>
+                          <div>
+                            <h4 className="text-white font-bold text-lg">{formatInfo.name}</h4>
+                            {formatGroup.variants.length > 1 && (
+                              <span className="inline-block mt-1 px-2 py-0.5 bg-white/20 text-white text-xs font-bold rounded-full">
+                                {formatGroup.variants.length} variantes
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Format Content with VariantSelector */}
+                      <VariantSelector
+                        variants={formatGroup.variants}
+                        format={formatGroup.format}
+                        onCopy={handleCopy}
+                        copiedVariant={copiedId}
+                        formatInfo={formatInfo}
+                      />
                     </div>
-                    <p className="text-gray-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
-                      {content.content}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
