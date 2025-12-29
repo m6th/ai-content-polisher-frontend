@@ -17,7 +17,7 @@ function History() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [copiedId, setCopiedId] = useState(null);
-  const [expandedItems, setExpandedItems] = useState(new Set());
+  const [expandedItemId, setExpandedItemId] = useState(null);
 
   const itemsPerPage = 20;
 
@@ -133,15 +133,7 @@ function History() {
   };
 
   const toggleExpanded = (itemId) => {
-    setExpandedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
-    });
+    setExpandedItemId(prev => prev === itemId ? null : itemId);
   };
 
   return (
@@ -190,7 +182,7 @@ function History() {
         <>
           <div className="space-y-4">
             {history.map((item, index) => {
-              const isExpanded = expandedItems.has(item.id);
+              const isExpanded = expandedItemId === item.id;
 
               return (
                 <div
