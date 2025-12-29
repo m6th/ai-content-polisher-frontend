@@ -395,7 +395,17 @@ function EditorialCalendar({ user }) {
           <div className="space-y-6">
             {/* Add Content Button */}
             <button
-              onClick={() => setShowScheduleModal(true)}
+              onClick={() => {
+                setScheduleForm({
+                  generated_content_id: '',
+                  scheduled_date: '',
+                  scheduled_time: '09:00',
+                  platform: 'linkedin',
+                  title: '',
+                  notes: ''
+                });
+                setShowScheduleModal(true);
+              }}
               className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg"
             >
               <Plus className="h-5 w-5" />
