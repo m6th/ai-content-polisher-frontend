@@ -17,6 +17,7 @@ function History() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [copiedId, setCopiedId] = useState(null);
+  const [expandedItems, setExpandedItems] = useState(new Set());
 
   const itemsPerPage = 20;
 
@@ -131,6 +132,18 @@ function History() {
       });
   };
 
+  const toggleExpanded = (itemId) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
@@ -175,101 +188,134 @@ function History() {
       {/* History List */}
       {!loading && history.length > 0 && (
         <>
-          <div className="space-y-8">
-            {history.map((item, index) => (
-              <div
-                key={item.id}
-                className="space-y-4"
-              >
-                {/* Header with original text and metadata */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      {/* Date & Stats */}
-                      <div className="flex items-center space-x-4 mb-3 text-sm text-gray-500 dark:text-slate-400">
-                        <span className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {getRelativeTime(item.created_at)}
-                        </span>
-                        {item.created_by && !item.is_own && (
-                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full text-xs font-semibold">
-                            👤 {item.created_by.name}
-                          </span>
-                        )}
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-full text-xs">
-                          {item.tone || 'Professionnel'}
-                        </span>
-                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-xs uppercase">
-                          {item.language || 'FR'}
-                        </span>
-                      </div>
+          <div className="space-y-4">
+            {history.map((item, index) => {
+              const isExpanded = expandedItems.has(item.id);
 
-                      {/* Original Text */}
-                      <div className="mb-3 p-4 bg-gray-50 dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-700">
-                        <h4 className="font-semibold text-gray-700 dark:text-slate-200 mb-2 flex items-center text-sm">
-                          <FileText className="h-4 w-4 mr-2" />
-                          Texte original
-                        </h4>
-                        <p className="text-gray-700 dark:text-slate-300 leading-relaxed text-sm">
+              return (
+                <div
+                  key={item.id}
+                  className="space-y-4"
+                >
+                  {/* Condensed view */}
+                  <div className={`bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 p-6 hover:shadow-lg transition-all fade-in-up stagger-${(index % 15) + 1}`}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        {/* Date & Stats */}
+                        <div className="flex items-center space-x-4 mb-3 text-sm text-gray-500 dark:text-slate-400">
+                          <span className="flex items-center">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {getRelativeTime(item.created_at)}
+                          </span>
+                          {item.created_by && !item.is_own && (
+                            <span className="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full text-xs font-semibold">
+                              👤 {item.created_by.name}
+                            </span>
+                          )}
+                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full text-xs font-semibold">
+                            {groupContentsByFormat(item.generated_contents).length} formats
+                          </span>
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-full text-xs">
+                            {item.tone || 'Professionnel'}
+                          </span>
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-xs uppercase">
+                            {item.language || 'FR'}
+                          </span>
+                        </div>
+
+                        {/* Original Text Preview */}
+                        <p className="text-gray-700 dark:text-slate-300 leading-relaxed mb-3 line-clamp-2">
                           {item.original_text}
                         </p>
                       </div>
-                    </div>
 
-                    {/* Delete button */}
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="p-2 bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded-lg transition-colors ml-4"
-                      title="Supprimer"
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Generated Formats Cards */}
-                <div className="grid grid-cols-1 gap-4">
-                  {groupContentsByFormat(item.generated_contents).map((formatGroup) => {
-                    const formatInfo = formatLabels[formatGroup.format] || {
-                      name: formatGroup.format,
-                      icon: '📝',
-                      color: 'from-gray-500 to-gray-600'
-                    };
-
-                    return (
-                      <div
-                        key={`${item.id}-${formatGroup.format}`}
-                        className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 overflow-hidden"
-                      >
-                        {/* Format Header */}
-                        <div className={`bg-gradient-to-r ${formatInfo.color} px-6 py-4 flex items-center justify-between`}>
-                          <div className="flex items-center space-x-3">
-                            <span className="text-3xl">{formatInfo.icon}</span>
-                            <div>
-                              <h4 className="text-white font-bold text-lg">{formatInfo.name}</h4>
-                              {formatGroup.variants.length > 1 && (
-                                <span className="inline-block mt-1 px-2 py-0.5 bg-white/20 text-white text-xs font-bold rounded-full">
-                                  {formatGroup.variants.length} variantes
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Format Content with VariantSelector */}
-                        <VariantSelector
-                          variants={formatGroup.variants}
-                          format={formatGroup.format}
-                          onCopy={handleCopy}
-                          copiedVariant={copiedId}
-                          formatInfo={formatInfo}
-                        />
+                      {/* Actions */}
+                      <div className="flex items-center space-x-2 ml-4">
+                        <button
+                          onClick={() => toggleExpanded(item.id)}
+                          className="px-4 py-2 bg-purple-100 dark:bg-purple-900/50 hover:bg-purple-200 dark:hover:bg-purple-900/70 text-purple-700 dark:text-purple-300 rounded-lg transition-colors font-medium text-sm flex items-center gap-2"
+                        >
+                          {isExpanded ? (
+                            <>
+                              <ChevronLeft className="h-4 w-4" />
+                              Masquer
+                            </>
+                          ) : (
+                            <>
+                              Voir les générations
+                              <ChevronRight className="h-4 w-4" />
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="p-2 bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded-lg transition-colors"
+                          title="Supprimer"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
                       </div>
-                    );
-                  })}
+                    </div>
+                  </div>
+
+                  {/* Expanded view - Generated Formats Cards */}
+                  {isExpanded && (
+                    <div className="grid grid-cols-1 gap-4 ml-4 animate-fadeIn">
+                      {/* Original Text Full */}
+                      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 p-6">
+                        <h4 className="font-semibold text-gray-700 dark:text-slate-200 mb-3 flex items-center">
+                          <FileText className="h-5 w-5 mr-2" />
+                          Texte original
+                        </h4>
+                        <p className="text-gray-700 dark:text-slate-300 leading-relaxed">
+                          {item.original_text}
+                        </p>
+                      </div>
+
+                      {/* Format cards */}
+                      {groupContentsByFormat(item.generated_contents).map((formatGroup) => {
+                        const formatInfo = formatLabels[formatGroup.format] || {
+                          name: formatGroup.format,
+                          icon: '📝',
+                          color: 'from-gray-500 to-gray-600'
+                        };
+
+                        return (
+                          <div
+                            key={`${item.id}-${formatGroup.format}`}
+                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 overflow-hidden"
+                          >
+                            {/* Format Header */}
+                            <div className={`bg-gradient-to-r ${formatInfo.color} px-6 py-4 flex items-center justify-between`}>
+                              <div className="flex items-center space-x-3">
+                                <span className="text-3xl">{formatInfo.icon}</span>
+                                <div>
+                                  <h4 className="text-white font-bold text-lg">{formatInfo.name}</h4>
+                                  {formatGroup.variants.length > 1 && (
+                                    <span className="inline-block mt-1 px-2 py-0.5 bg-white/20 text-white text-xs font-bold rounded-full">
+                                      {formatGroup.variants.length} variantes
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Format Content with VariantSelector */}
+                            <VariantSelector
+                              variants={formatGroup.variants}
+                              format={formatGroup.format}
+                              onCopy={handleCopy}
+                              copiedVariant={copiedId}
+                              formatInfo={formatInfo}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Pagination */}
