@@ -99,12 +99,12 @@ function History() {
   };
 
   const formatLabels = {
-    persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', order: 1 },
-    linkedin: { name: 'LinkedIn Post', icon: '💼', color: 'from-blue-500 to-blue-600', order: 2 },
-    instagram: { name: 'Instagram Caption', icon: '📸', color: 'from-purple-500 to-pink-500', order: 3 },
-    tiktok: { name: 'Script TikTok', icon: '🎵', color: 'from-pink-500 to-pink-600', order: 4 },
-    twitter: { name: 'Tweet / Thread', icon: '🐦', color: 'from-sky-500 to-sky-600', order: 5 },
-    email: { name: 'Email Pro', icon: '📧', color: 'from-green-500 to-green-600', order: 6 },
+    linkedin: { name: 'LinkedIn Post', icon: '💼', color: 'from-blue-500 to-blue-600', order: 1 },
+    instagram: { name: 'Instagram Caption', icon: '📸', color: 'from-purple-500 to-pink-500', order: 2 },
+    tiktok: { name: 'Script TikTok', icon: '🎵', color: 'from-pink-500 to-pink-600', order: 3 },
+    twitter: { name: 'Tweet / Thread', icon: '🐦', color: 'from-sky-500 to-sky-600', order: 4 },
+    email: { name: 'Email Pro', icon: '📧', color: 'from-green-500 to-green-600', order: 5 },
+    persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', order: 6 },
   };
 
   // Group generated contents by format
