@@ -142,7 +142,10 @@ function Register() {
 
       navigate(`/verify-email?${params.toString()}`);
     } catch (err) {
-      if (err.response?.status === 400) {
+      // Display the actual error message from backend if available
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (err.response?.status === 400) {
         setError(t.register.errorEmailExists);
       } else {
         setError(t.register.errorGeneric);
