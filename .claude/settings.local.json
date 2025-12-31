@@ -39,7 +39,12 @@
       "Bash(sudo -u postgres psql:*)",
       "Bash(cat:*)",
       "Bash(source:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql:*)",
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"SELECT id, name, plan, team_credits FROM teams;\")",
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"UPDATE alembic_version SET version_num = ''a542f38bd897'';\")",
+      "Bash(lsof:*)",
+      "Bash(echo \"curl -X POST https://VOTRE-BACKEND.onrender.com/calendar/send-reminders \\\\\"\necho \" -H 'X-Cron-Secret: GR4FsYVXk7se1qWJaDJJf-eGK2J9qfZMoIxomj_W7QU' \")"
     ]
   }
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test d'envoi d'email</h1>
+    <p>Cliquez sur le bouton pour envoyer un email de test à votre adresse:</p>
+    <button onclick="testEmail()">Envoyer un email de test</button>
+    <div id="result"></div>
+
+    <script>
+        async function testEmail() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Envoi en cours...';
+            resultDiv.className = 'result';
+
+            try {
+                const token = localStorage.getItem('token');
+
+                if (!token) {
+                    resultDiv.innerHTML = 'Erreur: Vous devez être connecté sur localhost:5173 d\'abord pour obtenir un token!';
+                    resultDiv.className = 'result error';
+                    return;
+                }
+
+                const response = await fetch('http://localhost:8000/users/test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <strong>✅ Succès!</strong><br>
+                        ${data.message}<br>
+                        Email envoyé à: ${data.sent_to}<br><br>
+                        Vérifiez votre boîte mail (ou les logs du backend si vous n'êtes pas mathdu0609@gmail.com)
+                    `;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `<strong>❌ Erreur:</strong> ${data.detail || 'Erreur inconnue'}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>❌ Erreur:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>

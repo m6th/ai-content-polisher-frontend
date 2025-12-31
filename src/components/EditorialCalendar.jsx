@@ -67,12 +67,27 @@ function EditorialCalendar({ user }) {
       setError(null);
 
       const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      // Fix: Include full last day of month (23:59:59)
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0, 23, 59, 59, 999);
+
+      console.log('📅 Loading calendar data:');
+      console.log('  Start:', startDate.toISOString());
+      console.log('  End:', endDate.toISOString());
+      console.log('  Current date:', currentDate);
 
       const response = await getCalendarView(
         startDate.toISOString(),
         endDate.toISOString()
       );
+
+      console.log('📊 Calendar response:', response.data.calendar);
+      console.log('🔑 Date keys in calendar:', Object.keys(response.data.calendar));
+      console.log('📝 Calendar entries count:', Object.keys(response.data.calendar).length);
+
+      // Log each date's content
+      Object.entries(response.data.calendar).forEach(([date, items]) => {
+        console.log(`  ${date}: ${items.length} items`);
+      });
 
       setCalendarData(response.data.calendar);
     } catch (err) {
@@ -423,6 +438,16 @@ function EditorialCalendar({ user }) {
                   const dateKey = `${year}-${month}-${day}`;
                   const dayContent = calendarData[dateKey] || [];
                   const isToday = new Date().toDateString() === date.toDateString();
+
+                  // Debug log for today
+                  if (isToday) {
+                    console.log('🎯 Today detected:', {
+                      dateKey,
+                      date: date.toDateString(),
+                      dayContent: dayContent.length,
+                      calendarDataKeys: Object.keys(calendarData)
+                    });
+                  }
 
                   return (
                     <div
