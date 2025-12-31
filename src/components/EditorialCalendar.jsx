@@ -6,10 +6,14 @@ import {
   updateScheduledContent,
   deleteScheduledContent,
   getUpcomingContent,
-  getContentHistory
+  getContentHistory,
+  getProTrialStatus
 } from '../services/api';
+import ProTrialModal from './ProTrialModal';
+import { useNavigate } from 'react-router-dom';
 
 function EditorialCalendar({ user }) {
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarData, setCalendarData] = useState({});
   const [upcomingContent, setUpcomingContent] = useState([]);
@@ -19,6 +23,10 @@ function EditorialCalendar({ user }) {
   const [availableContent, setAvailableContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Pro Trial Modal
+  const [showProTrialModal, setShowProTrialModal] = useState(false);
+  const [canUseTrial, setCanUseTrial] = useState(false);
 
   const [scheduleForm, setScheduleForm] = useState({
     generated_content_id: '',
@@ -51,10 +59,37 @@ function EditorialCalendar({ user }) {
     { value: 'email', label: 'Email', color: 'bg-green-600' }
   ];
 
+  // Check if user can access calendar (show modal if Free/Starter)
   useEffect(() => {
-    loadCalendarData();
-    loadUpcoming();
-    loadAvailableContent();
+    const checkAccess = async () => {
+      if (!isPro) {
+        // Load trial status
+        try {
+          const response = await getProTrialStatus();
+          setCanUseTrial(response.data.can_use_trial);
+        } catch (err) {
+          console.error('Error loading trial status:', err);
+        }
+        // Show modal for Free/Starter users
+        setShowProTrialModal(true);
+      } else {
+        // Pro users: load calendar normally
+        loadCalendarData();
+        loadUpcoming();
+        loadAvailableContent();
+      }
+    };
+
+    checkAccess();
+  }, [currentDate, isPro]);
+
+  useEffect(() => {
+    // Only load if Pro
+    if (isPro) {
+      loadCalendarData();
+      loadUpcoming();
+      loadAvailableContent();
+    }
   }, [currentDate]);
 
   const loadCalendarData = async () => {
@@ -936,6 +971,21 @@ function EditorialCalendar({ user }) {
           </div>
         </div>
       )}
+
+      {/* Pro Trial Modal */}
+      <ProTrialModal
+        isOpen={showProTrialModal}
+        onClose={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+        feature="calendar"
+        canUseTrial={canUseTrial}
+        onActivateTrial={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+      />
     </div>
   );
 }

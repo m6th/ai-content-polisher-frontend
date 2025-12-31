@@ -51,12 +51,10 @@ function Navbar({ user, onLogout }) {
                   <Calendar className="h-4 w-4" />
                   <span>{t.navbar.calendar || 'Calendrier'}</span>
                 </Link>
-                {(user.current_plan === 'pro' || user.current_plan === 'business') && (
-                  <Link to="/team" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
-                    <Users className="h-4 w-4" />
-                    <span>{t.navbar.team || 'Équipe'}</span>
-                  </Link>
-                )}
+                <Link to="/team" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
+                  <Users className="h-4 w-4" />
+                  <span>{t.navbar.team || 'Équipe'}</span>
+                </Link>
                 <Link to="/join-team" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all text-sm font-medium shadow-md">
                   <UserPlus className="h-4 w-4" />
                   <span>Rejoindre une équipe</span>
@@ -74,11 +72,9 @@ function Navbar({ user, onLogout }) {
                 <Link to="/calendar" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Calendrier">
                   <Calendar className="h-4 w-4" />
                 </Link>
-                {(user.current_plan === 'pro' || user.current_plan === 'business') && (
-                  <Link to="/team" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Équipe">
-                    <Users className="h-4 w-4" />
-                  </Link>
-                )}
+                <Link to="/team" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Équipe">
+                  <Users className="h-4 w-4" />
+                </Link>
                 <Link to="/join-team" className="p-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all shadow-md" title="Rejoindre une équipe">
                   <UserPlus className="h-4 w-4" />
                 </Link>
