@@ -35,15 +35,9 @@ function EditorialCalendar({ user }) {
 
   // Helper to format UTC date without timezone conversion
   const formatScheduledDate = (dateString, options = {}) => {
+    // Just use the date directly in local timezone
     const date = new Date(dateString);
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-
-    const localDate = new Date(year, month, day, hours, minutes);
-    return localDate.toLocaleDateString('fr-FR', options);
+    return date.toLocaleDateString('fr-FR', options);
   };
 
   const platforms = [
@@ -204,12 +198,12 @@ function EditorialCalendar({ user }) {
 
   const handleSchedule = async () => {
     try {
-      // Parse date and time separately to avoid timezone issues
+      // Parse date and time separately
       const [year, month, day] = scheduleForm.scheduled_date.split('-').map(Number);
       const [hours, minutes] = scheduleForm.scheduled_time.split(':').map(Number);
 
-      // Create date in UTC to avoid timezone conversion
-      const scheduledDateTime = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+      // Create date in LOCAL timezone (not UTC!)
+      const scheduledDateTime = new Date(year, month - 1, day, hours, minutes);
 
       await scheduleContent({
         generated_content_id: parseInt(scheduleForm.generated_content_id),
@@ -291,12 +285,12 @@ function EditorialCalendar({ user }) {
 
   const openEditModal = (item) => {
     const itemDate = new Date(item.scheduled_date);
-    // Extract UTC components to avoid timezone shift
-    const year = itemDate.getUTCFullYear();
-    const month = String(itemDate.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(itemDate.getUTCDate()).padStart(2, '0');
-    const hours = String(itemDate.getUTCHours()).padStart(2, '0');
-    const minutes = String(itemDate.getUTCMinutes()).padStart(2, '0');
+    // Extract LOCAL timezone components
+    const year = itemDate.getFullYear();
+    const month = String(itemDate.getMonth() + 1).padStart(2, '0');
+    const day = String(itemDate.getDate()).padStart(2, '0');
+    const hours = String(itemDate.getHours()).padStart(2, '0');
+    const minutes = String(itemDate.getMinutes()).padStart(2, '0');
 
     setEditingItem(item);
     setScheduleForm({
