@@ -13,7 +13,6 @@ function EditorialCalendar({ user }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarData, setCalendarData] = useState({});
   const [upcomingContent, setUpcomingContent] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -105,20 +104,36 @@ function EditorialCalendar({ user }) {
       // Extract items from response (same as History.jsx line 32)
       const historyItems = response.data?.items || [];
 
+      // Format labels for display
+      const formatDisplayNames = {
+        linkedin: 'LinkedIn',
+        instagram: 'Instagram',
+        tiktok: 'TikTok',
+        twitter: 'Twitter',
+        email: 'Email Pro',
+        persuasive: 'Publicité'
+      };
+
       // Get all generated content from history, filtering out errors
       const content = historyItems.flatMap(request =>
         (request.generated_contents || [])
           .filter(gc => gc.content && !gc.content.startsWith('[Erreur'))
-          .map(gc => ({
-            id: gc.id,
-            text: gc.content,
-            format_name: gc.format_name || 'Contenu',
-            variant_number: gc.variant_number || 1,
-            created_at: request.created_at
-          }))
+          .map(gc => {
+            const formatName = gc.format_name || 'unknown';
+            const displayName = formatDisplayNames[formatName] || formatName;
+
+            return {
+              id: gc.id,
+              text: gc.content,
+              format_name: displayName,
+              variant_number: gc.variant_number || 1,
+              created_at: request.created_at
+            };
+          })
       );
 
       console.log('Loaded content for calendar:', content.length, 'items');
+      console.log('Sample content:', content.slice(0, 3));
       setAvailableContent(content);
     } catch (err) {
       console.error('Error loading available content:', err);
@@ -223,10 +238,15 @@ function EditorialCalendar({ user }) {
   };
 
   const openScheduleModal = (date) => {
-    setSelectedDate(date);
+    // Create date key without timezone conversion
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}`;
+
     setScheduleForm({
       ...scheduleForm,
-      scheduled_date: date.toISOString().split('T')[0]
+      scheduled_date: dateString
     });
     setShowScheduleModal(true);
   };
@@ -373,7 +393,11 @@ function EditorialCalendar({ user }) {
                     return <div key={`empty-${index}`} className="aspect-square" />;
                   }
 
-                  const dateKey = date.toISOString().split('T')[0];
+                  // Create date key without timezone conversion
+                  const year = date.getFullYear();
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const day = String(date.getDate()).padStart(2, '0');
+                  const dateKey = `${year}-${month}-${day}`;
                   const dayContent = calendarData[dateKey] || [];
                   const isToday = new Date().toDateString() === date.toDateString();
 
