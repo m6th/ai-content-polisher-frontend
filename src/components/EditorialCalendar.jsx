@@ -33,11 +33,13 @@ function EditorialCalendar({ user }) {
 
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
-  // Helper to format UTC date without timezone conversion
+  // Helper to format date showing the exact time stored (without timezone conversion)
   const formatScheduledDate = (dateString, options = {}) => {
-    // Just use the date directly in local timezone
     const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', options);
+
+    // Force UTC timezone in formatting to show the exact stored time
+    const utcOptions = { ...options, timeZone: 'UTC' };
+    return date.toLocaleDateString('fr-FR', utcOptions);
   };
 
   const platforms = [
