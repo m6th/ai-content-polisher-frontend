@@ -122,6 +122,15 @@ function EditorialCalendar({ user }) {
             const formatName = gc.format_name || 'unknown';
             const displayName = formatDisplayNames[formatName] || formatName;
 
+            // Debug log for missing format_name
+            if (!gc.format_name) {
+              console.warn('⚠️ Content without format_name:', {
+                id: gc.id,
+                variant_number: gc.variant_number,
+                content_preview: gc.content.substring(0, 50) + '...'
+              });
+            }
+
             return {
               id: gc.id,
               text: gc.content,
@@ -132,8 +141,22 @@ function EditorialCalendar({ user }) {
           })
       );
 
-      console.log('Loaded content for calendar:', content.length, 'items');
-      console.log('Sample content:', content.slice(0, 3));
+      console.log('📊 Loaded content for calendar:', content.length, 'items');
+      console.log('📝 Sample content:', content.slice(0, 5));
+      console.log('🔢 Content by variant:', {
+        variant1: content.filter(c => c.variant_number === 1).length,
+        variant2: content.filter(c => c.variant_number === 2).length,
+        variant3: content.filter(c => c.variant_number === 3).length
+      });
+      console.log('📁 Content by format:', {
+        linkedin: content.filter(c => c.format_name === 'LinkedIn').length,
+        instagram: content.filter(c => c.format_name === 'Instagram').length,
+        tiktok: content.filter(c => c.format_name === 'TikTok').length,
+        twitter: content.filter(c => c.format_name === 'Twitter').length,
+        email: content.filter(c => c.format_name === 'Email Pro').length,
+        publicite: content.filter(c => c.format_name === 'Publicité').length,
+        unknown: content.filter(c => c.format_name === 'unknown').length
+      });
       setAvailableContent(content);
     } catch (err) {
       console.error('Error loading available content:', err);
