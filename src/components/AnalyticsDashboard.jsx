@@ -43,6 +43,7 @@ function AnalyticsDashboard({ user }) {
           console.error('Error loading trial status:', err);
         }
         setShowProTrialModal(true);
+        setLoading(false); // Stop loading for Free/Starter users
       } else {
         loadAnalytics();
       }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
-import { polishContent, getMyPlanRestrictions } from '../services/api';
+import { polishContent, getMyPlanRestrictions, getProTrialStatus } from '../services/api';
 import { Wand2, Copy, Check, Download, Globe, Smile, Lock, Crown, AlertCircle, CheckCircle, Info, Search, Sparkles, RefreshCw, Coins, Calendar, Lightbulb, ArrowUp, Eye, X, FileText, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
@@ -9,6 +9,7 @@ import AIInsights from './AIInsights';
 import HashtagButton from './HashtagButton';
 import VariantSelector from './VariantSelector';
 import AIFeatures from './AIFeatures';
+import ProTrialComparisonModal from './ProTrialComparisonModal';
 
 function ContentPolisher({ user, onUpdateUser }) {
   const { language: uiLanguage } = useLanguage();
@@ -46,6 +47,11 @@ function ContentPolisher({ user, onUpdateUser }) {
   const [hashtags, setHashtags] = useState(null);
   const [aiSuggestions, setAiSuggestions] = useState(null);
   const [requestId, setRequestId] = useState(null);
+
+  // Pro trial states
+  const [canUseTrial, setCanUseTrial] = useState(false);
+  const [showProTrialComparison, setShowProTrialComparison] = useState(false);
+  const [trialUsed, setTrialUsed] = useState(false);
 
   // Tous les tons disponibles dans l'application
   const allTones = [
@@ -259,6 +265,108 @@ function ContentPolisher({ user, onUpdateUser }) {
 
     loadRestrictions();
   }, []);
+
+  // Charger le statut de l'essai Pro
+  useEffect(() => {
+    const checkTrialStatus = async () => {
+      try {
+        const response = await getProTrialStatus();
+        setCanUseTrial(response.data.can_use_trial);
+        setTrialUsed(response.data.has_used_trial);
+      } catch (error) {
+        console.error('Erreur lors du chargement du statut Pro trial:', error);
+      }
+    };
+
+    if (user?.current_plan === 'free' || user?.current_plan === 'starter') {
+      checkTrialStatus();
+    }
+  }, [user]);
+
+  const handleProTrialGeneration = async () => {
+    setError('');
+    setGeneratedFormats([]);
+    setLoading(true);
+    setShowSuccessFeedback(false);
+    setGenerationStep(0);
+
+    // Simulate progress bar
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += Math.random() * 15;
+      if (progress >= 95) {
+        clearInterval(progressInterval);
+        setGenerationStep(95);
+      } else {
+        setGenerationStep(progress);
+      }
+    }, 300);
+
+    try {
+      const response = await polishContent(originalText, tone, contentLanguage, true); // use_pro_trial = true
+      clearInterval(progressInterval);
+      setGenerationStep(100);
+
+      // Group formats by format name and collect variants
+      const formatsMap = {};
+      response.data.formats.forEach(item => {
+        if (!formatsMap[item.format]) {
+          formatsMap[item.format] = {
+            format: item.format,
+            variants: [],
+            id: item.id,
+            created_at: item.created_at
+          };
+        }
+        formatsMap[item.format].variants.push(item.content);
+      });
+
+      // Convert to array and simplify if only one variant
+      const processedFormats = Object.values(formatsMap).map(f => ({
+        ...f,
+        content: f.variants.length === 1 ? f.variants[0] : f.variants[0],
+        variants: f.variants.length > 1 ? f.variants : null
+      }));
+
+      setGeneratedFormats(processedFormats);
+      setHashtags(response.data.hashtags || null);
+      setAiSuggestions(response.data.ai_suggestions || null);
+      setRequestId(response.data.request_id);
+      setShowSuccessFeedback(true);
+      setCanUseTrial(false);
+      setTrialUsed(true);
+      onUpdateUser();
+
+      // Trigger confetti animation
+      triggerConfetti();
+
+      toast.success(
+        uiLanguage === 'fr' ? `✨ Essai Pro activé ! ${response.data.formats.length} formats générés avec toutes les fonctionnalités Pro !` :
+        uiLanguage === 'en' ? `✨ Pro trial activated! ${response.data.formats.length} formats generated with all Pro features!` :
+        `✨ ¡Prueba Pro activada! ¡${response.data.formats.length} formatos generados con todas las funciones Pro!`
+      );
+
+      // Smooth scroll to results
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+
+      // Show comparison modal after 3 seconds
+      setTimeout(() => {
+        setShowProTrialComparison(true);
+      }, 3000);
+    } catch (err) {
+      clearInterval(progressInterval);
+      setGenerationStep(0);
+      if (err.response?.status === 403) {
+        toast.error(err.response?.data?.detail || t.polisher.errorInsufficientCredentials);
+      } else {
+        toast.error(t.polisher.errorGeneric);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -679,24 +787,51 @@ function ContentPolisher({ user, onUpdateUser }) {
             )}
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading || !originalText.trim()}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-          >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                <span>{t.polisher.generating}</span>
-              </>
-            ) : (
-              <>
-                <Wand2 className="h-6 w-6" />
-                <span>{t.polisher.generateButton}</span>
-              </>
+          {/* Submit Buttons */}
+          <div className="space-y-3">
+            {/* Pro Trial Button - Only for Free/Starter who can use trial */}
+            {canUseTrial && !trialUsed && (user?.current_plan === 'free' || user?.current_plan === 'starter') && (
+              <button
+                type="button"
+                onClick={handleProTrialGeneration}
+                disabled={loading || !originalText.trim()}
+                className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-yellow-600 hover:via-orange-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    <span>{t.polisher.generating}</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-6 w-6 animate-pulse" />
+                    <span>✨ Tester Pro Gratuitement (1 crédit)</span>
+                    <Crown className="h-5 w-5" />
+                  </>
+                )}
+              </button>
             )}
-          </button>
+
+            {/* Regular Submit Button */}
+            <button
+              type="submit"
+              disabled={loading || !originalText.trim()}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  <span>{t.polisher.generating}</span>
+                </>
+              ) : (
+                <>
+                  <Wand2 className="h-6 w-6" />
+                  <span>{t.polisher.generateButton}</span>
+                </>
+              )}
+            </button>
+          </div>
 
           {/* Progress Bar */}
           {loading && (
@@ -1060,6 +1195,12 @@ function ContentPolisher({ user, onUpdateUser }) {
           </div>
         </div>
       </div>
+
+      {/* Pro Trial Comparison Modal */}
+      <ProTrialComparisonModal
+        isOpen={showProTrialComparison}
+        onClose={() => setShowProTrialComparison(false)}
+      />
 
       {/* Preview Modal */}
       {previewModal.isOpen && (
