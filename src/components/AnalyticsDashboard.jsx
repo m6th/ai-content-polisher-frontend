@@ -9,12 +9,15 @@ import {
 } from 'lucide-react';
 import {
   getAnalyticsStats, getDailyUsage, getFormatAnalytics,
-  getPerformanceSummary
+  getPerformanceSummary, getProTrialStatus
 } from '../services/api';
+import ProTrialModal from './ProTrialModal';
+import { useNavigate } from 'react-router-dom';
 
 const COLORS = ['#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 
 function AnalyticsDashboard({ user }) {
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [dailyUsage, setDailyUsage] = useState([]);
   const [formatAnalytics, setFormatAnalytics] = useState(null);
@@ -23,10 +26,35 @@ function AnalyticsDashboard({ user }) {
   const [error, setError] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState(30);
 
+  // Pro Trial Modal
+  const [showProTrialModal, setShowProTrialModal] = useState(false);
+  const [canUseTrial, setCanUseTrial] = useState(false);
+
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
+  // Check access on mount
   useEffect(() => {
-    loadAnalytics();
+    const checkAccess = async () => {
+      if (!isPro) {
+        try {
+          const response = await getProTrialStatus();
+          setCanUseTrial(response.data.can_use_trial);
+        } catch (err) {
+          console.error('Error loading trial status:', err);
+        }
+        setShowProTrialModal(true);
+      } else {
+        loadAnalytics();
+      }
+    };
+
+    checkAccess();
+  }, [isPro]);
+
+  useEffect(() => {
+    if (isPro) {
+      loadAnalytics();
+    }
   }, [selectedPeriod]);
 
   const loadAnalytics = async () => {
@@ -336,6 +364,21 @@ function AnalyticsDashboard({ user }) {
           </div>
         </>
       )}
+
+      {/* Pro Trial Modal */}
+      <ProTrialModal
+        isOpen={showProTrialModal}
+        onClose={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+        feature="analytics"
+        canUseTrial={canUseTrial}
+        onActivateTrial={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+      />
     </div>
   );
 }

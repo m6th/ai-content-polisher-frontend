@@ -6,10 +6,14 @@ import {
   inviteTeamMember,
   removeTeamMember,
   leaveTeam,
-  updateTeam
+  updateTeam,
+  getProTrialStatus
 } from '../services/api';
+import ProTrialModal from './ProTrialModal';
+import { useNavigate } from 'react-router-dom';
 
 function TeamManagement({ user }) {
+  const navigate = useNavigate();
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,14 +25,29 @@ function TeamManagement({ user }) {
   const [copiedToken, setCopiedToken] = useState(false);
   const [lastInvitation, setLastInvitation] = useState(null);
 
+  // Pro Trial Modal
+  const [showProTrialModal, setShowProTrialModal] = useState(false);
+  const [canUseTrial, setCanUseTrial] = useState(false);
+
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
   useEffect(() => {
-    if (isPro) {
-      loadTeamData();
-    } else {
-      setLoading(false);
-    }
+    const checkAccess = async () => {
+      if (!isPro) {
+        try {
+          const response = await getProTrialStatus();
+          setCanUseTrial(response.data.can_use_trial);
+        } catch (err) {
+          console.error('Error loading trial status:', err);
+        }
+        setShowProTrialModal(true);
+        setLoading(false);
+      } else {
+        loadTeamData();
+      }
+    };
+
+    checkAccess();
   }, [isPro]);
 
   const loadTeamData = async () => {
@@ -623,6 +642,21 @@ function TeamManagement({ user }) {
           </div>
         </div>
       )}
+
+      {/* Pro Trial Modal */}
+      <ProTrialModal
+        isOpen={showProTrialModal}
+        onClose={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+        feature="team"
+        canUseTrial={canUseTrial}
+        onActivateTrial={() => {
+          setShowProTrialModal(false);
+          navigate('/dashboard');
+        }}
+      />
     </div>
   );
 }
