@@ -51,12 +51,13 @@ export const getCurrentUser = () => {
 };
 
 // Contenu
-export const polishContent = (originalText, tone, language) => {
+export const polishContent = (originalText, tone, language, useProTrial = false) => {
   return api.post('/content/polish', {
     original_text: originalText,
     platform: 'multi_format', // On n'utilise plus platform
     tone,
     language,
+    use_pro_trial: useProTrial,  // Paramètre pour l'essai Pro
   });
 };
 
@@ -301,6 +302,15 @@ export const updateTeam = (name) => {
 
 export const joinTeamWithCode = (code) => {
   return api.post('/teams/join', { code });
+};
+
+// Pro Trial
+export const getProTrialStatus = () => {
+  return api.get('/trial/status');
+};
+
+export const activateProTrial = () => {
+  return api.post('/trial/activate-pro-trial');
 };
 
 export { API_URL };
