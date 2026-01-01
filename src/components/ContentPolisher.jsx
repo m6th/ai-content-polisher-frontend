@@ -787,6 +787,66 @@ function ContentPolisher({ user, onUpdateUser }) {
             )}
           </div>
 
+          {/* Pro Trial Info Box */}
+          {canUseTrial && !trialUsed && (user?.current_plan === 'free' || user?.current_plan === 'starter') && (
+            <div className="bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-pink-900/20 border-2 border-yellow-300 dark:border-yellow-700 rounded-2xl p-6 mb-6">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Crown className="h-6 w-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                    ✨ Essai Pro Gratuit Disponible !
+                  </h3>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                    Testez toutes les fonctionnalités Pro avec 1 crédit gratuit. Vous recevrez :
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">3 variantes créatives</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Plusieurs versions de votre contenu</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">Hashtags optimisés par IA</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Maximisez votre portée</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">Suggestions d'amélioration IA</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Conseils personnalisés</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">Accès complet Calendar & Analytics</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Planification et statistiques</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+                <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                  <Info className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                  <span>Entrez votre texte ci-dessus, puis cliquez sur "Tester Pro Gratuitement" pour découvrir toutes les fonctionnalités Pro !</span>
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Submit Buttons */}
           <div className="space-y-3">
             {/* Pro Trial Button - Only for Free/Starter who can use trial */}

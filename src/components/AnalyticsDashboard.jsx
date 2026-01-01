@@ -29,13 +29,14 @@ function AnalyticsDashboard({ user }) {
   // Pro Trial Modal
   const [showProTrialModal, setShowProTrialModal] = useState(false);
   const [canUseTrial, setCanUseTrial] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false); // Mode aperçu pour Free/Starter
 
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
   // Check access on mount
   useEffect(() => {
     const checkAccess = async () => {
-      if (!isPro) {
+      if (!isPro && !previewMode) {
         try {
           const response = await getProTrialStatus();
           setCanUseTrial(response.data.can_use_trial);
@@ -44,19 +45,59 @@ function AnalyticsDashboard({ user }) {
         }
         setShowProTrialModal(true);
         setLoading(false); // Stop loading for Free/Starter users
-      } else {
+      } else if (isPro) {
         loadAnalytics();
+      } else if (previewMode) {
+        loadDemoData();
       }
     };
 
     checkAccess();
-  }, [isPro]);
+  }, [isPro, previewMode]);
 
   useEffect(() => {
     if (isPro) {
       loadAnalytics();
     }
   }, [selectedPeriod]);
+
+  const loadDemoData = () => {
+    // Données de démonstration pour le mode preview
+    setStats({
+      total_requests: 156,
+      total_formats: 468,
+      most_used_platform: 'LinkedIn',
+      analytics_enabled: true
+    });
+
+    setDailyUsage([
+      { date: '2025-01-25', count: 12 },
+      { date: '2025-01-26', count: 18 },
+      { date: '2025-01-27', count: 15 },
+      { date: '2025-01-28', count: 22 },
+      { date: '2025-01-29', count: 19 },
+      { date: '2025-01-30', count: 25 },
+      { date: '2025-01-31', count: 20 }
+    ]);
+
+    setFormatAnalytics({
+      formats: [
+        { format: 'LinkedIn', count: 142, percentage: 30 },
+        { format: 'Instagram', count: 118, percentage: 25 },
+        { format: 'TikTok', count: 94, percentage: 20 },
+        { format: 'Twitter', count: 71, percentage: 15 },
+        { format: 'Email', count: 43, percentage: 10 }
+      ]
+    });
+
+    setPerformance({
+      avg_generation_time: 2.3,
+      success_rate: 98.5,
+      total_credits_used: 156
+    });
+
+    setLoading(false);
+  };
 
   const loadAnalytics = async () => {
     try {
@@ -86,6 +127,11 @@ function AnalyticsDashboard({ user }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleActivatePreview = () => {
+    setShowProTrialModal(false);
+    setPreviewMode(true);
   };
 
   if (loading) {
@@ -119,6 +165,27 @@ function AnalyticsDashboard({ user }) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Preview Mode Banner */}
+      {previewMode && (
+        <div className="mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl p-4 shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Sparkles className="h-6 w-6" />
+              <div>
+                <p className="font-bold text-lg">Mode Aperçu Pro</p>
+                <p className="text-sm text-blue-100">Vous explorez l'interface Pro. Les données affichées sont des exemples.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate('/pricing')}
+              className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg font-semibold transition-all"
+            >
+              Passer à Pro
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
@@ -128,7 +195,7 @@ function AnalyticsDashboard({ user }) {
               Analytics
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {isPro ? 'Dashboard analytics détaillé' : 'Vue d\'ensemble de votre utilisation'}
+              {isPro || previewMode ? 'Dashboard analytics détaillé' : 'Vue d\'ensemble de votre utilisation'}
             </p>
           </div>
 
@@ -379,6 +446,7 @@ function AnalyticsDashboard({ user }) {
           setShowProTrialModal(false);
           navigate('/dashboard');
         }}
+        onActivatePreview={handleActivatePreview}
       />
     </div>
   );

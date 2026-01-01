@@ -1,7 +1,7 @@
 import { X, Sparkles, Check, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function ProTrialModal({ isOpen, onClose, feature, canUseTrial, onActivateTrial }) {
+function ProTrialModal({ isOpen, onClose, feature, canUseTrial, onActivateTrial, onActivatePreview }) {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -50,7 +50,15 @@ function ProTrialModal({ isOpen, onClose, feature, canUseTrial, onActivateTrial 
   };
 
   const handleTryPro = () => {
+    // Utiliser le crédit réel pour générer du contenu
     onActivateTrial();
+  };
+
+  const handlePreview = () => {
+    // Activer le mode preview sans utiliser le crédit
+    if (onActivatePreview) {
+      onActivatePreview();
+    }
   };
 
   return (
@@ -120,25 +128,31 @@ function ProTrialModal({ isOpen, onClose, feature, canUseTrial, onActivateTrial 
 
           {/* Boutons d'action */}
           <div className="space-y-3">
-            {canUseTrial ? (
+            {/* Bouton Explorer en mode aperçu - toujours visible */}
+            <button
+              onClick={handlePreview}
+              className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
+            >
+              <Sparkles className="h-5 w-5 group-hover:animate-pulse" />
+              Explorer en Mode Aperçu
+            </button>
+            <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+              Découvrez l'interface Pro complète (sans utiliser votre crédit)
+            </p>
+
+            {canUseTrial && feature !== 'analytics' && feature !== 'calendar' && feature !== 'team' && (
               <>
                 <button
                   onClick={handleTryPro}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
+                  className="w-full py-4 px-6 bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 hover:from-yellow-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
                 >
                   <Zap className="h-5 w-5 group-hover:animate-pulse" />
-                  Tester Pro Gratuitement (1 crédit)
+                  Utiliser mon Crédit Pro Gratuit
                 </button>
                 <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                   Générez 1 contenu avec toutes les fonctionnalités Pro
                 </p>
               </>
-            ) : (
-              <div className="text-center py-2">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  Vous avez déjà utilisé votre essai Pro gratuit
-                </p>
-              </div>
             )}
 
             <button
