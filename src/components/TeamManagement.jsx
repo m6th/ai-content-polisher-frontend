@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, Plus, Mail, Shield, Trash2, UserPlus, Crown, AlertCircle, Check, Copy, X } from 'lucide-react';
+import { Users, Plus, Mail, Shield, Trash2, UserPlus, Crown, AlertCircle, Check, Copy, X, Sparkles } from 'lucide-react';
 import {
   getMyTeam,
   createTeam,
@@ -28,27 +28,34 @@ function TeamManagement({ user }) {
   // Pro Trial Modal
   const [showProTrialModal, setShowProTrialModal] = useState(false);
   const [canUseTrial, setCanUseTrial] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false); // Mode aperçu pour Free/Starter
 
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
   useEffect(() => {
     const checkAccess = async () => {
       if (!isPro) {
-        try {
-          const response = await getProTrialStatus();
-          setCanUseTrial(response.data.can_use_trial);
-        } catch (err) {
-          console.error('Error loading trial status:', err);
+        if (previewMode) {
+          // Si on est en mode preview, charger les données de démo
+          loadDemoData();
+        } else {
+          // Sinon, charger le statut du trial et afficher le modal
+          try {
+            const response = await getProTrialStatus();
+            setCanUseTrial(response.data.can_use_trial);
+          } catch (err) {
+            console.error('Error loading trial status:', err);
+          }
+          setShowProTrialModal(true);
+          setLoading(false);
         }
-        setShowProTrialModal(true);
-        setLoading(false);
       } else {
         loadTeamData();
       }
     };
 
     checkAccess();
-  }, [isPro]);
+  }, [isPro, previewMode]);
 
   const loadTeamData = async () => {
     try {
@@ -68,7 +75,63 @@ function TeamManagement({ user }) {
     }
   };
 
+  const loadDemoData = () => {
+    // Créer des données de démonstration pour le mode aperçu
+    setTeamData({
+      team: {
+        id: 'demo-team',
+        name: 'Mon Équipe Marketing',
+        plan: 'Pro',
+        current_members: 3,
+        max_members: 5,
+        team_credits: 250
+      },
+      membership: {
+        id: 'demo-membership-1',
+        role: 'owner',
+        user_id: user?.id,
+        email: user?.email,
+        joined_at: new Date().toISOString()
+      },
+      members: [
+        {
+          id: 'demo-membership-1',
+          user_id: user?.id,
+          email: user?.email,
+          role: 'owner',
+          joined_at: new Date().toISOString()
+        },
+        {
+          id: 'demo-membership-2',
+          user_id: 'demo-user-2',
+          email: 'marie.durand@example.com',
+          role: 'admin',
+          joined_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 'demo-membership-3',
+          user_id: 'demo-user-3',
+          email: 'jean.martin@example.com',
+          role: 'member',
+          joined_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ]
+    });
+    setLoading(false);
+  };
+
+  const handleActivatePreview = () => {
+    setShowProTrialModal(false);
+    setPreviewMode(true);
+  };
+
   const handleCreateTeam = async () => {
+    // Bloquer la création en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour créer réellement une équipe, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     if (!teamName.trim()) {
       alert('Veuillez entrer un nom d\'équipe');
       return;
@@ -86,6 +149,12 @@ function TeamManagement({ user }) {
   };
 
   const handleInviteMember = async () => {
+    // Bloquer l'invitation en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour inviter réellement des membres, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     if (!inviteEmail.trim()) {
       alert('Veuillez entrer une adresse email');
       return;
@@ -103,6 +172,12 @@ function TeamManagement({ user }) {
   };
 
   const handleRemoveMember = async (memberId) => {
+    // Bloquer le retrait en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour retirer réellement des membres, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     if (!confirm('Êtes-vous sûr de vouloir retirer ce membre ?')) {
       return;
     }
@@ -131,6 +206,12 @@ function TeamManagement({ user }) {
   };
 
   const handleUpdateTeam = async () => {
+    // Bloquer la mise à jour en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour modifier réellement votre équipe, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     if (!teamName.trim()) {
       alert('Veuillez entrer un nom d\'équipe');
       return;
@@ -357,6 +438,27 @@ function TeamManagement({ user }) {
             </div>
           </div>
         </div>
+
+        {/* Preview Mode Banner */}
+        {previewMode && (
+          <div className="mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl p-4 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-6 w-6" />
+                <div>
+                  <p className="font-bold text-lg">Mode Aperçu Pro</p>
+                  <p className="text-sm text-blue-100">Vous explorez l'interface Pro. Les données affichées sont des exemples.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/pricing')}
+                className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg font-semibold transition-all"
+              >
+                Passer à Pro
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Members List */}
@@ -656,6 +758,7 @@ function TeamManagement({ user }) {
           setShowProTrialModal(false);
           navigate('/dashboard');
         }}
+        onActivatePreview={handleActivatePreview}
       />
     </div>
   );

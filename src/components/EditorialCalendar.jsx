@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Plus, X, Edit2, Trash2, Clock, Share2, AlertCircle } from 'lucide-react';
+import { Calendar, Plus, X, Edit2, Trash2, Clock, Share2, AlertCircle, Sparkles } from 'lucide-react';
 import {
   getCalendarView,
   scheduleContent,
@@ -27,6 +27,7 @@ function EditorialCalendar({ user }) {
   // Pro Trial Modal
   const [showProTrialModal, setShowProTrialModal] = useState(false);
   const [canUseTrial, setCanUseTrial] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false); // Mode aperçu pour Free/Starter
 
   const [scheduleForm, setScheduleForm] = useState({
     generated_content_id: '',
@@ -62,7 +63,7 @@ function EditorialCalendar({ user }) {
   // Check if user can access calendar (show modal if Free/Starter)
   useEffect(() => {
     const checkAccess = async () => {
-      if (!isPro) {
+      if (!isPro && !previewMode) {
         // Load trial status
         try {
           const response = await getProTrialStatus();
@@ -72,16 +73,20 @@ function EditorialCalendar({ user }) {
         }
         // Show modal for Free/Starter users
         setShowProTrialModal(true);
-      } else {
+        setLoading(false);
+      } else if (isPro) {
         // Pro users: load calendar normally
         loadCalendarData();
         loadUpcoming();
         loadAvailableContent();
+      } else if (previewMode) {
+        // Preview mode: load demo data
+        loadDemoData();
       }
     };
 
     checkAccess();
-  }, [currentDate, isPro]);
+  }, [currentDate, isPro, previewMode]);
 
   useEffect(() => {
     // Only load if Pro
@@ -91,6 +96,64 @@ function EditorialCalendar({ user }) {
       loadAvailableContent();
     }
   }, [currentDate]);
+
+  const loadDemoData = () => {
+    // Données de démonstration pour le mode preview
+    const today = new Date();
+    const demoCalendar = {};
+
+    // Ajouter des événements de démo pour le mois en cours
+    for (let i = 0; i < 5; i++) {
+      const demoDate = new Date(today);
+      demoDate.setDate(today.getDate() + (i * 3));
+      const dateKey = demoDate.toISOString().split('T')[0];
+
+      demoCalendar[dateKey] = [
+        {
+          id: i + 1,
+          title: `Publication ${['LinkedIn', 'Instagram', 'Twitter', 'Facebook', 'Email'][i % 5]}`,
+          platform: ['linkedin', 'instagram', 'twitter', 'facebook', 'email'][i % 5],
+          scheduled_date: demoDate.toISOString(),
+          content_preview: `Exemple de contenu planifié pour démonstration du mode Pro. Ce contenu montre comment vous pouvez organiser vos publications.`,
+          notes: 'Note de démonstration'
+        }
+      ];
+    }
+
+    setCalendarData(demoCalendar);
+
+    // Upcoming demo content
+    setUpcomingContent([
+      {
+        id: 1,
+        title: 'Publication LinkedIn',
+        platform: 'linkedin',
+        scheduled_date: new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString(),
+        content_preview: 'Contenu de démonstration pour LinkedIn...'
+      },
+      {
+        id: 2,
+        title: 'Post Instagram',
+        platform: 'instagram',
+        scheduled_date: new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+        content_preview: 'Contenu de démonstration pour Instagram...'
+      }
+    ]);
+
+    // Available content demo
+    setAvailableContent([
+      { id: 1, format_name: 'LinkedIn Post', content: 'Exemple de contenu disponible...', created_at: new Date().toISOString() },
+      { id: 2, format_name: 'Instagram Caption', content: 'Exemple de contenu disponible...', created_at: new Date().toISOString() },
+      { id: 3, format_name: 'Tweet', content: 'Exemple de contenu disponible...', created_at: new Date().toISOString() }
+    ]);
+
+    setLoading(false);
+  };
+
+  const handleActivatePreview = () => {
+    setShowProTrialModal(false);
+    setPreviewMode(true);
+  };
 
   const loadCalendarData = async () => {
     try {
@@ -234,6 +297,12 @@ function EditorialCalendar({ user }) {
   };
 
   const handleSchedule = async () => {
+    // Bloquer la planification en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour planifier réellement du contenu, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     try {
       // Parse date and time separately
       const [year, month, day] = scheduleForm.scheduled_date.split('-').map(Number);
@@ -269,6 +338,12 @@ function EditorialCalendar({ user }) {
   };
 
   const handleUpdate = async () => {
+    // Bloquer la mise à jour en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour modifier réellement du contenu planifié, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     try {
       const scheduledDateTime = new Date(`${scheduleForm.scheduled_date}T${scheduleForm.scheduled_time}`);
 
@@ -290,6 +365,12 @@ function EditorialCalendar({ user }) {
   };
 
   const handleDelete = async (itemId) => {
+    // Bloquer la suppression en mode preview
+    if (previewMode) {
+      alert('⚠️ Mode Aperçu\n\nVous explorez l\'interface Pro en mode démonstration.\n\nPour supprimer réellement du contenu planifié, vous devez passer à un plan Pro ou Business.\n\nCliquez sur "Passer à Pro" pour débloquer cette fonctionnalité !');
+      return;
+    }
+
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce contenu planifié ?')) {
       return;
     }
@@ -420,6 +501,27 @@ function EditorialCalendar({ user }) {
             Planifiez et gérez vos publications sur tous vos réseaux sociaux
           </p>
         </div>
+
+        {/* Preview Mode Banner */}
+        {previewMode && (
+          <div className="mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl p-4 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-6 w-6" />
+                <div>
+                  <p className="font-bold text-lg">Mode Aperçu Pro</p>
+                  <p className="text-sm text-blue-100">Vous explorez l'interface Pro. Les données affichées sont des exemples.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/pricing')}
+                className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg font-semibold transition-all"
+              >
+                Passer à Pro
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Calendar */}
@@ -985,6 +1087,7 @@ function EditorialCalendar({ user }) {
           setShowProTrialModal(false);
           navigate('/dashboard');
         }}
+        onActivatePreview={handleActivatePreview}
       />
     </div>
   );
