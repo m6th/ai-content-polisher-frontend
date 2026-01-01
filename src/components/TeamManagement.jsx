@@ -333,7 +333,7 @@ function TeamManagement({ user }) {
   }
 
   // No team yet
-  if (!teamData.team) {
+  if (!teamData || !teamData.team) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
         <div className="max-w-4xl mx-auto px-4">
