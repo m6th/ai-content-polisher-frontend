@@ -161,7 +161,27 @@ function AnalyticsDashboard({ user }) {
     );
   }
 
-  if (!stats) return null;
+  if (!stats) {
+    return (
+      <>
+        {/* Pro Trial Modal */}
+        <ProTrialModal
+          isOpen={showProTrialModal}
+          onClose={() => {
+            setShowProTrialModal(false);
+            navigate('/dashboard');
+          }}
+          feature="analytics"
+          canUseTrial={canUseTrial}
+          onActivateTrial={() => {
+            setShowProTrialModal(false);
+            navigate('/dashboard');
+          }}
+          onActivatePreview={handleActivatePreview}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -432,22 +452,6 @@ function AnalyticsDashboard({ user }) {
           </div>
         </>
       )}
-
-      {/* Pro Trial Modal */}
-      <ProTrialModal
-        isOpen={showProTrialModal}
-        onClose={() => {
-          setShowProTrialModal(false);
-          navigate('/dashboard');
-        }}
-        feature="analytics"
-        canUseTrial={canUseTrial}
-        onActivateTrial={() => {
-          setShowProTrialModal(false);
-          navigate('/dashboard');
-        }}
-        onActivatePreview={handleActivatePreview}
-      />
     </div>
   );
 }

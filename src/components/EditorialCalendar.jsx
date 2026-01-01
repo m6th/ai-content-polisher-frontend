@@ -430,7 +430,7 @@ function EditorialCalendar({ user }) {
                       'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
-  if (!isPro) {
+  if (!isPro && !previewMode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-4">
@@ -453,6 +453,22 @@ function EditorialCalendar({ user }) {
             </a>
           </div>
         </div>
+
+        {/* Pro Trial Modal */}
+        <ProTrialModal
+          isOpen={showProTrialModal}
+          onClose={() => {
+            setShowProTrialModal(false);
+            navigate('/dashboard');
+          }}
+          feature="calendar"
+          canUseTrial={canUseTrial}
+          onActivateTrial={() => {
+            setShowProTrialModal(false);
+            navigate('/dashboard');
+          }}
+          onActivatePreview={handleActivatePreview}
+        />
       </div>
     );
   }
@@ -1073,22 +1089,6 @@ function EditorialCalendar({ user }) {
           </div>
         </div>
       )}
-
-      {/* Pro Trial Modal */}
-      <ProTrialModal
-        isOpen={showProTrialModal}
-        onClose={() => {
-          setShowProTrialModal(false);
-          navigate('/dashboard');
-        }}
-        feature="calendar"
-        canUseTrial={canUseTrial}
-        onActivateTrial={() => {
-          setShowProTrialModal(false);
-          navigate('/dashboard');
-        }}
-        onActivatePreview={handleActivatePreview}
-      />
     </div>
   );
 }
