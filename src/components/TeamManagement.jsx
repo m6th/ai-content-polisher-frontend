@@ -116,7 +116,8 @@ function TeamManagement({ user }) {
           role: 'member',
           joined_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
         }
-      ]
+      ],
+      pending_invitations: []  // Ajouter le champ manquant
     };
     console.log('📦 Setting teamData:', demoData);
     setTeamData(demoData);
