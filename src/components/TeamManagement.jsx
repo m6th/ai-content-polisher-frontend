@@ -76,8 +76,9 @@ function TeamManagement({ user }) {
   };
 
   const loadDemoData = () => {
+    console.log('📊 loadDemoData called, user:', user);
     // Créer des données de démonstration pour le mode aperçu
-    setTeamData({
+    const demoData = {
       team: {
         id: 'demo-team',
         name: 'Mon Équipe Marketing',
@@ -89,15 +90,15 @@ function TeamManagement({ user }) {
       membership: {
         id: 'demo-membership-1',
         role: 'owner',
-        user_id: user?.id,
-        email: user?.email,
+        user_id: user?.id || 'demo-user-1',
+        email: user?.email || 'vous@example.com',
         joined_at: new Date().toISOString()
       },
       members: [
         {
           id: 'demo-membership-1',
-          user_id: user?.id,
-          email: user?.email,
+          user_id: user?.id || 'demo-user-1',
+          email: user?.email || 'vous@example.com',
           role: 'owner',
           joined_at: new Date().toISOString()
         },
@@ -116,15 +117,21 @@ function TeamManagement({ user }) {
           joined_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
         }
       ]
-    });
+    };
+    console.log('📦 Setting teamData:', demoData);
+    setTeamData(demoData);
     setLoading(false);
+    console.log('✅ teamData set, loading = false');
   };
 
   const handleActivatePreview = () => {
+    console.log('🎯 handleActivatePreview called');
     setShowProTrialModal(false);
     setPreviewMode(true);
     // Charger immédiatement les données de démo
+    console.log('📦 Loading demo data...');
     loadDemoData();
+    console.log('✅ Demo data loaded');
   };
 
   const handleCreateTeam = async () => {
@@ -336,6 +343,7 @@ function TeamManagement({ user }) {
 
   // No team yet
   if (!teamData || !teamData.team) {
+    console.log('❌ No teamData or teamData.team, teamData:', teamData);
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
         <div className="max-w-4xl mx-auto px-4">
@@ -413,6 +421,7 @@ function TeamManagement({ user }) {
     );
   }
 
+  console.log('✅ Rendering team dashboard, teamData:', teamData, 'previewMode:', previewMode);
   const isOwner = teamData.membership?.role === 'owner';
   const isAdmin = teamData.membership?.role === 'admin' || isOwner;
 
