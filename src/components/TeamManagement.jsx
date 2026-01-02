@@ -123,6 +123,8 @@ function TeamManagement({ user }) {
   const handleActivatePreview = () => {
     setShowProTrialModal(false);
     setPreviewMode(true);
+    // Charger immédiatement les données de démo
+    loadDemoData();
   };
 
   const handleCreateTeam = async () => {
