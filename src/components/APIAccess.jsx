@@ -361,7 +361,7 @@ function APIAccess({ user }) {
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">Base URL</h3>
-                <code className="block bg-white dark:bg-slate-900 p-3 rounded border border-blue-200 dark:border-blue-800 text-sm">
+                <code className="block bg-white dark:bg-slate-900 p-3 rounded border border-blue-200 dark:border-blue-800 text-sm text-gray-900 dark:text-gray-100">
                   {API_URL}
                 </code>
               </div>
@@ -372,7 +372,7 @@ function APIAccess({ user }) {
                   <p className="text-gray-600 dark:text-gray-400 mb-3">
                     Toutes les requêtes doivent inclure votre clé API dans le header Authorization:
                   </p>
-                  <code className="block bg-gray-100 dark:bg-slate-900 p-3 rounded text-sm">
+                  <code className="block bg-gray-100 dark:bg-slate-900 p-3 rounded text-sm text-gray-900 dark:text-gray-100">
                     Authorization: Bearer acp_live_xxxxxxxxxxxxx
                   </code>
                 </div>
@@ -499,7 +499,7 @@ function APIAccess({ user }) {
                       )}
                     </button>
                   </div>
-                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto">
+                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto text-gray-900 dark:text-gray-100">
 {`curl -X POST '${API_URL}/api/v1/generate' \\
   -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
@@ -553,7 +553,7 @@ print(data)`, 'python')}
                       )}
                     </button>
                   </div>
-                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto">
+                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto text-gray-900 dark:text-gray-100">
 {`import requests
 
 API_KEY = "YOUR_API_KEY"
@@ -616,7 +616,7 @@ fetch("${API_URL}/api/v1/generate", {
                       )}
                     </button>
                   </div>
-                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto">
+                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto text-gray-900 dark:text-gray-100">
 {`const API_KEY = "YOUR_API_KEY";
 
 fetch("${API_URL}/api/v1/generate", {
@@ -684,7 +684,7 @@ print_r($result);
                       )}
                     </button>
                   </div>
-                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto">
+                  <pre className="bg-gray-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto text-gray-900 dark:text-gray-100">
 {`<?php
 $api_key = "YOUR_API_KEY";
 $url = "${API_URL}/api/v1/generate";
