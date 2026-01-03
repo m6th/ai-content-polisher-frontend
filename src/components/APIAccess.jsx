@@ -407,11 +407,11 @@ function APIAccess({ user }) {
                   </p>
 
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Paramètres (JSON body)</h4>
-                  <div className="bg-white dark:bg-slate-900 p-4 rounded border border-green-200 dark:border-green-800 space-y-2 text-sm">
-                    <div><code className="text-blue-600">text</code> <span className="text-red-600">*</span> <span className="text-gray-600 dark:text-gray-400">string</span> - Le texte à transformer</div>
-                    <div><code className="text-blue-600">platform</code> <span className="text-red-600">*</span> <span className="text-gray-600 dark:text-gray-400">string</span> - linkedin | instagram | tiktok | facebook | twitter | multi_format</div>
-                    <div><code className="text-blue-600">tone</code> <span className="text-gray-600 dark:text-gray-400">string</span> - professional | engaging | storytelling (défaut: professional)</div>
-                    <div><code className="text-blue-600">language</code> <span className="text-gray-600 dark:text-gray-400">string</span> - fr | en | es (défaut: fr)</div>
+                  <div className="bg-white dark:bg-slate-900 p-4 rounded border border-green-200 dark:border-green-800 space-y-2 text-sm text-gray-900 dark:text-gray-100">
+                    <div><code className="text-blue-600 dark:text-blue-400">text</code> <span className="text-red-600 dark:text-red-400">*</span> <span className="text-gray-600 dark:text-gray-400">string</span> - Le texte à transformer</div>
+                    <div><code className="text-blue-600 dark:text-blue-400">platform</code> <span className="text-red-600 dark:text-red-400">*</span> <span className="text-gray-600 dark:text-gray-400">string</span> - linkedin | instagram | tiktok | facebook | twitter | multi_format</div>
+                    <div><code className="text-blue-600 dark:text-blue-400">tone</code> <span className="text-gray-600 dark:text-gray-400">string</span> - professional | engaging | storytelling (défaut: professional)</div>
+                    <div><code className="text-blue-600 dark:text-blue-400">language</code> <span className="text-gray-600 dark:text-gray-400">string</span> - fr | en | es (défaut: fr)</div>
                   </div>
 
                   <h4 className="font-semibold text-gray-900 dark:text-white mt-4 mb-2">Réponse (200 OK)</h4>
@@ -446,9 +446,9 @@ function APIAccess({ user }) {
                   </p>
 
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Paramètres (Query params)</h4>
-                  <div className="bg-white dark:bg-slate-900 p-4 rounded border border-blue-200 dark:border-blue-800 space-y-2 text-sm">
-                    <div><code className="text-blue-600">limit</code> <span className="text-gray-600 dark:text-gray-400">integer</span> - Nombre de résultats (défaut: 50, max: 100)</div>
-                    <div><code className="text-blue-600">offset</code> <span className="text-gray-600 dark:text-gray-400">integer</span> - Pagination (défaut: 0)</div>
+                  <div className="bg-white dark:bg-slate-900 p-4 rounded border border-blue-200 dark:border-blue-800 space-y-2 text-sm text-gray-900 dark:text-gray-100">
+                    <div><code className="text-blue-600 dark:text-blue-400">limit</code> <span className="text-gray-600 dark:text-gray-400">integer</span> - Nombre de résultats (défaut: 50, max: 100)</div>
+                    <div><code className="text-blue-600 dark:text-blue-400">offset</code> <span className="text-gray-600 dark:text-gray-400">integer</span> - Pagination (défaut: 0)</div>
                   </div>
                 </div>
 
