@@ -20,6 +20,7 @@ function Login({ onLogin }) {
   const plan = searchParams.get('plan') || 'free';
   const invitationToken = searchParams.get('invitation');
   const joinCode = searchParams.get('join_code');
+  const sessionExpired = searchParams.get('expired') === 'true';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -152,6 +153,16 @@ function Login({ onLogin }) {
             <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">{t.login.title}</h2>
             <p className="text-slate-600 dark:text-slate-400">{t.login.subtitle}</p>
           </div>
+
+          {sessionExpired && (
+            <div className="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 text-amber-700 dark:text-amber-300 px-6 py-4 rounded-xl mb-6 flex items-start">
+              <span className="text-2xl mr-3">⏱️</span>
+              <div>
+                <p className="font-semibold">Session expirée</p>
+                <p className="text-sm">Votre session a expiré pour des raisons de sécurité. Veuillez vous reconnecter.</p>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-300 px-6 py-4 rounded-xl mb-6 flex items-start">

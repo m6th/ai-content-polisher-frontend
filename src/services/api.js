@@ -24,6 +24,26 @@ api.interceptors.request.use(
   }
 );
 
+// Intercepteur pour gérer les erreurs 401 (token expiré)
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expiré ou invalide
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
+      // Rediriger vers la page de connexion seulement si on n'est pas déjà dessus
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+        window.location.href = '/login?expired=true';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Authentification
 export const register = (email, name, password, plan = 'free') => {
   return api.post('/users/register', { email, name, password, plan });
