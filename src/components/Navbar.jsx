@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users, UserPlus } from 'lucide-react';
+import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users, UserPlus, Key } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 import ThemeToggle from './ThemeToggle';
@@ -55,6 +55,12 @@ function Navbar({ user, onLogout }) {
                   <Users className="h-4 w-4" />
                   <span>{t.navbar.team || 'Équipe'}</span>
                 </Link>
+                {user?.current_plan === 'business' && (
+                  <Link to="/api-access" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg transition-all text-sm font-medium shadow-md">
+                    <Key className="h-4 w-4" />
+                    <span>API</span>
+                  </Link>
+                )}
                 <Link to="/join-team" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all text-sm font-medium shadow-md">
                   <UserPlus className="h-4 w-4" />
                   <span>Rejoindre une équipe</span>
@@ -75,6 +81,11 @@ function Navbar({ user, onLogout }) {
                 <Link to="/team" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Équipe">
                   <Users className="h-4 w-4" />
                 </Link>
+                {user?.current_plan === 'business' && (
+                  <Link to="/api-access" className="p-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg transition-all shadow-md" title="API Access">
+                    <Key className="h-4 w-4" />
+                  </Link>
+                )}
                 <Link to="/join-team" className="p-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all shadow-md" title="Rejoindre une équipe">
                   <UserPlus className="h-4 w-4" />
                 </Link>

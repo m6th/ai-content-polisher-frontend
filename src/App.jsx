@@ -26,6 +26,7 @@ const EditorialCalendar = lazy(() => import('./components/EditorialCalendar'));
 const TeamManagement = lazy(() => import('./components/TeamManagement'));
 const AcceptInvitation = lazy(() => import('./components/AcceptInvitation'));
 const JoinTeam = lazy(() => import('./components/JoinTeam'));
+const APIAccess = lazy(() => import('./components/APIAccess'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -168,6 +169,16 @@ function App() {
               element={
                 user ? (
                   <TeamManagement user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/api-access"
+              element={
+                user ? (
+                  <APIAccess user={user} />
                 ) : (
                   <Navigate to="/login" />
                 )
