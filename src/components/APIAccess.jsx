@@ -415,7 +415,7 @@ function APIAccess({ user }) {
                   </div>
 
                   <h4 className="font-semibold text-gray-900 dark:text-white mt-4 mb-2">Réponse (200 OK)</h4>
-                  <pre className="bg-white dark:bg-slate-900 p-4 rounded border border-green-200 dark:border-green-800 text-xs overflow-x-auto">
+                  <pre className="bg-white dark:bg-slate-900 p-4 rounded border border-green-200 dark:border-green-800 text-xs overflow-x-auto text-gray-900 dark:text-gray-100">
 {`{
   "request_id": 123,
   "original_text": "Votre texte...",
