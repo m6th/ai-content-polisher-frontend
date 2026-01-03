@@ -42,6 +42,13 @@ function EditorialCalendar({ user }) {
 
   const isPro = user?.current_plan === 'pro' || user?.current_plan === 'business';
 
+  // Debug: Log user plan
+  useEffect(() => {
+    console.log('EditorialCalendar - User:', user);
+    console.log('EditorialCalendar - Current plan:', user?.current_plan);
+    console.log('EditorialCalendar - isPro:', isPro);
+  }, [user, isPro]);
+
   // Helper to format date showing the exact time stored (without timezone conversion)
   const formatScheduledDate = (dateString, options = {}) => {
     const date = new Date(dateString);
@@ -63,6 +70,12 @@ function EditorialCalendar({ user }) {
   // Check if user can access calendar (show modal if Free/Starter)
   useEffect(() => {
     const checkAccess = async () => {
+      // Attendre que user soit chargé avant de vérifier le plan
+      if (!user) {
+        setLoading(true);
+        return;
+      }
+
       if (!isPro && !previewMode) {
         // Load trial status
         try {
@@ -86,7 +99,7 @@ function EditorialCalendar({ user }) {
     };
 
     checkAccess();
-  }, [currentDate, isPro, previewMode]);
+  }, [currentDate, isPro, previewMode, user]);
 
   useEffect(() => {
     // Only load if Pro
