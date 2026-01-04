@@ -21,12 +21,14 @@ function Pricing({ user }) {
       annual: 'Annuel',
       saveUpTo: 'Économisez jusqu\'à 20%',
       perMonth: '€/mois',
-      perMonthBilled: '€/mois facturé annuellement',
+      perYear: '€/an',
+      billedMonthly: 'Soit {price}€ facturé mensuellement',
+      billedAnnually: 'Soit {price}€ facturé annuellement',
       creditsPerMonth: 'crédits/mois',
       currentPlan: 'Plan actuel',
       changePlan: 'Changer de plan',
       choosePlan: 'Commencer gratuitement',
-      startTrial: 'Essayer gratuitement',
+      choosePaid: 'Choisir ce plan',
       contactSales: 'Nous contacter',
       popular: 'POPULAIRE',
       bestValue: 'MEILLEUR RAPPORT QUALITÉ/PRIX',
@@ -223,12 +225,14 @@ function Pricing({ user }) {
       annual: 'Annual',
       saveUpTo: 'Save up to 20%',
       perMonth: '€/month',
-      perMonthBilled: '€/month billed annually',
+      perYear: '€/year',
+      billedMonthly: 'Or {price}€ billed monthly',
+      billedAnnually: 'Or {price}€ billed annually',
       creditsPerMonth: 'credits/month',
       currentPlan: 'Current plan',
       changePlan: 'Change plan',
       choosePlan: 'Start for free',
-      startTrial: 'Try for free',
+      choosePaid: 'Choose this plan',
       contactSales: 'Contact us',
       popular: 'POPULAR',
       bestValue: 'BEST VALUE',
@@ -437,6 +441,15 @@ function Pricing({ user }) {
     }
   };
 
+  // Calcul du prix annuel total (prix mensuel * 12)
+  const getAnnualTotal = (planKey) => {
+    return (pricing.annual[planKey] * 12).toFixed(2);
+  };
+
+  const getMonthlyTotal = (planKey) => {
+    return (pricing.monthly[planKey] * 12).toFixed(2);
+  };
+
   const plans = [
     {
       key: 'free',
@@ -581,9 +594,11 @@ function Pricing({ user }) {
               </span>
             </button>
           </div>
-          <p className="text-sm text-green-600 dark:text-green-400 font-semibold mt-3">
-            💰 {t.saveUpTo}
-          </p>
+          {billingPeriod === 'annual' && (
+            <p className="text-sm text-green-600 dark:text-green-400 font-semibold mt-3">
+              💰 {t.saveUpTo}
+            </p>
+          )}
         </div>
 
         {/* Pricing Cards */}
@@ -623,16 +638,35 @@ function Pricing({ user }) {
 
                   {/* Price */}
                   <div className="text-center mb-6">
-                    <div className="flex items-baseline justify-center">
-                      <span className="text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
-                      <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">
-                        {billingPeriod === 'annual' && plan.key !== 'free' ? t.perMonthBilled : t.perMonth}
-                      </span>
-                    </div>
-                    {billingPeriod === 'annual' && discount > 0 && (
-                      <p className="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">
-                        Économisez {discount}%
-                      </p>
+                    {billingPeriod === 'annual' && plan.key !== 'free' ? (
+                      <>
+                        {/* Mode annuel : afficher le prix annuel total */}
+                        <div className="flex items-baseline justify-center">
+                          <span className="text-4xl font-black text-slate-900 dark:text-white">{getAnnualTotal(plan.key)}</span>
+                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perYear}</span>
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                          {t.billedMonthly.replace('{price}', plan.price.toFixed(2))}
+                        </p>
+                        {discount > 0 && (
+                          <p className="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">
+                            Économisez 20%
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {/* Mode mensuel : afficher le prix mensuel */}
+                        <div className="flex items-baseline justify-center">
+                          <span className="text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
+                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
+                        </div>
+                        {plan.key !== 'free' && (
+                          <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                            {t.billedAnnually.replace('{price}', getMonthlyTotal(plan.key))}
+                          </p>
+                        )}
+                      </>
                     )}
                     <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 font-semibold">
                       {plan.credits} {t.creditsPerMonth}
@@ -677,7 +711,7 @@ function Pricing({ user }) {
                     ) : user ? (
                       t.changePlan
                     ) : (
-                      t.startTrial
+                      t.choosePaid
                     )}
                   </button>
                 </div>
