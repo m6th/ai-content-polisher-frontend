@@ -640,13 +640,13 @@ function Pricing({ user }) {
                   <div className="text-center mb-6">
                     {billingPeriod === 'annual' && plan.key !== 'free' ? (
                       <>
-                        {/* Mode annuel : afficher le prix annuel total */}
+                        {/* Mode annuel : afficher le prix mensuel en gros */}
                         <div className="flex items-baseline justify-center">
-                          <span className="text-4xl font-black text-slate-900 dark:text-white">{getAnnualTotal(plan.key)}</span>
-                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perYear}</span>
+                          <span className="text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
+                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
                         </div>
                         <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                          {t.billedMonthly.replace('{price}', plan.price.toFixed(2))}
+                          Soit {getAnnualTotal(plan.key)}€/an
                         </p>
                         {discount > 0 && (
                           <p className="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">
@@ -663,7 +663,7 @@ function Pricing({ user }) {
                         </div>
                         {plan.key !== 'free' && (
                           <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                            {t.billedAnnually.replace('{price}', getMonthlyTotal(plan.key))}
+                            Soit {getMonthlyTotal(plan.key)}€/an
                           </p>
                         )}
                       </>
