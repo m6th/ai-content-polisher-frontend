@@ -646,7 +646,7 @@ function Pricing({ user }) {
                           <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
                         </div>
                         <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                          Soit {getAnnualTotal(plan.key)}€/an
+                          Soit {getAnnualTotal(plan.key)}€/an, Hors Taxes | Annulation à tout moment
                         </p>
                         {discount > 0 && (
                           <p className="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">
@@ -663,7 +663,7 @@ function Pricing({ user }) {
                         </div>
                         {plan.key !== 'free' && (
                           <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                            Soit {getMonthlyTotal(plan.key)}€/an
+                            Soit {getMonthlyTotal(plan.key)}€/an, Hors Taxes | Annulation à tout moment
                           </p>
                         )}
                       </>
