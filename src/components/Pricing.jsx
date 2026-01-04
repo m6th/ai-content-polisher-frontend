@@ -446,10 +446,6 @@ function Pricing({ user }) {
     return (pricing.annual[planKey] * 12).toFixed(2);
   };
 
-  const getMonthlyTotal = (planKey) => {
-    return (pricing.monthly[planKey] * 12).toFixed(2);
-  };
-
   const plans = [
     {
       key: 'free',
@@ -663,7 +659,7 @@ function Pricing({ user }) {
                         </div>
                         {plan.key !== 'free' && (
                           <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                            Soit {getMonthlyTotal(plan.key)}€/an, Hors Taxes | Annulation à tout moment
+                            Hors Taxes | Annulation à tout moment
                           </p>
                         )}
                       </>
