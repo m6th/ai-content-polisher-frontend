@@ -8,7 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import axios from 'axios';
 
 // Composant interne pour le formulaire de paiement
-function CheckoutForm({ planPrice, language, email, plan }) {
+function CheckoutForm({ planPrice, billing, language, email, plan }) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -102,7 +102,7 @@ function CheckoutForm({ planPrice, language, email, plan }) {
         disabled={!stripe || processing}
         className="w-full bg-[#635BFF] hover:bg-[#5851ea] text-white font-semibold py-4 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-base"
       >
-        {processing ? t.processing : `${t.pay} ${planPrice}€/mois`}
+        {processing ? t.processing : `${t.pay} ${planPrice}€`}
       </button>
 
       {/* Security badges */}
@@ -129,6 +129,7 @@ export default function Checkout() {
   const plan = searchParams.get('plan');
   const planName = searchParams.get('planName');
   const planPrice = searchParams.get('price');
+  const billing = searchParams.get('billing') || 'monthly'; // monthly or annual
   const email = searchParams.get('email'); // Guest checkout support
 
   const [stripePromise, setStripePromise] = useState(null);
@@ -154,12 +155,12 @@ export default function Checkout() {
       if (email) {
         // Guest checkout - unauthenticated payment
         response = await axios.post('http://127.0.0.1:8000/stripe/create-payment-intent-guest',
-          { plan },
+          { plan, billing },
           { params: { email } }
         );
       } else {
         // Authenticated checkout
-        response = await createPaymentIntent(plan);
+        response = await createPaymentIntent(plan, billing);
       }
 
       if (!response.data.publishable_key) {
@@ -194,7 +195,10 @@ export default function Checkout() {
       plan: 'Plan',
       price: 'Prix',
       perMonth: '/mois',
-      total: 'Total aujourd\'hui'
+      perYear: '/an',
+      total: 'Total aujourd\'hui',
+      oneTimePayment: '(paiement unique)',
+      monthlyPayment: '(paiement mensuel)'
     },
     en: {
       title: 'Complete your subscription',
@@ -203,7 +207,10 @@ export default function Checkout() {
       plan: 'Plan',
       price: 'Price',
       perMonth: '/month',
-      total: 'Total today'
+      perYear: '/year',
+      total: 'Total today',
+      oneTimePayment: '(one-time payment)',
+      monthlyPayment: '(monthly payment)'
     },
     es: {
       title: 'Completar su suscripción',
@@ -212,7 +219,10 @@ export default function Checkout() {
       plan: 'Plan',
       price: 'Precio',
       perMonth: '/mes',
-      total: 'Total hoy'
+      perYear: '/año',
+      total: 'Total hoy',
+      oneTimePayment: '(pago único)',
+      monthlyPayment: '(pago mensual)'
     }
   };
 
@@ -299,16 +309,21 @@ export default function Checkout() {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400">{t.price}</span>
                   <span className="font-semibold text-gray-900 dark:text-white">
-                    {planPrice}€{t.perMonth}
+                    {planPrice}€{billing === 'annual' ? t.perYear : t.perMonth}
                   </span>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-gray-900 dark:text-white">{t.total}</span>
-                    <span className="text-2xl font-bold text-purple-600">
-                      {planPrice}€
-                    </span>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-purple-600">
+                        {planPrice}€
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {billing === 'annual' ? t.oneTimePayment : t.monthlyPayment}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -341,6 +356,7 @@ export default function Checkout() {
                 <Elements stripe={stripePromise} options={options}>
                   <CheckoutForm
                     planPrice={planPrice}
+                    billing={billing}
                     language={language}
                     email={email}
                     plan={plan}

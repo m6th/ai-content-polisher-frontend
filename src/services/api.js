@@ -119,8 +119,8 @@ export const getDailyUsage = () => {
 };
 
 // Stripe Payment
-export const createPaymentIntent = (plan) => {
-  return api.post('/stripe/create-payment-intent', { plan });
+export const createPaymentIntent = (plan, billing = 'monthly') => {
+  return api.post('/stripe/create-payment-intent', { plan, billing });
 };
 
 export const getPlatformUsage = () => {
