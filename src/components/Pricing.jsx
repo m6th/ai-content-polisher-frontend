@@ -36,6 +36,7 @@ function Pricing({ user }) {
       allFromPrevious: 'Tout du plan',
       plus: '+',
       paymentInfo: 'Tous les paiements sont sécurisés et peuvent être annulés à tout moment',
+      annualBillingNote: 'Abonnements annuels : paiement en une seule fois. En cas d\'annulation, accès maintenu jusqu\'à la fin de la période payée (pas de remboursement au prorata).',
       helpText: 'Besoin d\'aide pour choisir ?',
       contactUs: 'Contactez-nous',
       compareTitle: 'Comparez les fonctionnalités',
@@ -240,6 +241,7 @@ function Pricing({ user }) {
       allFromPrevious: 'Everything in',
       plus: '+',
       paymentInfo: 'All payments are secure and can be cancelled at any time',
+      annualBillingNote: 'Annual subscriptions: one-time payment. If cancelled, access maintained until the end of the paid period (no prorated refund).',
       helpText: 'Need help choosing?',
       contactUs: 'Contact us',
       compareTitle: 'Compare features',
@@ -435,15 +437,20 @@ function Pricing({ user }) {
     },
     annual: {
       free: 0,
-      starter: 11.99,
-      pro: 23.99,
-      business: 62.99
+      starter: 143.88,  // Prix annuel total (payé en une fois)
+      pro: 287.88,      // Prix annuel total (payé en une fois)
+      business: 755.88  // Prix annuel total (payé en une fois)
     }
   };
 
-  // Calcul du prix annuel total (prix mensuel * 12)
+  // Calcul du prix mensuel équivalent pour les plans annuels
+  const getMonthlyEquivalent = (planKey) => {
+    return (pricing.annual[planKey] / 12).toFixed(2);
+  };
+
+  // Retourne le prix annuel total
   const getAnnualTotal = (planKey) => {
-    return (pricing.annual[planKey] * 12).toFixed(2);
+    return pricing.annual[planKey].toFixed(2);
   };
 
   const plans = [
@@ -636,13 +643,13 @@ function Pricing({ user }) {
                   <div className="text-center mb-6">
                     {billingPeriod === 'annual' && plan.key !== 'free' ? (
                       <>
-                        {/* Mode annuel : afficher le prix mensuel en gros */}
+                        {/* Mode annuel : afficher le prix mensuel équivalent en gros */}
                         <div className="flex items-baseline justify-center">
-                          <span className="text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
+                          <span className="text-4xl font-black text-slate-900 dark:text-white">{getMonthlyEquivalent(plan.key)}</span>
                           <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
                         </div>
                         <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                          Soit {getAnnualTotal(plan.key)}€/an, Hors Taxes | Annulation à tout moment
+                          Soit {getAnnualTotal(plan.key)}€/an (payé en une fois), Hors Taxes | Annulation à tout moment
                         </p>
                         {discount > 0 && (
                           <p className="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">
@@ -824,6 +831,14 @@ function Pricing({ user }) {
               {t.paymentInfo}
             </p>
           </div>
+
+          {/* Note sur les abonnements annuels */}
+          <div className="max-w-3xl mx-auto mb-6 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              ℹ️ {t.annualBillingNote}
+            </p>
+          </div>
+
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {t.helpText}{' '}
             <a
