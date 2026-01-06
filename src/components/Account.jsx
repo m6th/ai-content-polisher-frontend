@@ -178,68 +178,68 @@ function Account({ user, onUpdateUser }) {
   const isGoogleAccount = !user?.password_hash;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-6 sm:py-8 lg:py-12 px-3 sm:px-4 lg:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center mb-4">
-            <User className="h-8 w-8 text-purple-600 dark:text-purple-400 mr-3" />
-            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center mb-3 sm:mb-4">
+            <User className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 dark:text-purple-400 mr-2 sm:mr-3" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white">
               {language === 'fr' ? 'Mon compte' : language === 'en' ? 'My Account' : 'Mi cuenta'}
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-slate-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400">
             {language === 'fr' ? 'Gérez vos informations personnelles et vos paramètres' : language === 'en' ? 'Manage your personal information and settings' : 'Gestiona tu información personal y configuración'}
           </p>
         </div>
 
         {/* Account Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 border-2 border-gray-100 dark:border-slate-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-gray-100 dark:border-slate-700">
             <div className="flex items-center justify-between mb-2">
-              <CreditCard className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-              <span className={`px-3 py-1 bg-gradient-to-r ${getPlanBadgeColor()} text-white rounded-lg text-sm font-semibold uppercase`}>
+              <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 dark:text-purple-400" />
+              <span className={`px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r ${getPlanBadgeColor()} text-white rounded-lg text-xs sm:text-sm font-semibold uppercase`}>
                 {user?.current_plan}
               </span>
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white">{user?.credits_remaining}</div>
-            <div className="text-sm text-gray-600 dark:text-slate-400">
+            <div className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">{user?.credits_remaining}</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
               {language === 'fr' ? 'Crédits restants' : language === 'en' ? 'Credits remaining' : 'Créditos restantes'}
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 border-2 border-gray-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-gray-100 dark:border-slate-700">
             <div className="flex items-center justify-between mb-2">
-              <Calendar className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="text-lg font-bold text-gray-800 dark:text-blue-400">{calculateNextRenewal()}</div>
-            <div className="text-sm text-gray-600 dark:text-slate-400">
+            <div className="text-base sm:text-lg font-bold text-gray-800 dark:text-blue-400">{calculateNextRenewal()}</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
               {language === 'fr' ? 'Prochain renouvellement' : language === 'en' ? 'Next renewal' : 'Próxima renovación'}
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 border-2 border-gray-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-gray-100 dark:border-slate-700">
             <div className="flex items-center justify-between mb-2">
-              <Sparkles className="h-8 w-8 text-green-600" />
+              <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-800 dark:text-white">{stats?.total_requests || 0}</div>
-            <div className="text-sm text-gray-600 dark:text-slate-400">
+            <div className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">{stats?.total_requests || 0}</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
               {language === 'fr' ? 'Générations totales' : language === 'en' ? 'Total generations' : 'Generaciones totales'}
             </div>
           </div>
         </div>
 
         {/* Profile Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 mb-6 border-2 border-gray-100 dark:border-slate-700">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
-              <User className="h-6 w-6 mr-2 text-purple-600 dark:text-purple-400" />
+        <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 border-2 border-gray-100 dark:border-slate-700">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+              <User className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-purple-600 dark:text-purple-400" />
               {language === 'fr' ? 'Profil' : language === 'en' ? 'Profile' : 'Perfil'}
             </h2>
             {!editingProfile && (
               <button
                 onClick={() => setEditingProfile(true)}
-                className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg transition-colors font-medium"
+                className="w-full sm:w-auto px-4 py-2 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg transition-colors text-sm sm:text-base font-medium"
               >
                 {language === 'fr' ? 'Modifier' : language === 'en' ? 'Edit' : 'Editar'}
               </button>
@@ -292,16 +292,16 @@ function Account({ user, onUpdateUser }) {
         </div>
 
         {/* Email Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 mb-6 border-2 border-gray-100 dark:border-slate-700">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
-              <Mail className="h-6 w-6 mr-2 text-blue-600 dark:text-blue-400" />
+        <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 border-2 border-gray-100 dark:border-slate-700">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+              <Mail className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600 dark:text-blue-400" />
               Email
             </h2>
             {!editingEmail && !isGoogleAccount && (
               <button
                 onClick={() => setEditingEmail(true)}
-                className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg transition-colors font-medium"
+                className="w-full sm:w-auto px-4 py-2 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg transition-colors text-sm sm:text-base font-medium"
               >
                 {language === 'fr' ? 'Modifier' : language === 'en' ? 'Change' : 'Cambiar'}
               </button>
@@ -398,9 +398,9 @@ function Account({ user, onUpdateUser }) {
 
         {/* Password Section */}
         {!isGoogleAccount && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-6 border-2 border-gray-100 dark:border-slate-700">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
-              <Lock className="h-6 w-6 mr-2 text-red-600 dark:text-red-400" />
+          <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-gray-100 dark:border-slate-700">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6 flex items-center">
+              <Lock className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-red-600 dark:text-red-400" />
               {language === 'fr' ? 'Mot de passe' : language === 'en' ? 'Password' : 'Contraseña'}
             </h2>
 

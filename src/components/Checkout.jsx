@@ -77,9 +77,9 @@ function CheckoutForm({ planPrice, billing, language, email, plan }) {
   const t = translations[language] || translations.fr;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
       {/* Payment Element */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
         <PaymentElement
           options={{
             layout: {
@@ -92,7 +92,7 @@ function CheckoutForm({ planPrice, billing, language, email, plan }) {
 
       {/* Error message */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base">
           {error}
         </div>
       )}
@@ -101,19 +101,19 @@ function CheckoutForm({ planPrice, billing, language, email, plan }) {
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full bg-[#635BFF] hover:bg-[#5851ea] text-white font-semibold py-4 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-base"
+        className="w-full bg-[#635BFF] hover:bg-[#5851ea] text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-sm sm:text-base"
       >
         {processing ? t.processing : `${t.pay} ${planPrice}€`}
       </button>
 
       {/* Security badges */}
-      <div className="flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
-        <div className="flex items-center gap-2">
-          <Lock className="w-4 h-4" />
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>{t.secure}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <CreditCard className="w-4 h-4" />
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <CreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>{t.guarantee}</span>
         </div>
       </div>
@@ -286,48 +286,48 @@ export default function Checkout() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-6 sm:py-8 lg:py-12 px-3 sm:px-4 lg:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Back button */}
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
+          className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 sm:mb-8 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>Retour aux plans</span>
         </button>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {/* Order Summary */}
-          <div className="md:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sticky top-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+          <div className="md:col-span-1 order-2 md:order-1">
+            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 md:sticky md:top-8">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
                 {t.orderSummary}
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-start">
-                  <span className="text-gray-600 dark:text-gray-400">{t.plan}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white text-right">
+                  <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">{t.plan}</span>
+                  <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white text-right">
                     {planName}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400">{t.price}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                  <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">{t.price}</span>
+                  <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                     {planPrice}€{billing === 'annual' ? t.perYear : t.perMonth}
                   </span>
                 </div>
 
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-3 sm:pt-4 mt-3 sm:mt-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-gray-900 dark:text-white">{t.total}</span>
+                    <span className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">{t.total}</span>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-purple-600">
+                      <div className="text-xl sm:text-2xl font-bold text-purple-600">
                         {planPrice}€
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1">
                         {billing === 'annual' ? t.oneTimePayment : t.monthlyPayment}
                       </div>
                     </div>
@@ -338,23 +338,23 @@ export default function Checkout() {
           </div>
 
           {/* Payment Form */}
-          <div className="md:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+          <div className="md:col-span-2 order-1 md:order-2">
+            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
                 {t.title}
               </h1>
 
               {loading && (
-                <div className="py-12 text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent"></div>
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
+                <div className="py-8 sm:py-12 text-center">
+                  <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-purple-600 border-t-transparent"></div>
+                  <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-600 dark:text-gray-400">
                     {t.loading}
                   </p>
                 </div>
               )}
 
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg mb-4 sm:mb-6 text-sm sm:text-base">
                   {error}
                 </div>
               )}
