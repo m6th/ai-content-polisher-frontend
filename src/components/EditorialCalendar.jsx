@@ -518,15 +518,16 @@ function EditorialCalendar({ user }) {
   const days = getDaysInMonth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-6 sm:py-8 lg:py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
-            <Calendar className="h-10 w-10 text-purple-600 dark:text-purple-400" />
-            Calendrier Éditorial
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+            <Calendar className="h-7 w-7 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-purple-600 dark:text-purple-400" />
+            <span className="hidden sm:inline">Calendrier Éditorial</span>
+            <span className="sm:hidden">Calendrier</span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Planifiez et gérez vos publications sur tous vos réseaux sociaux
           </p>
         </div>
@@ -552,42 +553,43 @@ function EditorialCalendar({ user }) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Main Calendar */}
           <div className="lg:col-span-3">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6">
+            <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 lg:p-6">
               {/* Calendar Controls */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <button
                   onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm sm:text-base"
                 >
                   ←
                 </button>
 
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
                   {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                 </h2>
 
                 <button
                   onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm sm:text-base"
                 >
                   →
                 </button>
               </div>
 
               {/* Day Headers */}
-              <div className="grid grid-cols-7 gap-2 mb-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-1 sm:mb-2">
                 {dayNames.map(day => (
-                  <div key={day} className="text-center font-semibold text-gray-600 dark:text-gray-400 text-sm py-2">
-                    {day}
+                  <div key={day} className="text-center font-semibold text-gray-600 dark:text-gray-400 text-xs sm:text-sm py-1 sm:py-2">
+                    <span className="hidden sm:inline">{day}</span>
+                    <span className="sm:hidden">{day.slice(0, 1)}</span>
                   </div>
                 ))}
               </div>
 
               {/* Calendar Grid */}
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2">
                 {days.map((date, index) => {
                   if (!date) {
                     return <div key={`empty-${index}`} className="aspect-square" />;
@@ -615,7 +617,7 @@ function EditorialCalendar({ user }) {
                     <div
                       key={dateKey}
                       className={`
-                        aspect-square border-2 rounded-xl p-2 transition-all cursor-pointer
+                        aspect-square border-2 rounded-lg sm:rounded-xl p-1 sm:p-2 transition-all cursor-pointer
                         ${isToday
                           ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                           : 'border-gray-200 dark:border-slate-600 hover:border-purple-300 dark:hover:border-purple-700 bg-white dark:bg-slate-700/50'
