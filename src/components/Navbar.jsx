@@ -23,14 +23,14 @@ function Navbar({ user, onLogout }) {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 shadow-sm">
-      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-full mx-auto px-2 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group flex-shrink-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <Sparkles className="h-6 w-6 text-white" />
+          <Link to="/" className="flex items-center space-x-1.5 sm:space-x-2 group flex-shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
             </div>
-            <span className="font-black text-lg xl:text-xl text-slate-900 dark:text-white hidden lg:block">
+            <span className="font-black text-base sm:text-lg xl:text-xl text-slate-900 dark:text-white hidden lg:block">
               AI Content Polisher
             </span>
           </Link>
@@ -92,7 +92,7 @@ function Navbar({ user, onLogout }) {
               </div>
 
               {/* User info - responsive */}
-              <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-2 xl:pl-3">
+              <div className="flex items-center gap-1.5 sm:gap-2 border-l border-slate-200 dark:border-slate-700 pl-1.5 sm:pl-2 xl:pl-3">
                 <ThemeToggle />
                 <div className="hidden md:flex flex-col items-end">
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-200">{user.name}</span>
@@ -101,7 +101,7 @@ function Navbar({ user, onLogout }) {
                 <div className="flex md:hidden">
                   <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining}</span>
                 </div>
-                <Link to="/account" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Compte">
+                <Link to="/account" className="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Compte">
                   <User className="h-4 w-4" />
                 </Link>
                 {user.is_admin === 1 && (
@@ -110,13 +110,13 @@ function Navbar({ user, onLogout }) {
                     <span className="hidden lg:inline">Admin</span>
                   </Link>
                 )}
-                <button onClick={handleLogout} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Déconnexion">
+                <button onClick={handleLogout} className="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Déconnexion">
                   <LogOut className="h-4 w-4" />
                 </button>
               </div>
             </div>
           ) : (
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-1.5 sm:space-x-2 lg:space-x-4">
               <ThemeToggle />
               <Link
                 to="/pricing"
@@ -162,7 +162,7 @@ function Navbar({ user, onLogout }) {
 
               <Link
                 to="/register"
-                className="px-4 sm:px-6 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 {t.navbar.getStarted}
               </Link>
