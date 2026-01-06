@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users, UserPlus, Key } from 'lucide-react';
+import { LogOut, Sparkles, Globe, Shield, History, User, BarChart3, Calendar, Users, UserPlus, Key, Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 import ThemeToggle from './ThemeToggle';
@@ -8,6 +9,7 @@ function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const { language, changeLanguage } = useLanguage();
   const t = useTranslation(language);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -118,6 +120,8 @@ function Navbar({ user, onLogout }) {
           ) : (
             <div className="flex items-center space-x-1.5 sm:space-x-2 lg:space-x-4">
               <ThemeToggle />
+
+              {/* Desktop Navigation */}
               <Link
                 to="/pricing"
                 className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden md:block"
@@ -125,7 +129,7 @@ function Navbar({ user, onLogout }) {
                 {t.navbar.pricing}
               </Link>
 
-              <div className="relative group">
+              <div className="relative group hidden md:block">
                 <button className="flex items-center space-x-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
                   <Globe className="h-4 w-4" />
                   <span>{languages.find(l => l.code === language)?.label || 'FR'}</span>
@@ -160,15 +164,78 @@ function Navbar({ user, onLogout }) {
                 {t.navbar.login}
               </Link>
 
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"
+                aria-label="Menu"
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+
+              {/* Reduced CTA Button */}
               <Link
                 to="/register"
-                className="px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="px-2.5 sm:px-4 lg:px-6 py-1.5 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                {t.navbar.getStarted}
+                <span className="md:hidden">Gratuit</span>
+                <span className="hidden md:inline">{t.navbar.getStarted}</span>
               </Link>
             </div>
           )}
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {!user && mobileMenuOpen && (
+          <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+            <div className="px-4 py-3 space-y-2">
+              <Link
+                to="/pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                {t.navbar.pricing}
+              </Link>
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                {t.navbar.login}
+              </Link>
+              <Link
+                to="/join-team"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                Rejoindre une équipe
+              </Link>
+
+              {/* Language Selector in Mobile Menu */}
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                <p className="px-4 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400">Langue</p>
+                <div className="space-y-1">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        changeLanguage(lang.code);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`w-full px-4 py-2 text-left rounded-lg transition-all ${
+                        language === lang.code
+                          ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 font-semibold'
+                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      {lang.flag} {lang.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

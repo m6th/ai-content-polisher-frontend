@@ -323,7 +323,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* Formats Grid */}
+      {/* Formats Grid - "Tous tes réseaux" */}
       <section className="py-20 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -343,8 +343,8 @@ function LandingPage() {
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative">
-                  <div className={`w-14 h-14 ${format.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                <div className="relative text-center md:text-left">
+                  <div className={`w-14 h-14 ${format.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform mx-auto md:mx-0`}>
                     <format.icon className="h-7 w-7 text-white" />
                   </div>
 
@@ -357,7 +357,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* How It Works - "Simple. Rapide. Efficace" */}
       <section className="py-20 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -395,12 +395,12 @@ function LandingPage() {
             ].map((item, idx) => (
               <div key={idx} className="relative">
                 <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200 dark:border-slate-700">
-                  <div className={`absolute -top-4 -left-4 w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-xl`}>
+                  <div className={`absolute -top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:-left-4 w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-xl`}>
                     <span className="text-2xl font-black text-white">{item.step}</span>
                   </div>
 
-                  <div className="pt-8">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-6 shadow-lg`}>
+                  <div className="pt-8 text-center md:text-left">
+                    <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-6 shadow-lg mx-auto md:mx-0`}>
                       <item.icon className="h-7 w-7 text-white" />
                     </div>
 
@@ -414,7 +414,7 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Features - "Pourquoi AI Content Polisher" */}
       <section className="py-20 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -430,9 +430,9 @@ function LandingPage() {
             {features.map((feature, idx) => (
               <div
                 key={idx}
-                className="group bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200 dark:border-slate-700"
+                className="group bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200 dark:border-slate-700 text-center md:text-left"
               >
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform`}>
+                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform mx-auto md:mx-0`}>
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
 
