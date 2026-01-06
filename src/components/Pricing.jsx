@@ -548,34 +548,34 @@ function Pricing({ user }) {
   };
 
   return (
-    <section id="tarifs" className="py-20 bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tarifs" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {success && (
-          <div className="mb-8 bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 text-green-700 dark:text-green-300 px-6 py-4 rounded-xl max-w-2xl mx-auto shadow-lg">
-            <p className="font-semibold">✅ {success}</p>
+          <div className="mb-6 sm:mb-8 bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 text-green-700 dark:text-green-300 px-4 sm:px-6 py-3 sm:py-4 rounded-xl max-w-2xl mx-auto shadow-lg">
+            <p className="font-semibold text-sm sm:text-base">✅ {success}</p>
           </div>
         )}
 
         {error && (
-          <div className="mb-8 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-300 px-6 py-4 rounded-xl max-w-2xl mx-auto shadow-lg">
-            <p className="font-semibold">⚠️ {error}</p>
+          <div className="mb-6 sm:mb-8 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-300 px-4 sm:px-6 py-3 sm:py-4 rounded-xl max-w-2xl mx-auto shadow-lg">
+            <p className="font-semibold text-sm sm:text-base">⚠️ {error}</p>
           </div>
         )}
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-black text-slate-900 dark:text-white mb-4">
+        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 sm:mb-4">
             {t.title}
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 px-4">
             {t.subtitle}
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center bg-white dark:bg-slate-800 rounded-full p-1.5 shadow-lg border border-slate-200 dark:border-slate-700">
+          <div className="inline-flex items-center bg-white dark:bg-slate-800 rounded-full p-1 sm:p-1.5 shadow-lg border border-slate-200 dark:border-slate-700">
             <button
               onClick={() => setBillingPeriod('monthly')}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
+              className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-sm sm:text-base font-semibold transition-all ${
                 billingPeriod === 'monthly'
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -585,27 +585,27 @@ function Pricing({ user }) {
             </button>
             <button
               onClick={() => setBillingPeriod('annual')}
-              className={`px-6 py-3 rounded-full font-semibold transition-all relative ${
+              className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-sm sm:text-base font-semibold transition-all relative ${
                 billingPeriod === 'annual'
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {t.annual}
-              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-1.5 sm:px-2 py-0.5 rounded-full">
                 -20%
               </span>
             </button>
           </div>
           {billingPeriod === 'annual' && (
-            <p className="text-sm text-green-600 dark:text-green-400 font-semibold mt-3">
+            <p className="text-xs sm:text-sm text-green-600 dark:text-green-400 font-semibold mt-2 sm:mt-3">
               💰 {t.saveUpTo}
             </p>
           )}
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-12 sm:mb-16 lg:mb-20">
           {plans.map((plan) => {
             const Icon = plan.icon;
             const isCurrentPlan = user && user.current_plan === plan.key;
@@ -614,8 +614,8 @@ function Pricing({ user }) {
             return (
               <div
                 key={plan.key}
-                className={`relative bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-105 ${
-                  plan.popular ? 'ring-4 ring-blue-500 ring-offset-4 dark:ring-offset-slate-900 lg:scale-110' : ''
+                className={`relative bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-105 ${
+                  plan.popular ? 'ring-2 sm:ring-4 ring-blue-500 ring-offset-2 sm:ring-offset-4 dark:ring-offset-slate-900 md:scale-105 lg:scale-110' : ''
                 }`}
               >
                 {plan.badge && (
@@ -624,31 +624,31 @@ function Pricing({ user }) {
                   </div>
                 )}
 
-                <div className="p-6">
+                <div className="p-4 sm:p-5 md:p-6">
                   {/* Icon & Name */}
-                  <div className="flex items-center justify-center mb-4">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                      <Icon className="h-7 w-7 text-white" />
+                  <div className="flex items-center justify-center mb-3 sm:mb-4">
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${plan.color} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg`}>
+                      <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                     </div>
                   </div>
 
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white text-center mb-1">
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white text-center mb-1">
                     {plan.name}
                   </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 text-center mb-4">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 text-center mb-3 sm:mb-4">
                     {plan.description}
                   </p>
 
                   {/* Price */}
-                  <div className="text-center mb-6">
+                  <div className="text-center mb-4 sm:mb-6">
                     {billingPeriod === 'annual' && plan.key !== 'free' ? (
                       <>
                         {/* Mode annuel : afficher le prix mensuel équivalent en gros */}
                         <div className="flex items-baseline justify-center">
-                          <span className="text-4xl font-black text-slate-900 dark:text-white">{getMonthlyEquivalent(plan.key)}</span>
-                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
+                          <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">{getMonthlyEquivalent(plan.key)}</span>
+                          <span className="text-base sm:text-lg text-slate-600 dark:text-slate-400 ml-1 sm:ml-2">{t.perMonth}</span>
                         </div>
-                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 px-2">
                           Soit {getAnnualTotal(plan.key)}€/an (payé en une fois), Hors Taxes | Annulation à tout moment
                         </p>
                         {discount > 0 && (
@@ -661,17 +661,17 @@ function Pricing({ user }) {
                       <>
                         {/* Mode mensuel : afficher le prix mensuel */}
                         <div className="flex items-baseline justify-center">
-                          <span className="text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
-                          <span className="text-lg text-slate-600 dark:text-slate-400 ml-2">{t.perMonth}</span>
+                          <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">{plan.price.toFixed(2)}</span>
+                          <span className="text-base sm:text-lg text-slate-600 dark:text-slate-400 ml-1 sm:ml-2">{t.perMonth}</span>
                         </div>
                         {plan.key !== 'free' && (
-                          <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                          <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 px-2">
                             Hors Taxes | Annulation à tout moment
                           </p>
                         )}
                       </>
                     )}
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 font-semibold">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2 font-semibold">
                       {plan.credits} {t.creditsPerMonth}
                     </p>
                   </div>

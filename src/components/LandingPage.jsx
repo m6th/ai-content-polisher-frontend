@@ -171,20 +171,20 @@ function LandingPage() {
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-300 rounded-full opacity-20 blur-3xl" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Badge */}
-            <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-purple-100 dark:border-purple-900">
-              <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg border border-purple-100 dark:border-purple-900">
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600 dark:text-purple-400" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
                 ⏱️ {t.landing.hero.badge}
               </span>
             </div>
 
             {/* Main Heading */}
             <div>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight mb-4 sm:mb-6">
                 <span className="text-slate-900 dark:text-white">{t.landing.hero.title1}</span>
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600">
@@ -193,29 +193,29 @@ function LandingPage() {
                 <br />
                 <span className="text-slate-900 dark:text-white">{t.landing.hero.title3}</span>
               </h1>
-              <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
                 {t.landing.hero.subtitle}
                 <span className="font-semibold text-slate-900 dark:text-white">{t.landing.hero.subtitleBold}</span>
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 to="/register"
-                className="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
               >
                 <span className="relative z-10 flex items-center">
                   {t.landing.hero.cta}
-                  <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-2 transition-transform duration-300" />
                 </span>
               </Link>
               <Link
                 to="/join-team"
-                className="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-2xl shadow-xl hover:shadow-2xl hover:border-green-500 dark:hover:border-green-500 transform hover:scale-105 transition-all duration-300"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-base sm:text-lg font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl hover:border-green-500 dark:hover:border-green-500 transform hover:scale-105 transition-all duration-300"
               >
                 <span className="relative z-10 flex items-center">
-                  <UserPlus className="mr-3 h-5 w-5" />
+                  <UserPlus className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
                   Rejoindre une équipe
                 </span>
               </Link>
