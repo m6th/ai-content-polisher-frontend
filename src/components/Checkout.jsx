@@ -5,6 +5,7 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { ArrowLeft, Lock, CreditCard } from 'lucide-react';
 import { createPaymentIntent } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import axios from 'axios';
 
 // Composant interne pour le formulaire de paiement
@@ -125,6 +126,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { language } = useLanguage();
+  const { isDark } = useTheme();
 
   const plan = searchParams.get('plan');
   const planName = searchParams.get('planName');
@@ -234,8 +236,8 @@ export default function Checkout() {
       theme: 'flat',
       variables: {
         colorPrimary: '#635BFF',
-        colorBackground: '#ffffff',
-        colorText: '#30313d',
+        colorBackground: isDark ? '#1f2937' : '#ffffff',
+        colorText: isDark ? '#f9fafb' : '#30313d',
         colorDanger: '#df1b41',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif',
         spacingUnit: '4px',
@@ -247,7 +249,9 @@ export default function Checkout() {
       },
       rules: {
         '.Input': {
-          border: '1.5px solid #e0e0e0',
+          border: isDark ? '1.5px solid #374151' : '1.5px solid #e0e0e0',
+          backgroundColor: isDark ? '#111827' : '#ffffff',
+          color: isDark ? '#f9fafb' : '#30313d',
           boxShadow: 'none',
           padding: '14px 12px',
           fontSize: '16px',
@@ -261,10 +265,12 @@ export default function Checkout() {
           fontSize: '14px',
           fontWeight: '500',
           marginBottom: '8px',
-          color: '#30313d',
+          color: isDark ? '#f9fafb' : '#30313d',
         },
         '.Tab': {
-          border: '1.5px solid #e0e0e0',
+          border: isDark ? '1.5px solid #374151' : '1.5px solid #e0e0e0',
+          backgroundColor: isDark ? '#1f2937' : '#ffffff',
+          color: isDark ? '#f9fafb' : '#30313d',
           boxShadow: 'none',
         },
         '.Tab:hover': {
@@ -272,6 +278,7 @@ export default function Checkout() {
         },
         '.Tab--selected': {
           border: '1.5px solid #635BFF',
+          backgroundColor: isDark ? '#111827' : '#f8f9fa',
           boxShadow: '0 0 0 3px rgba(99, 91, 255, 0.1)',
         },
       },
