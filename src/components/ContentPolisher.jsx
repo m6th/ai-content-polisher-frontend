@@ -638,7 +638,7 @@ function ContentPolisher({ user, onUpdateUser }) {
   ];
 
   return (
-    <div className="max-w-full px-4 mx-auto relative">
+    <div className="max-w-full px-2 sm:px-4 mx-auto relative">
       {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-10 left-10 w-32 h-32 bg-purple-200 rounded-full opacity-20 blur-3xl float-particle"></div>
@@ -647,31 +647,31 @@ function ContentPolisher({ user, onUpdateUser }) {
         <div className="absolute bottom-40 right-1/3 w-28 h-28 bg-purple-300 rounded-full opacity-20 blur-3xl float-particle-delayed"></div>
       </div>
 
-      <div className="flex gap-6 items-start">
+      <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 items-start">
         {/* Main Content */}
-        <div className="flex-1 bg-white dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-slate-700">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl mb-4 shadow-lg">
-            <Wand2 className="h-8 w-8 text-white" />
+        <div className="flex-1 w-full bg-white dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8 border border-gray-100 dark:border-slate-700">
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 shadow-lg">
+            <Wand2 className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
           </div>
-          <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">
             {t.polisher.title}
           </h2>
-          <p className="text-gray-600 dark:text-slate-400 text-lg">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-slate-400">
             {t.polisher.subtitle}
           </p>
         </div>
 
         {/* Plan Restriction Alert */}
         {planRestrictions && (user.current_plan === 'free' || user.current_plan === 'starter') && (
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
             <div className="flex items-start">
-              <Lock className="h-5 w-5 text-purple-600 mr-3 mt-0.5 flex-shrink-0" />
+              <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
-                <h3 className="font-bold text-purple-900 mb-1">
+                <h3 className="text-sm sm:text-base font-bold text-purple-900 mb-1">
                   Plan {user.current_plan === 'free' ? 'Gratuit' : 'Starter'} - Accès limité
                 </h3>
-                <p className="text-sm text-purple-700 mb-2">
+                <p className="text-xs sm:text-sm text-purple-700 mb-2">
                   {user.current_plan === 'free'
                     ? 'Vous avez accès à 3 plateformes et 3 tons uniquement.'
                     : 'Vous avez accès à toutes les plateformes mais seulement 3 tons.'
@@ -679,10 +679,10 @@ function ContentPolisher({ user, onUpdateUser }) {
                 </p>
                 <button
                   onClick={() => navigate('/pricing')}
-                  className="inline-flex items-center text-sm font-semibold text-purple-600 hover:text-purple-800 transition"
+                  className="inline-flex items-center text-xs sm:text-sm font-semibold text-purple-600 hover:text-purple-800 transition"
                 >
-                  <Crown className="h-4 w-4 mr-1" />
-                  Passer à Pro pour débloquer tous les tons et fonctionnalités
+                  <Crown className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="line-clamp-1">Passer à Pro pour débloquer tous les tons et fonctionnalités</span>
                 </button>
               </div>
             </div>
@@ -696,19 +696,19 @@ function ContentPolisher({ user, onUpdateUser }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Tone Selection with restrictions */}
             <div>
-              <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold mb-3 text-lg">
-                <Smile className="h-5 w-5 mr-2 text-purple-600" />
+              <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">
+                <Smile className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-purple-600" />
                 {t.polisher.toneLabel}
               </label>
               <div className="relative">
                 <select
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-lg appearance-none"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-slate-700 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base lg:text-lg appearance-none"
                 >
                   {allTones.map((toneOption) => {
                     const allowed = isToneAllowed(toneOption.value);
@@ -733,14 +733,14 @@ function ContentPolisher({ user, onUpdateUser }) {
 
             {/* Language Selection */}
             <div>
-              <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold mb-3 text-lg">
-                <Globe className="h-5 w-5 mr-2 text-blue-600" />
+              <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">
+                <Globe className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-blue-600" />
                 {t.polisher.languageLabel}
               </label>
               <select
                 value={contentLanguage}
                 onChange={(e) => setContentLanguage(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-lg"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-slate-700 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base lg:text-lg"
               >
                 {languages.map((lang) => (
                   <option key={lang.value} value={lang.value}>
@@ -753,13 +753,13 @@ function ContentPolisher({ user, onUpdateUser }) {
 
           {/* Text Input */}
           <div>
-            <label className="text-gray-700 dark:text-slate-300 font-semibold mb-3 block text-lg">
+            <label className="text-gray-700 dark:text-slate-300 font-semibold mb-2 sm:mb-3 block text-sm sm:text-base lg:text-lg">
               {t.polisher.inputLabel}
             </label>
             <textarea
               value={originalText}
               onChange={handleTextChange}
-              className="w-full px-5 py-4 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none text-lg placeholder:text-gray-400 dark:placeholder:text-slate-500"
+              className="w-full px-3 sm:px-5 py-3 sm:py-4 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none text-sm sm:text-base lg:text-lg placeholder:text-gray-400 dark:placeholder:text-slate-500"
               rows="6"
               placeholder={t.polisher.inputPlaceholder}
               required
@@ -767,17 +767,17 @@ function ContentPolisher({ user, onUpdateUser }) {
 
             {/* Character Counter & Quality Indicator */}
             {originalText.length > 0 && (
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-sm text-gray-500 dark:text-slate-400">
+              <div className="mt-2 sm:mt-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-between">
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-slate-400">
                   {charCount} {t.polisher.charCounter.characters}
                 </span>
                 {textQuality !== 'empty' && (() => {
                   const config = getQualityConfig();
                   const IconComponent = config.icon;
                   return (
-                    <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border ${config.borderColor} ${config.bgColor} transition-all`}>
-                      <IconComponent className={`h-4 w-4 ${config.color}`} />
-                      <span className={`text-sm font-medium ${config.color}`}>
+                    <div className={`flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border ${config.borderColor} ${config.bgColor} transition-all`}>
+                      <IconComponent className={`h-3 w-3 sm:h-4 sm:w-4 ${config.color}`} />
+                      <span className={`text-xs sm:text-sm font-medium ${config.color}`}>
                         {config.message}
                       </span>
                     </div>
@@ -848,26 +848,27 @@ function ContentPolisher({ user, onUpdateUser }) {
           )}
 
           {/* Submit Buttons */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {/* Pro Trial Button - Only for Free/Starter who can use trial */}
             {canUseTrial && !trialUsed && (user?.current_plan === 'free' || user?.current_plan === 'starter') && (
               <button
                 type="button"
                 onClick={handleProTrialGeneration}
                 disabled={loading || !originalText.trim()}
-                className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-yellow-600 hover:via-orange-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 relative overflow-hidden group"
+                className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-bold text-sm sm:text-base lg:text-lg hover:from-yellow-600 hover:via-orange-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
                 {loading ? (
                   <>
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-white"></div>
                     <span>{t.polisher.generating}</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-6 w-6 animate-pulse" />
-                    <span>✨ Tester Pro Gratuitement (1 crédit)</span>
-                    <Crown className="h-5 w-5" />
+                    <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 animate-pulse" />
+                    <span className="hidden sm:inline">✨ Tester Pro Gratuitement (1 crédit)</span>
+                    <span className="sm:hidden">✨ Tester Pro Gratuit</span>
+                    <Crown className="h-4 w-4 sm:h-5 sm:w-5" />
                   </>
                 )}
               </button>
@@ -877,16 +878,16 @@ function ContentPolisher({ user, onUpdateUser }) {
             <button
               type="submit"
               disabled={loading || !originalText.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-bold text-sm sm:text-base lg:text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-white"></div>
                   <span>{t.polisher.generating}</span>
                 </>
               ) : (
                 <>
-                  <Wand2 className="h-6 w-6" />
+                  <Wand2 className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span>{t.polisher.generateButton}</span>
                 </>
               )}
@@ -929,30 +930,30 @@ function ContentPolisher({ user, onUpdateUser }) {
 
         {/* Empty State with Examples */}
         {!loading && generatedFormats.length === 0 && (
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-3xl mb-6">
-              <Wand2 className="h-10 w-10 text-purple-600 animate-pulse" />
+          <div className="mt-8 sm:mt-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6">
+              <Wand2 className="h-8 w-8 sm:h-10 sm:w-10 text-purple-600 animate-pulse" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-3">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3">
               {t.polisher.emptyState.title}
             </h3>
-            <p className="text-gray-600 dark:text-slate-400 text-lg mb-8">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-slate-400 mb-6 sm:mb-8 px-4">
               {t.polisher.emptyState.subtitle}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
               {t.polisher.emptyState.examples.map((example, idx) => (
                 <button
                   key={idx}
                   onClick={() => useExample(example)}
-                  className="group relative p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-2 border-dashed border-purple-200 dark:border-purple-700 rounded-2xl hover:border-purple-400 dark:hover:border-purple-500 hover:from-purple-100 hover:to-blue-100 dark:hover:from-purple-900/30 dark:hover:to-blue-900/30 transition-all text-left"
+                  className="group relative p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-2 border-dashed border-purple-200 dark:border-purple-700 rounded-xl sm:rounded-2xl hover:border-purple-400 dark:hover:border-purple-500 hover:from-purple-100 hover:to-blue-100 dark:hover:from-purple-900/30 dark:hover:to-blue-900/30 transition-all text-left"
                 >
-                  <div className="flex items-start space-x-3">
-                    <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-1 group-hover:animate-spin" />
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-1 group-hover:animate-spin" />
                     <div>
-                      <p className="text-gray-700 dark:text-slate-200 leading-relaxed">
+                      <p className="text-sm sm:text-base text-gray-700 dark:text-slate-200 leading-relaxed">
                         {example}
                       </p>
-                      <span className="inline-block mt-3 text-sm font-semibold text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300">
+                      <span className="inline-block mt-2 sm:mt-3 text-xs sm:text-sm font-semibold text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300">
                         {t.polisher.emptyState.tryExample} →
                       </span>
                     </div>
@@ -1004,29 +1005,31 @@ function ContentPolisher({ user, onUpdateUser }) {
         {/* Generated Content */}
         <div ref={resultsRef}>
         {generatedFormats.length > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-3xl font-bold text-gray-800 dark:text-white">
+          <div className="mt-8 sm:mt-12">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">
                 {t.polisher.generatedContent}
               </h3>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 {requestId && (user.current_plan === 'pro' || user.current_plan === 'business') && (
                   <a
                     href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/content/export/${requestId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg font-semibold"
+                    className="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 sm:space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg text-sm sm:text-base font-semibold"
                   >
-                    <Download className="h-5 w-5" />
-                    <span>Export ZIP (Pro)</span>
+                    <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="hidden sm:inline">Export ZIP (Pro)</span>
+                    <span className="sm:hidden">Export ZIP</span>
                   </a>
                 )}
                 <button
                   onClick={handleDownloadAll}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg font-semibold"
+                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 sm:space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg text-sm sm:text-base font-semibold"
                 >
-                  <Download className="h-5 w-5" />
-                  <span>Tout télécharger</span>
+                  <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="hidden sm:inline">Tout télécharger</span>
+                  <span className="sm:hidden">Télécharger</span>
                 </button>
               </div>
             </div>
@@ -1038,7 +1041,7 @@ function ContentPolisher({ user, onUpdateUser }) {
               </div>
             )}
 
-            <div className="grid grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8">
               {generatedFormats.map((format, index) => {
                 const formatInfo = formatLabels[format.format] || {
                   name: format.format,
@@ -1054,50 +1057,50 @@ function ContentPolisher({ user, onUpdateUser }) {
                   <div
                     key={index}
                     id={`card-${index}`}
-                    className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all fade-in-up ${staggerClass}`}
+                    className={`bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-lg border-2 border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all fade-in-up ${staggerClass}`}
                   >
-                    <div className={`bg-gradient-to-r ${formatInfo.color} px-6 py-4 flex items-center justify-between`}>
-                      <div className="flex items-center space-x-3">
-                        <span className="text-3xl">{formatInfo.icon}</span>
+                    <div className={`bg-gradient-to-r ${formatInfo.color} px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3`}>
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <span className="text-2xl sm:text-3xl">{formatInfo.icon}</span>
                         <div>
-                          <h4 className="text-white font-bold text-lg">{formatInfo.name}</h4>
+                          <h4 className="text-white font-bold text-base sm:text-lg">{formatInfo.name}</h4>
                           {isRecommended && (
-                            <span className="inline-block mt-1 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full shimmer">
+                            <span className="inline-block mt-0.5 sm:mt-1 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full shimmer">
                               ⭐ {t.polisher.formatCard.recommended}
                             </span>
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 flex-wrap w-full sm:w-auto justify-end">
                         <button
                           onClick={() => setShowOriginal(prev => ({ ...prev, [index]: !prev[index] }))}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all text-xs font-medium shadow-md tooltip"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all text-xs font-medium shadow-md tooltip"
                           data-tooltip={showOriginal[index] ? t.polisher.formatCard.hideOriginal : t.polisher.formatCard.showOriginal}
                         >
                           {showOriginal[index] ? '👁️‍🗨️' : '👁️'}
                         </button>
                         <button
                           onClick={() => setPreviewModal({ isOpen: true, format: format.format, content: format.content })}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all tooltip shadow-md"
                           data-tooltip={t.polisher.preview.viewPreview}
                         >
-                          <Eye className="h-4 w-4" />
+                          <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => handleCopy(format.content, index)}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-4 py-2 rounded-lg transition-all flex items-center space-x-2 shadow-md"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all flex items-center space-x-1.5 sm:space-x-2 shadow-md"
                         >
                           {copiedId === index ? (
                             <>
-                              <Check className="h-4 w-4" />
-                              <span className="text-sm font-medium">
+                              <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
                                 {uiLanguage === 'fr' ? 'Copié !' : uiLanguage === 'en' ? 'Copied!' : '¡Copiado!'}
                               </span>
                             </>
                           ) : (
                             <>
-                              <Copy className="h-4 w-4" />
-                              <span className="text-sm font-medium">
+                              <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                              <span className="text-xs sm:text-sm font-medium hidden sm:inline">
                                 {uiLanguage === 'fr' ? 'Copier' : uiLanguage === 'en' ? 'Copy' : 'Copiar'}
                               </span>
                             </>
@@ -1105,31 +1108,33 @@ function ContentPolisher({ user, onUpdateUser }) {
                         </button>
                         <button
                           onClick={() => handleDownloadTxt(format.content, formatInfo.name)}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all tooltip shadow-md hidden sm:inline-flex"
                           data-tooltip={uiLanguage === 'fr' ? 'Télécharger TXT' : uiLanguage === 'en' ? 'Download TXT' : 'Descargar TXT'}
                         >
-                          <FileText className="h-4 w-4" />
+                          <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => handleDownloadPdf(format.content, format.format)}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all tooltip shadow-md hidden lg:inline-flex"
                           data-tooltip={uiLanguage === 'fr' ? 'Exporter PDF' : uiLanguage === 'en' ? 'Export PDF' : 'Exportar PDF'}
                         >
-                          <Download className="h-4 w-4" />
+                          <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => handleShare(format.content, format.format.toLowerCase())}
-                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-3 py-2 rounded-lg transition-all tooltip shadow-md"
+                          className="bg-white/95 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800/40 text-gray-700 dark:text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all tooltip shadow-md hidden lg:inline-flex"
                           data-tooltip={uiLanguage === 'fr' ? 'Partager' : uiLanguage === 'en' ? 'Share' : 'Compartir'}
                         >
-                          <Share2 className="h-4 w-4" />
+                          <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
-                        <HashtagButton
-                          content={format.content}
-                          platform={format.format.toLowerCase()}
-                          language={contentLanguage}
-                          uiLanguage={uiLanguage}
-                        />
+                        <div className="hidden sm:block">
+                          <HashtagButton
+                            content={format.content}
+                            platform={format.format.toLowerCase()}
+                            language={contentLanguage}
+                            uiLanguage={uiLanguage}
+                          />
+                        </div>
                       </div>
                     </div>
 
