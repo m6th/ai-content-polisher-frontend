@@ -74,13 +74,23 @@ function Dashboard({ user, onUpdateUser }) {
             </div>
             <div className="text-center p-3 sm:p-0 bg-gradient-to-br from-purple-50 to-blue-50 dark:bg-slate-700/50 sm:bg-transparent rounded-lg sm:rounded-none">
               <button
-                onClick={() => navigate('/history')}
+                onClick={() => navigate('/pricing')}
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-semibold text-sm shadow-lg"
               >
-                <History className="h-4 w-4 inline mr-1.5" />
-                {language === 'fr' ? "Voir l'historique" : language === 'en' ? 'View history' : 'Ver historial'}
+                {language === 'fr' ? 'Améliorer mon plan' : language === 'en' ? 'Upgrade plan' : 'Mejorar plan'}
               </button>
             </div>
+          </div>
+
+          {/* History button - Below stats */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => navigate('/history')}
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition flex items-center justify-center space-x-2 mx-auto text-sm sm:text-base"
+            >
+              <History className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="whitespace-nowrap">{language === 'fr' ? "Voir l'historique" : language === 'en' ? 'View history' : 'Ver historial'}</span>
+            </button>
           </div>
         </div>
 
