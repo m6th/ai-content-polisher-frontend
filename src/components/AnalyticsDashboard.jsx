@@ -207,32 +207,33 @@ function AnalyticsDashboard({ user }) {
       )}
 
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <BarChart3 className="h-8 w-8 text-purple-600" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
+              <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
               Analytics
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 hidden sm:block">
               {isPro || previewMode ? 'Dashboard analytics détaillé' : 'Vue d\'ensemble de votre utilisation'}
             </p>
           </div>
 
           {isPro && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(Number(e.target.value))}
-                className="px-4 py-2 border-2 border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
+                className="px-2 sm:px-4 py-2 text-xs sm:text-base border-2 border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
               >
-                <option value={7}>7 derniers jours</option>
-                <option value={30}>30 derniers jours</option>
-                <option value={90}>90 derniers jours</option>
+                <option value={7}>7 jours</option>
+                <option value={30}>30 jours</option>
+                <option value={90}>90 jours</option>
               </select>
               <button
                 onClick={loadAnalytics}
-                className="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition"
+                className="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition shrink-0"
+                title="Actualiser"
               >
                 <RefreshCw className="h-5 w-5" />
               </button>

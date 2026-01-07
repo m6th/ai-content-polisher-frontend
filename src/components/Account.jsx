@@ -194,7 +194,7 @@ function Account({ user, onUpdateUser }) {
         </div>
 
         {/* Account Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-gray-100 dark:border-slate-700">
             <div className="flex items-center justify-between mb-2">
               <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 dark:text-purple-400" />
@@ -226,6 +226,15 @@ function Account({ user, onUpdateUser }) {
             <div className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
               {language === 'fr' ? 'Générations totales' : language === 'en' ? 'Total generations' : 'Generaciones totales'}
             </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 border-2 border-purple-200 dark:border-purple-800 flex items-center justify-center">
+            <a
+              href="/pricing"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-semibold text-sm text-center shadow-lg"
+            >
+              {language === 'fr' ? 'Améliorer mon plan' : language === 'en' ? 'Upgrade plan' : 'Mejorar plan'}
+            </a>
           </div>
         </div>
 

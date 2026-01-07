@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getContentHistory } from '../services/api';
 import ContentPolisher from './ContentPolisher';
 import Analytics from './Analytics';
-import { History, Calendar, MessageSquare, BarChart3, Sparkles } from 'lucide-react';
+import { History, BarChart3, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
 
@@ -11,9 +10,6 @@ function Dashboard({ user, onUpdateUser }) {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const navigate = useNavigate();
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
   const [activeTab, setActiveTab] = useState('polisher'); // 'polisher' ou 'analytics'
 
   useEffect(() => {
@@ -22,32 +18,6 @@ function Dashboard({ user, onUpdateUser }) {
       navigate(`/verify-email?email=${encodeURIComponent(user.email)}`);
     }
   }, [user, navigate]);
-
-  useEffect(() => {
-    if (showHistory) {
-      loadHistory();
-    }
-  }, [showHistory]);
-
-  const loadHistory = async () => {
-    setLoading(true);
-    try {
-      const response = await getContentHistory();
-      setHistory(response.data);
-    } catch (err) {
-      console.error('Erreur lors du chargement de l\'historique:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const platformEmojis = {
-    linkedin: '💼',
-    instagram: '📸',
-    tiktok: '🎵',
-    facebook: '👥',
-    twitter: '🐦',
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-6 sm:py-8 lg:py-12 px-3 sm:px-4 lg:px-6">
@@ -104,23 +74,13 @@ function Dashboard({ user, onUpdateUser }) {
             </div>
             <div className="text-center p-3 sm:p-0 bg-gradient-to-br from-purple-50 to-blue-50 dark:bg-slate-700/50 sm:bg-transparent rounded-lg sm:rounded-none">
               <button
-                onClick={() => navigate('/pricing')}
+                onClick={() => navigate('/history')}
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-semibold text-sm shadow-lg"
               >
-                {language === 'fr' ? 'Améliorer mon plan' : language === 'en' ? 'Upgrade plan' : 'Mejorar plan'}
+                <History className="h-4 w-4 inline mr-1.5" />
+                {language === 'fr' ? "Voir l'historique" : language === 'en' ? 'View history' : 'Ver historial'}
               </button>
             </div>
-          </div>
-
-          {/* History button - Below stats on mobile */}
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => setShowHistory(!showHistory)}
-              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition flex items-center justify-center space-x-2 mx-auto text-sm sm:text-base"
-            >
-              <History className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="whitespace-nowrap">{showHistory ? (language === 'fr' ? 'Masquer' : language === 'en' ? 'Hide' : 'Ocultar') : (language === 'fr' ? 'Voir' : language === 'en' ? 'View' : 'Ver')} {language === 'fr' ? "l'historique" : language === 'en' ? 'history' : 'historial'}</span>
-            </button>
           </div>
         </div>
 
