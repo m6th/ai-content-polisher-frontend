@@ -38,8 +38,8 @@ function Navbar({ user, onLogout }) {
           </Link>
 
           {user ? (
-            <div className="flex items-center gap-2 xl:gap-3 flex-1 justify-end">
-              {/* Navigation Links - compact on smaller screens */}
+            <div className="flex items-center gap-2 flex-1 justify-end">
+              {/* Desktop Navigation Links */}
               <div className="hidden xl:flex items-center gap-2">
                 <Link to="/history" className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all text-sm font-medium">
                   <History className="h-4 w-4" />
@@ -69,47 +69,31 @@ function Navbar({ user, onLogout }) {
                 </Link>
               </div>
 
-              {/* Mobile: Icons only */}
-              <div className="flex xl:hidden items-center gap-1">
-                <Link to="/history" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Historique">
-                  <History className="h-4 w-4" />
-                </Link>
-                <Link to="/analytics" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Analytics">
-                  <BarChart3 className="h-4 w-4" />
-                </Link>
-                <Link to="/calendar" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Calendrier">
-                  <Calendar className="h-4 w-4" />
-                </Link>
-                <Link to="/team" className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Équipe">
-                  <Users className="h-4 w-4" />
-                </Link>
-                {user?.current_plan === 'business' && (
-                  <Link to="/api-access" className="p-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg transition-all shadow-md" title="API Access">
-                    <Key className="h-4 w-4" />
-                  </Link>
-                )}
-                <Link to="/join-team" className="p-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition-all shadow-md" title="Rejoindre une équipe">
-                  <UserPlus className="h-4 w-4" />
-                </Link>
-              </div>
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="xl:hidden p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all"
+                aria-label="Menu"
+              >
+                <Menu className="h-4 w-4" />
+              </button>
 
               {/* User info - responsive */}
-              <div className="flex items-center gap-1.5 sm:gap-2 border-l border-slate-200 dark:border-slate-700 pl-1.5 sm:pl-2 xl:pl-3">
+              <div className="flex items-center gap-1.5 sm:gap-2 border-l border-slate-200 dark:border-slate-700 pl-1.5 sm:pl-2">
                 <ThemeToggle />
-                <div className="hidden md:flex flex-col items-end">
+                <div className="hidden sm:flex flex-col items-end">
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-200">{user.name}</span>
                   <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining} {t.navbar.credits}</span>
                 </div>
-                <div className="flex md:hidden">
+                <div className="flex sm:hidden">
                   <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{user.credits_remaining}</span>
                 </div>
                 <Link to="/account" className="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Compte">
                   <User className="h-4 w-4" />
                 </Link>
-                {user.is_admin === 1 && (
-                  <Link to="/admin" className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all text-sm font-medium shadow-lg">
+                {user.email === 'mathdu0609@gmail.com' && (
+                  <Link to="/admin" className="p-1.5 sm:p-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg" title="Admin">
                     <Shield className="h-4 w-4" />
-                    <span className="hidden lg:inline">Admin</span>
                   </Link>
                 )}
                 <button onClick={handleLogout} className="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-all" title="Déconnexion">
@@ -119,22 +103,16 @@ function Navbar({ user, onLogout }) {
             </div>
           ) : (
             <div className="flex items-center space-x-1.5 sm:space-x-2 lg:space-x-4">
+              {/* Theme Toggle - Always visible */}
               <ThemeToggle />
 
-              {/* Desktop Navigation */}
-              <Link
-                to="/pricing"
-                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden md:block"
-              >
-                {t.navbar.pricing}
-              </Link>
-
-              <div className="relative group hidden md:block">
-                <button className="flex items-center space-x-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
+              {/* Language Selector - Always visible */}
+              <div className="relative group">
+                <button className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
                   <Globe className="h-4 w-4" />
-                  <span>{languages.find(l => l.code === language)?.label || 'FR'}</span>
+                  <span className="text-xs sm:text-sm">{languages.find(l => l.code === language)?.label || 'FR'}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
@@ -149,9 +127,17 @@ function Navbar({ user, onLogout }) {
                 </div>
               </div>
 
+              {/* Desktop Navigation Links */}
+              <Link
+                to="/pricing"
+                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden md:block"
+              >
+                {t.navbar.pricing}
+              </Link>
+
               <Link
                 to="/join-team"
-                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hidden sm:flex"
+                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hidden md:flex"
               >
                 <UserPlus className="h-4 w-4" />
                 <span className="hidden lg:inline">Rejoindre une équipe</span>
@@ -159,12 +145,19 @@ function Navbar({ user, onLogout }) {
 
               <Link
                 to="/login"
-                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden sm:block"
+                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden md:block"
               >
                 {t.navbar.login}
               </Link>
 
-              {/* Mobile Menu Button */}
+              <Link
+                to="/register"
+                className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 hidden md:inline-flex"
+              >
+                {t.navbar.getStarted}
+              </Link>
+
+              {/* Mobile Menu Button - Far right */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"
@@ -172,23 +165,21 @@ function Navbar({ user, onLogout }) {
               >
                 {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
-
-              {/* Reduced CTA Button */}
-              <Link
-                to="/register"
-                className="px-2.5 sm:px-4 lg:px-6 py-1.5 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <span className="md:hidden">Gratuit</span>
-                <span className="hidden md:inline">{t.navbar.getStarted}</span>
-              </Link>
             </div>
           )}
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu - Not logged in */}
         {!user && mobileMenuOpen && (
           <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
             <div className="px-4 py-3 space-y-2">
+              <Link
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-center bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg"
+              >
+                {t.navbar.getStarted}
+              </Link>
               <Link
                 to="/pricing"
                 onClick={() => setMobileMenuOpen(false)}
@@ -210,29 +201,64 @@ function Navbar({ user, onLogout }) {
               >
                 Rejoindre une équipe
               </Link>
+            </div>
+          </div>
+        )}
 
-              {/* Language Selector in Mobile Menu */}
-              <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                <p className="px-4 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400">Langue</p>
-                <div className="space-y-1">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        changeLanguage(lang.code);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`w-full px-4 py-2 text-left rounded-lg transition-all ${
-                        language === lang.code
-                          ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 font-semibold'
-                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                      }`}
-                    >
-                      {lang.flag} {lang.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* Mobile Dropdown Menu - Logged in */}
+        {user && mobileMenuOpen && (
+          <div className="xl:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+            <div className="px-4 py-3 space-y-2">
+              <Link
+                to="/history"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                <History className="h-4 w-4" />
+                <span>{t.navbar.history || 'Historique'}</span>
+              </Link>
+              <Link
+                to="/analytics"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                <BarChart3 className="h-4 w-4" />
+                <span>{t.navbar.analytics || 'Analytics'}</span>
+              </Link>
+              <Link
+                to="/calendar"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                <Calendar className="h-4 w-4" />
+                <span>{t.navbar.calendar || 'Calendrier'}</span>
+              </Link>
+              <Link
+                to="/team"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                <Users className="h-4 w-4" />
+                <span>{t.navbar.team || 'Équipe'}</span>
+              </Link>
+              <Link
+                to="/join-team"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all font-medium"
+              >
+                <UserPlus className="h-4 w-4" />
+                <span>Rejoindre une équipe</span>
+              </Link>
+              {user?.current_plan === 'business' && (
+                <Link
+                  to="/api-access"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all font-medium shadow-md"
+                >
+                  <Key className="h-4 w-4" />
+                  <span>API Access</span>
+                </Link>
+              )}
             </div>
           </div>
         )}

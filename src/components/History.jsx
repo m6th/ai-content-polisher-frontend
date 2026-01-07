@@ -137,14 +137,14 @@ function History() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center mb-4">
-          <HistoryIcon className="h-8 w-8 text-purple-600 dark:text-purple-400 mr-3" />
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">Historique des générations</h1>
+      <div className="mb-4 sm:mb-8">
+        <div className="flex items-center mb-3 sm:mb-4">
+          <HistoryIcon className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 dark:text-purple-400 mr-2 sm:mr-3" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">Historique des générations</h1>
         </div>
-        <p className="text-gray-600 dark:text-slate-400">Retrouvez tous vos contenus générés</p>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400">Retrouvez tous vos contenus générés</p>
       </div>
 
       {/* Search Bar */}
@@ -190,13 +190,13 @@ function History() {
                   className="space-y-4"
                 >
                   {/* Condensed view */}
-                  <div className={`bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 p-6 hover:shadow-lg transition-all fade-in-up stagger-${(index % 15) + 1}`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                  <div className={`bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 p-3 sm:p-6 hover:shadow-lg transition-all fade-in-up stagger-${(index % 15) + 1}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
                         {/* Date & Stats */}
-                        <div className="flex items-center space-x-4 mb-3 text-sm text-gray-500 dark:text-slate-400">
-                          <span className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
+                        <div className="flex flex-wrap items-center gap-2 mb-3 text-xs sm:text-sm text-gray-500 dark:text-slate-400">
+                          <span className="flex items-center shrink-0">
+                            <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                             {getRelativeTime(item.created_at)}
                           </span>
                           {item.created_by && !item.is_own && (
@@ -216,26 +216,27 @@ function History() {
                         </div>
 
                         {/* Original Text Preview */}
-                        <p className="text-gray-700 dark:text-slate-300 leading-relaxed mb-3 line-clamp-2">
+                        <p className="text-sm sm:text-base text-gray-700 dark:text-slate-300 leading-relaxed mb-3 line-clamp-2">
                           {item.original_text}
                         </p>
                       </div>
 
                       {/* Actions */}
-                      <div className="flex items-center space-x-2 ml-4">
+                      <div className="flex items-center gap-2 sm:ml-4 shrink-0">
                         <button
                           onClick={() => toggleExpanded(item.id)}
-                          className="px-4 py-2 bg-purple-100 dark:bg-purple-900/50 hover:bg-purple-200 dark:hover:bg-purple-900/70 text-purple-700 dark:text-purple-300 rounded-lg transition-colors font-medium text-sm flex items-center gap-2"
+                          className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-purple-100 dark:bg-purple-900/50 hover:bg-purple-200 dark:hover:bg-purple-900/70 text-purple-700 dark:text-purple-300 rounded-lg transition-colors font-medium text-xs sm:text-sm flex items-center justify-center gap-1 sm:gap-2"
                         >
                           {isExpanded ? (
                             <>
-                              <ChevronLeft className="h-4 w-4" />
-                              Masquer
+                              <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                              <span className="hidden sm:inline">Masquer</span>
                             </>
                           ) : (
                             <>
-                              Voir les générations
-                              <ChevronRight className="h-4 w-4" />
+                              <span className="hidden sm:inline">Voir les générations</span>
+                              <span className="sm:hidden">Voir</span>
+                              <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                             </>
                           )}
                         </button>
@@ -244,7 +245,7 @@ function History() {
                           className="p-2 bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded-lg transition-colors"
                           title="Supprimer"
                         >
-                          <Trash2 className="h-5 w-5" />
+                          <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
                         </button>
                       </div>
                     </div>
