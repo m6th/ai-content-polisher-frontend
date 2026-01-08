@@ -333,6 +333,19 @@ export const activateProTrial = () => {
   return api.post('/trial/activate-pro-trial');
 };
 
+// Onboarding
+export const saveOnboardingData = (data) => {
+  return api.post('/onboarding/complete', data);
+};
+
+export const getOnboardingStatus = () => {
+  return api.get('/onboarding/status');
+};
+
+export const resetOnboarding = () => {
+  return api.post('/onboarding/reset');
+};
+
 export { API_URL };
 
 export default api;

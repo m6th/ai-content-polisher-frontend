@@ -14,7 +14,6 @@ const Checkout = lazy(() => import('./components/Checkout'));
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const VerifyEmail = lazy(() => import('./components/VerifyEmail'));
-const Dashboard = lazy(() => import('./components/Dashboard'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const History = lazy(() => import('./components/History'));
 const Account = lazy(() => import('./components/Account'));
@@ -27,6 +26,8 @@ const TeamManagement = lazy(() => import('./components/TeamManagement'));
 const AcceptInvitation = lazy(() => import('./components/AcceptInvitation'));
 const JoinTeam = lazy(() => import('./components/JoinTeam'));
 const APIAccess = lazy(() => import('./components/APIAccess'));
+const Onboarding = lazy(() => import('./components/Onboarding'));
+const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -115,10 +116,20 @@ function App() {
               }
             />
             <Route
+              path="/onboarding"
+              element={
+                user ? (
+                  <Onboarding user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
               path="/dashboard"
               element={
                 user ? (
-                  <Dashboard user={user} onUpdateUser={checkAuth} />
+                  <DashboardWrapper user={user} onUpdateUser={checkAuth} />
                 ) : (
                   <Navigate to="/login" />
                 )

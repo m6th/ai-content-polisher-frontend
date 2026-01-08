@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
   const content = {
     fr: {
       title: "Politique de confidentialité",
-      lastUpdated: "Dernière mise à jour : 17 décembre 2024",
+      lastUpdated: "Dernière mise à jour : 8 janvier 2026",
       sections: [
         {
           title: "1. Introduction",
@@ -17,6 +17,7 @@ export default function PrivacyPolicy() {
           content: "Nous collectons les informations suivantes :",
           list: [
             "Informations de compte : nom, adresse email",
+            "Données d'onboarding : source de découverte de notre service, réseaux sociaux préférés, style d'écriture préféré (collectées lors de votre première connexion avec votre consentement explicite)",
             "Données d'utilisation : contenu généré, historique des générations",
             "Données de paiement : gérées de manière sécurisée par Stripe (nous ne stockons pas vos coordonnées bancaires)",
             "Données techniques : adresse IP, type de navigateur, système d'exploitation",
@@ -28,9 +29,11 @@ export default function PrivacyPolicy() {
           content: "Vos données sont utilisées pour :",
           list: [
             "Fournir et améliorer nos services",
+            "Personnaliser votre expérience utilisateur (contenu, suggestions)",
             "Gérer votre compte et vos abonnements",
             "Communiquer avec vous (support, mises à jour)",
             "Analyser l'utilisation du service pour l'améliorer",
+            "Comprendre comment les utilisateurs découvrent notre service (données marketing anonymisées)",
             "Respecter nos obligations légales"
           ]
         },
@@ -89,7 +92,7 @@ export default function PrivacyPolicy() {
     },
     en: {
       title: "Privacy Policy",
-      lastUpdated: "Last updated: December 17, 2024",
+      lastUpdated: "Last updated: January 8, 2026",
       sections: [
         {
           title: "1. Introduction",
@@ -100,6 +103,7 @@ export default function PrivacyPolicy() {
           content: "We collect the following information:",
           list: [
             "Account information: name, email address",
+            "Onboarding data: how you discovered our service, preferred social networks, preferred writing style (collected during your first login with your explicit consent)",
             "Usage data: generated content, generation history",
             "Payment data: securely managed by Stripe (we do not store your bank details)",
             "Technical data: IP address, browser type, operating system",
@@ -111,9 +115,11 @@ export default function PrivacyPolicy() {
           content: "Your data is used to:",
           list: [
             "Provide and improve our services",
+            "Personalize your user experience (content, suggestions)",
             "Manage your account and subscriptions",
             "Communicate with you (support, updates)",
             "Analyze service usage for improvement",
+            "Understand how users discover our service (anonymized marketing data)",
             "Comply with legal obligations"
           ]
         },
