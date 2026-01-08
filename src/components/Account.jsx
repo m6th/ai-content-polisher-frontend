@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, Lock, Calendar, CreditCard, Shield, Check, X, Eye, EyeOff, Sparkles, ExternalLink } from 'lucide-react';
-import { updateProfile, changePassword, changeEmail, getAnalyticsStats, getSubscriptionInfo, createPortalSession } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { User, Mail, Lock, Calendar, CreditCard, Shield, Check, Eye, EyeOff, Sparkles, RefreshCw } from 'lucide-react';
+import { updateProfile, changePassword, changeEmail, getAnalyticsStats, resetOnboarding } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useTranslation } from '../locales/translations';
 import { useToast } from '../contexts/ToastContext';
 
 function Account({ user, onUpdateUser }) {
   const { language } = useLanguage();
-  const t = useTranslation(language);
+  const navigate = useNavigate();
   const toast = useToast();
 
   // Profile state
@@ -403,6 +403,56 @@ function Account({ user, onUpdateUser }) {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Preferences Section */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 border-2 border-gray-100 dark:border-slate-700">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6 flex items-center">
+            <RefreshCw className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-purple-600 dark:text-purple-400" />
+            {language === 'fr' ? 'Préférences' : language === 'en' ? 'Preferences' : 'Preferencias'}
+          </h2>
+
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4 sm:p-6 border border-purple-200 dark:border-purple-800">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {language === 'fr' ? 'Guide de démarrage' : language === 'en' ? 'Getting Started Guide' : 'Guía de inicio'}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-slate-400">
+                  {language === 'fr'
+                    ? 'Refaites le guide de démarrage pour mettre à jour vos préférences (réseaux sociaux, style d\'écriture, etc.)'
+                    : language === 'en'
+                    ? 'Redo the getting started guide to update your preferences (social networks, writing style, etc.)'
+                    : 'Rehace la guía de inicio para actualizar tus preferencias (redes sociales, estilo de escritura, etc.)'}
+                </p>
+              </div>
+              <button
+                onClick={async () => {
+                  try {
+                    await resetOnboarding();
+                    toast.success(
+                      language === 'fr' ? 'Redirection vers le guide...' :
+                      language === 'en' ? 'Redirecting to guide...' :
+                      'Redirigiendo a la guía...'
+                    );
+                    setTimeout(() => {
+                      navigate('/onboarding');
+                    }, 500);
+                  } catch (error) {
+                    toast.error(
+                      language === 'fr' ? 'Erreur lors de la réinitialisation' :
+                      language === 'en' ? 'Error resetting onboarding' :
+                      'Error al reiniciar la guía'
+                    );
+                  }
+                }}
+                className="shrink-0 w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                <RefreshCw className="h-5 w-5" />
+                {language === 'fr' ? 'Refaire le guide' : language === 'en' ? 'Redo guide' : 'Rehacer guía'}
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Password Section */}
