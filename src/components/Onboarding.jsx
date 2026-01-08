@@ -17,6 +17,14 @@ function Onboarding({ user }) {
     discoverySource: '',
     discoverySourceOther: '',
     preferredNetworks: [],
+    socialUrls: {
+      linkedin: '',
+      twitter: '',
+      instagram: '',
+      facebook: '',
+      tiktok: '',
+      youtube: ''
+    },
     preferredStyle: '',
     consentDataStorage: false
   });
@@ -106,9 +114,17 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Précise comment tu nous as trouvé...'
       },
       step3: {
-        title: 'Quels réseaux sociaux utilises-tu ?',
-        subtitle: 'Sélectionne tous les réseaux sur lesquels tu veux créer du contenu',
-        note: 'Tu pourras modifier ce choix plus tard dans les paramètres'
+        title: 'Connecte tes réseaux sociaux',
+        subtitle: 'Ajoute les URLs de tes profils pour que l\'IA apprenne ton style d\'écriture (optionnel)',
+        note: 'Ces informations nous permettront de personnaliser les contenus générés selon ton style',
+        placeholders: {
+          linkedin: 'https://linkedin.com/in/ton-profil',
+          twitter: 'https://twitter.com/ton-pseudo',
+          instagram: 'https://instagram.com/ton-pseudo',
+          facebook: 'https://facebook.com/ton-profil',
+          tiktok: 'https://tiktok.com/@ton-pseudo',
+          youtube: 'https://youtube.com/@ta-chaine'
+        }
       },
       step4: {
         title: 'Quel style d\'écriture préfères-tu ?',
@@ -143,9 +159,17 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Specify how you found us...'
       },
       step3: {
-        title: 'Which social networks do you use?',
-        subtitle: 'Select all networks where you want to create content',
-        note: 'You can change this later in settings'
+        title: 'Connect your social networks',
+        subtitle: 'Add your profile URLs so the AI can learn your writing style (optional)',
+        note: 'This will help us personalize generated content to match your style',
+        placeholders: {
+          linkedin: 'https://linkedin.com/in/your-profile',
+          twitter: 'https://twitter.com/your-username',
+          instagram: 'https://instagram.com/your-username',
+          facebook: 'https://facebook.com/your-profile',
+          tiktok: 'https://tiktok.com/@your-username',
+          youtube: 'https://youtube.com/@your-channel'
+        }
       },
       step4: {
         title: 'What writing style do you prefer?',
@@ -180,9 +204,17 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Especifica cómo nos encontraste...'
       },
       step3: {
-        title: '¿Qué redes sociales usas?',
-        subtitle: 'Selecciona todas las redes donde quieres crear contenido',
-        note: 'Puedes cambiar esto más tarde en la configuración'
+        title: 'Conecta tus redes sociales',
+        subtitle: 'Añade las URLs de tus perfiles para que la IA aprenda tu estilo de escritura (opcional)',
+        note: 'Esto nos ayudará a personalizar el contenido generado según tu estilo',
+        placeholders: {
+          linkedin: 'https://linkedin.com/in/tu-perfil',
+          twitter: 'https://twitter.com/tu-usuario',
+          instagram: 'https://instagram.com/tu-usuario',
+          facebook: 'https://facebook.com/tu-perfil',
+          tiktok: 'https://tiktok.com/@tu-usuario',
+          youtube: 'https://youtube.com/@tu-canal'
+        }
       },
       step4: {
         title: '¿Qué estilo de escritura prefieres?',
@@ -212,19 +244,31 @@ function Onboarding({ user }) {
     setOnboardingData({ ...onboardingData, discoverySource: sourceId });
   };
 
-  const toggleNetwork = (networkId) => {
-    const networks = onboardingData.preferredNetworks;
-    if (networks.includes(networkId)) {
-      setOnboardingData({
-        ...onboardingData,
-        preferredNetworks: networks.filter(n => n !== networkId)
-      });
-    } else {
-      setOnboardingData({
-        ...onboardingData,
-        preferredNetworks: [...networks, networkId]
-      });
-    }
+  const handleSocialUrlChange = (network, url) => {
+    setOnboardingData({
+      ...onboardingData,
+      socialUrls: {
+        ...onboardingData.socialUrls,
+        [network]: url
+      }
+    });
+
+    // Auto-update preferredNetworks based on which URLs are filled
+    const filledNetworks = Object.entries({
+      ...onboardingData.socialUrls,
+      [network]: url
+    })
+      .filter(([_, url]) => url.trim() !== '')
+      .map(([network, _]) => network);
+
+    setOnboardingData(prev => ({
+      ...prev,
+      socialUrls: {
+        ...prev.socialUrls,
+        [network]: url
+      },
+      preferredNetworks: filledNetworks
+    }));
   };
 
   const handleStyleSelect = (styleId) => {
@@ -241,10 +285,7 @@ function Onboarding({ user }) {
       toast.error(language === 'fr' ? 'Merci de préciser comment tu nous as trouvé' : language === 'en' ? 'Please specify how you found us' : 'Por favor especifica cómo nos encontraste');
       return;
     }
-    if (step === 3 && onboardingData.preferredNetworks.length === 0) {
-      toast.error(language === 'fr' ? 'Sélectionne au moins un réseau social' : language === 'en' ? 'Select at least one social network' : 'Selecciona al menos una red social');
-      return;
-    }
+    // Step 3 is optional - no validation needed
     if (step === 4 && !onboardingData.preferredStyle) {
       toast.error(language === 'fr' ? 'Choisis un style d\'écriture' : language === 'en' ? 'Choose a writing style' : 'Elige un estilo de escritura');
       return;
@@ -271,6 +312,7 @@ function Onboarding({ user }) {
       await saveOnboardingData({
         discovery_source: onboardingData.discoverySource === 'other' ? onboardingData.discoverySourceOther : onboardingData.discoverySource,
         preferred_networks: onboardingData.preferredNetworks,
+        social_urls: onboardingData.socialUrls,
         preferred_style: onboardingData.preferredStyle,
         consent_data_storage: onboardingData.consentDataStorage
       });
@@ -395,7 +437,7 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 3: Social networks */}
+          {/* Step 3: Social network URLs */}
           {step === 3 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
@@ -405,33 +447,25 @@ function Onboarding({ user }) {
                 {t.step3.subtitle}
               </p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+              <div className="space-y-4 mb-6">
                 {socialNetworks.map((network) => {
                   const Icon = network.icon;
-                  const isSelected = onboardingData.preferredNetworks.includes(network.id);
-
                   return (
-                    <button
-                      key={network.id}
-                      onClick={() => toggleNetwork(network.id)}
-                      className={`p-6 rounded-xl border-2 transition-all ${
-                        isSelected
-                          ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                          : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
-                      }`}
-                    >
-                      <div className="flex flex-col items-center gap-3">
-                        <div className={`bg-gradient-to-r ${network.color} p-3 rounded-xl`}>
-                          <Icon className="h-6 w-6 text-white" />
+                    <div key={network.id} className="relative">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                        <div className={`bg-gradient-to-r ${network.color} p-2 rounded-lg`}>
+                          <Icon className="h-4 w-4 text-white" />
                         </div>
-                        <span className="font-medium text-gray-900 dark:text-white text-sm text-center">
-                          {network.label}
-                        </span>
-                        {isSelected && (
-                          <Check className="h-5 w-5 text-purple-600" />
-                        )}
-                      </div>
-                    </button>
+                        {network.label}
+                      </label>
+                      <input
+                        type="url"
+                        value={onboardingData.socialUrls[network.id]}
+                        onChange={(e) => handleSocialUrlChange(network.id, e.target.value)}
+                        placeholder={t.step3.placeholders[network.id]}
+                        className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      />
+                    </div>
                   );
                 })}
               </div>
