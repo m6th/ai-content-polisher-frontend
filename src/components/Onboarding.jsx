@@ -25,7 +25,10 @@ function Onboarding({ user }) {
       tiktok: '',
       youtube: ''
     },
+    styleOption: '', // 'personal', 'creator', 'predefined'
+    creatorUrl: '',
     preferredStyle: '',
+    fallbackStyle: '', // Style de secours si le scraping échoue
     consentDataStorage: false
   });
 
@@ -127,9 +130,26 @@ function Onboarding({ user }) {
         }
       },
       step4: {
-        title: 'Quel style d\'écriture préfères-tu ?',
-        subtitle: 'Choisis le ton qui correspond le mieux à ta personnalité',
-        note: 'Tu pourras toujours changer de style pour chaque post'
+        title: 'Comment veux-tu que l\'IA écrive ?',
+        subtitle: 'Choisis la méthode qui te correspond le mieux',
+        options: {
+          personal: {
+            label: 'Mon style personnel',
+            description: 'L\'IA analyse tes posts sur LinkedIn/Instagram/Facebook pour apprendre ton style unique',
+            note: 'Nécessite au moins une URL renseignée à l\'étape précédente'
+          },
+          creator: {
+            label: 'Style d\'un créateur',
+            description: 'Imite le style d\'un créateur que tu admires',
+            placeholder: 'https://linkedin.com/in/createur-inspire'
+          },
+          predefined: {
+            label: 'Style prédéfini',
+            description: 'Choisis parmi nos styles optimisés pour tous les réseaux'
+          }
+        },
+        fallbackLabel: 'Style de secours',
+        fallbackNote: 'Ce style sera utilisé si l\'analyse échoue ou pour les réseaux non supportés (Twitter, TikTok, YouTube)'
       },
       step5: {
         title: 'Dernière étape !',
@@ -172,9 +192,26 @@ function Onboarding({ user }) {
         }
       },
       step4: {
-        title: 'What writing style do you prefer?',
-        subtitle: 'Choose the tone that best matches your personality',
-        note: 'You can always change the style for each post'
+        title: 'How do you want the AI to write?',
+        subtitle: 'Choose the method that suits you best',
+        options: {
+          personal: {
+            label: 'My personal style',
+            description: 'AI analyzes your posts on LinkedIn/Instagram/Facebook to learn your unique style',
+            note: 'Requires at least one URL from the previous step'
+          },
+          creator: {
+            label: 'Creator\'s style',
+            description: 'Mimic the style of a creator you admire',
+            placeholder: 'https://linkedin.com/in/inspiring-creator'
+          },
+          predefined: {
+            label: 'Predefined style',
+            description: 'Choose from our styles optimized for all networks'
+          }
+        },
+        fallbackLabel: 'Fallback style',
+        fallbackNote: 'This style will be used if analysis fails or for unsupported networks (Twitter, TikTok, YouTube)'
       },
       step5: {
         title: 'Last step!',
@@ -217,9 +254,26 @@ function Onboarding({ user }) {
         }
       },
       step4: {
-        title: '¿Qué estilo de escritura prefieres?',
-        subtitle: 'Elige el tono que mejor se adapte a tu personalidad',
-        note: 'Siempre puedes cambiar el estilo para cada publicación'
+        title: '¿Cómo quieres que escriba la IA?',
+        subtitle: 'Elige el método que mejor te convenga',
+        options: {
+          personal: {
+            label: 'Mi estilo personal',
+            description: 'La IA analiza tus publicaciones en LinkedIn/Instagram/Facebook para aprender tu estilo único',
+            note: 'Requiere al menos una URL del paso anterior'
+          },
+          creator: {
+            label: 'Estilo de un creador',
+            description: 'Imita el estilo de un creador que admiras',
+            placeholder: 'https://linkedin.com/in/creador-inspirador'
+          },
+          predefined: {
+            label: 'Estilo predefinido',
+            description: 'Elige entre nuestros estilos optimizados para todas las redes'
+          }
+        },
+        fallbackLabel: 'Estilo de respaldo',
+        fallbackNote: 'Este estilo se usará si el análisis falla o para redes no soportadas (Twitter, TikTok, YouTube)'
       },
       step5: {
         title: '¡Último paso!',
@@ -271,8 +325,26 @@ function Onboarding({ user }) {
     }));
   };
 
+  const handleStyleOptionSelect = (option) => {
+    setOnboardingData({
+      ...onboardingData,
+      styleOption: option,
+      // Reset other fields when changing option
+      creatorUrl: option === 'creator' ? onboardingData.creatorUrl : '',
+      preferredStyle: option === 'predefined' ? onboardingData.preferredStyle : ''
+    });
+  };
+
+  const handleCreatorUrlChange = (url) => {
+    setOnboardingData({ ...onboardingData, creatorUrl: url });
+  };
+
   const handleStyleSelect = (styleId) => {
     setOnboardingData({ ...onboardingData, preferredStyle: styleId });
+  };
+
+  const handleFallbackStyleSelect = (styleId) => {
+    setOnboardingData({ ...onboardingData, fallbackStyle: styleId });
   };
 
   const handleNext = () => {
@@ -286,9 +358,28 @@ function Onboarding({ user }) {
       return;
     }
     // Step 3 is optional - no validation needed
-    if (step === 4 && !onboardingData.preferredStyle) {
-      toast.error(language === 'fr' ? 'Choisis un style d\'écriture' : language === 'en' ? 'Choose a writing style' : 'Elige un estilo de escritura');
-      return;
+    if (step === 4) {
+      if (!onboardingData.styleOption) {
+        toast.error(language === 'fr' ? 'Choisis une option de style' : language === 'en' ? 'Choose a style option' : 'Elige una opción de estilo');
+        return;
+      }
+      if (onboardingData.styleOption === 'personal' && onboardingData.preferredNetworks.length === 0) {
+        toast.error(language === 'fr' ? 'Retourne à l\'étape précédente pour ajouter au moins une URL' : language === 'en' ? 'Go back to add at least one URL' : 'Vuelve para añadir al menos una URL');
+        return;
+      }
+      if (onboardingData.styleOption === 'creator' && !onboardingData.creatorUrl.trim()) {
+        toast.error(language === 'fr' ? 'Entre l\'URL du créateur' : language === 'en' ? 'Enter the creator\'s URL' : 'Ingresa la URL del creador');
+        return;
+      }
+      if (onboardingData.styleOption === 'predefined' && !onboardingData.preferredStyle) {
+        toast.error(language === 'fr' ? 'Choisis un style prédéfini' : language === 'en' ? 'Choose a predefined style' : 'Elige un estilo predefinido');
+        return;
+      }
+      // Fallback style is required for personal and creator options
+      if ((onboardingData.styleOption === 'personal' || onboardingData.styleOption === 'creator') && !onboardingData.fallbackStyle) {
+        toast.error(language === 'fr' ? 'Choisis un style de secours' : language === 'en' ? 'Choose a fallback style' : 'Elige un estilo de respaldo');
+        return;
+      }
     }
 
     setStep(step + 1);
@@ -313,7 +404,10 @@ function Onboarding({ user }) {
         discovery_source: onboardingData.discoverySource === 'other' ? onboardingData.discoverySourceOther : onboardingData.discoverySource,
         preferred_networks: onboardingData.preferredNetworks,
         social_urls: onboardingData.socialUrls,
+        style_option: onboardingData.styleOption,
+        creator_url: onboardingData.creatorUrl,
         preferred_style: onboardingData.preferredStyle,
+        fallback_style: onboardingData.fallbackStyle,
         consent_data_storage: onboardingData.consentDataStorage
       });
 
@@ -492,7 +586,7 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 4: Writing style */}
+          {/* Step 4: Writing style method */}
           {step === 4 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
@@ -502,34 +596,149 @@ function Onboarding({ user }) {
                 {t.step4.subtitle}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {writingStyles[language].map((style) => (
+              {/* Style option selection */}
+              <div className="space-y-4 mb-6">
+                {/* Option 1: Personal style */}
+                <button
+                  onClick={() => handleStyleOptionSelect('personal')}
+                  className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                    onboardingData.styleOption === 'personal'
+                      ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                      : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">👤</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.personal.label}</span>
+                    </div>
+                    {onboardingData.styleOption === 'personal' && (
+                      <Check className="h-5 w-5 text-purple-600" />
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.personal.description}</p>
+                  {onboardingData.preferredNetworks.length === 0 && (
+                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">⚠️ {t.step4.options.personal.note}</p>
+                  )}
+                </button>
+
+                {/* Option 2: Creator style */}
+                <div>
                   <button
-                    key={style.id}
-                    onClick={() => handleStyleSelect(style.id)}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
-                      onboardingData.preferredStyle === style.id
+                    onClick={() => handleStyleOptionSelect('creator')}
+                    className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                      onboardingData.styleOption === 'creator'
                         ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
                         : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-2xl">{style.emoji}</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">{style.label}</span>
+                        <span className="text-2xl">⭐</span>
+                        <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.creator.label}</span>
                       </div>
-                      {onboardingData.preferredStyle === style.id && (
+                      {onboardingData.styleOption === 'creator' && (
                         <Check className="h-5 w-5 text-purple-600" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-slate-400">{style.description}</p>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.creator.description}</p>
                   </button>
-                ))}
+                  {onboardingData.styleOption === 'creator' && (
+                    <input
+                      type="url"
+                      value={onboardingData.creatorUrl}
+                      onChange={(e) => handleCreatorUrlChange(e.target.value)}
+                      placeholder={t.step4.options.creator.placeholder}
+                      className="w-full mt-3 px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  )}
+                </div>
+
+                {/* Option 3: Predefined style */}
+                <button
+                  onClick={() => handleStyleOptionSelect('predefined')}
+                  className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                    onboardingData.styleOption === 'predefined'
+                      ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                      : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">📝</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.predefined.label}</span>
+                    </div>
+                    {onboardingData.styleOption === 'predefined' && (
+                      <Check className="h-5 w-5 text-purple-600" />
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.predefined.description}</p>
+                </button>
               </div>
 
-              <p className="text-xs text-gray-500 dark:text-slate-500 text-center mb-6">
-                {t.step4.note}
-              </p>
+              {/* Show style selection based on option */}
+              {onboardingData.styleOption === 'predefined' && (
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">
+                    {language === 'fr' ? 'Choisis ton style' : language === 'en' ? 'Choose your style' : 'Elige tu estilo'}
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {writingStyles[language].map((style) => (
+                      <button
+                        key={style.id}
+                        onClick={() => handleStyleSelect(style.id)}
+                        className={`p-3 rounded-lg border-2 transition-all text-left ${
+                          onboardingData.preferredStyle === style.id
+                            ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                            : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xl">{style.emoji}</span>
+                          <span className="font-medium text-gray-900 dark:text-white text-sm">{style.label}</span>
+                          {onboardingData.preferredStyle === style.id && (
+                            <Check className="h-4 w-4 text-purple-600 ml-auto" />
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-slate-400">{style.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Fallback style selection for personal and creator options */}
+              {(onboardingData.styleOption === 'personal' || onboardingData.styleOption === 'creator') && (
+                <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                    {t.step4.fallbackLabel}
+                  </label>
+                  <p className="text-xs text-gray-600 dark:text-slate-400 mb-3">
+                    {t.step4.fallbackNote}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {writingStyles[language].map((style) => (
+                      <button
+                        key={style.id}
+                        onClick={() => handleFallbackStyleSelect(style.id)}
+                        className={`p-2 rounded-lg border-2 transition-all ${
+                          onboardingData.fallbackStyle === style.id
+                            ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                            : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                        }`}
+                      >
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-lg">{style.emoji}</span>
+                          <span className="text-xs font-medium text-gray-900 dark:text-white text-center">{style.label}</span>
+                          {onboardingData.fallbackStyle === style.id && (
+                            <Check className="h-3 w-3 text-purple-600" />
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="flex gap-3 justify-between">
                 <button
