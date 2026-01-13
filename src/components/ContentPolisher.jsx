@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
-import { polishContent, getMyPlanRestrictions, getProTrialStatus } from '../services/api';
+import { polishContent, getMyPlanRestrictions, getProTrialStatus, getAvailableTones } from '../services/api';
 import { Wand2, Copy, Check, Download, Globe, Smile, Lock, Crown, AlertCircle, CheckCircle, Info, Search, Sparkles, RefreshCw, Coins, Calendar, Lightbulb, ArrowUp, Eye, X, FileText, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
@@ -53,12 +53,19 @@ function ContentPolisher({ user, onUpdateUser }) {
   const [showProTrialComparison, setShowProTrialComparison] = useState(false);
   const [trialUsed, setTrialUsed] = useState(false);
 
-  // Tous les tons disponibles dans l'application
-  const allTones = [
+  // Custom style modal states
+  const [showAddStyleModal, setShowAddStyleModal] = useState(false);
+  const [newStyleType, setNewStyleType] = useState('personal'); // 'personal' or 'creator'
+  const [newStyleUrl, setNewStyleUrl] = useState('');
+  const [newStyleName, setNewStyleName] = useState('');
+  const [creatingStyle, setCreatingStyle] = useState(false);
+
+  // Dynamic tones (predefined + custom styles)
+  const [allTones, setAllTones] = useState([
     { value: 'professional', label: t.polisher.tones.professional },
     { value: 'engaging', label: t.polisher.tones.engaging },
     { value: 'storytelling', label: t.polisher.tones.storytelling },
-  ];
+  ]);
 
   const languages = [
     { value: 'fr', label: t.polisher.languages.fr },
@@ -264,6 +271,40 @@ function ContentPolisher({ user, onUpdateUser }) {
     };
 
     loadRestrictions();
+  }, []);
+
+  // Charger les tons disponibles (prédéfinis + styles personnalisés)
+  useEffect(() => {
+    const loadTones = async () => {
+      try {
+        const response = await getAvailableTones();
+        const tones = response.data;
+
+        // Séparer les tons prédéfinis et customs
+        const predefinedTones = tones
+          .filter(t => t.type === 'predefined')
+          .map(t => ({
+            value: t.id,
+            label: t.name
+          }));
+
+        const customTones = tones
+          .filter(t => t.type === 'custom')
+          .map(t => ({
+            value: t.id,
+            label: t.name,
+            status: t.status,
+            platform: t.platform,
+            isCustom: true
+          }));
+
+        setAllTones([...predefinedTones, ...customTones]);
+      } catch (error) {
+        console.error('Erreur lors du chargement des tons:', error);
+      }
+    };
+
+    loadTones();
   }, []);
 
   // Charger le statut de l'essai Pro
@@ -700,33 +741,66 @@ function ContentPolisher({ user, onUpdateUser }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Tone Selection with restrictions */}
             <div>
-              <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold mb-2 sm:mb-3 text-sm sm:text-base lg:text-lg">
-                <Smile className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-purple-600" />
-                {t.polisher.toneLabel}
-              </label>
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <label className="flex items-center text-gray-700 dark:text-slate-300 font-semibold text-sm sm:text-base lg:text-lg">
+                  <Smile className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-purple-600" />
+                  {t.polisher.toneLabel}
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowAddStyleModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:shadow-lg transition-all"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {uiLanguage === 'fr' ? 'Nouveau style' : uiLanguage === 'en' ? 'New style' : 'Nuevo estilo'}
+                </button>
+              </div>
               <div className="relative">
                 <select
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-slate-700 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base lg:text-lg appearance-none"
                 >
-                  {allTones.map((toneOption) => {
-                    const allowed = isToneAllowed(toneOption.value);
-                    return (
-                      <option
-                        key={toneOption.value}
-                        value={toneOption.value}
-                        disabled={!allowed}
-                      >
-                        {toneOption.label} {!allowed ? '🔒 (Pro/Business)' : ''}
-                      </option>
-                    );
-                  })}
+                  {/* Tons prédéfinis */}
+                  <optgroup label={uiLanguage === 'fr' ? '📝 Styles prédéfinis' : uiLanguage === 'en' ? '📝 Predefined styles' : '📝 Estilos predefinidos'}>
+                    {allTones.filter(t => !t.isCustom).map((toneOption) => {
+                      const allowed = isToneAllowed(toneOption.value);
+                      return (
+                        <option
+                          key={toneOption.value}
+                          value={toneOption.value}
+                          disabled={!allowed}
+                        >
+                          {toneOption.label} {!allowed ? '🔒 (Pro/Business)' : ''}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+
+                  {/* Styles personnalisés */}
+                  {allTones.some(t => t.isCustom) && (
+                    <optgroup label={uiLanguage === 'fr' ? '✨ Mes styles personnels' : uiLanguage === 'en' ? '✨ My personal styles' : '✨ Mis estilos personales'}>
+                      {allTones.filter(t => t.isCustom).map((toneOption) => {
+                        const statusIcon = toneOption.status === 'ready' ? '✅' :
+                                          toneOption.status === 'analyzing' ? '⏳' :
+                                          toneOption.status === 'failed' ? '❌' : '⏸️';
+                        return (
+                          <option
+                            key={toneOption.value}
+                            value={toneOption.value}
+                            disabled={toneOption.status !== 'ready'}
+                          >
+                            {statusIcon} {toneOption.label}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                  )}
                 </select>
               </div>
               {planRestrictions && (user.current_plan === 'free' || user.current_plan === 'starter') && (
                 <p className="text-xs text-gray-500 dark:text-slate-400 mt-2">
-                  💡 Tons disponibles : {planRestrictions.tones.length}/{allTones.length}
+                  💡 Tons disponibles : {planRestrictions.tones.length}/{allTones.filter(t => !t.isCustom).length}
                 </p>
               )}
             </div>
@@ -1367,6 +1441,190 @@ function ContentPolisher({ user, onUpdateUser }) {
                 className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-semibold transition-all"
               >
                 {t.polisher.preview.close}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Custom Style Modal */}
+      {showAddStyleModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full shadow-2xl">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-purple-600" />
+                  {uiLanguage === 'fr' ? 'Ajouter un style personnel' : uiLanguage === 'en' ? 'Add personal style' : 'Añadir estilo personal'}
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowAddStyleModal(false);
+                    setNewStyleUrl('');
+                    setNewStyleName('');
+                    setNewStyleType('personal');
+                  }}
+                  className="text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="px-6 py-4 space-y-4">
+              {/* Style Type Selection */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
+                  {uiLanguage === 'fr' ? 'Type de style' : uiLanguage === 'en' ? 'Style type' : 'Tipo de estilo'}
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setNewStyleType('personal')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      newStyleType === 'personal'
+                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                        : 'border-gray-200 dark:border-slate-700'
+                    }`}
+                  >
+                    <div className="text-2xl mb-1">👤</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                      {uiLanguage === 'fr' ? 'Mon style' : uiLanguage === 'en' ? 'My style' : 'Mi estilo'}
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setNewStyleType('creator')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      newStyleType === 'creator'
+                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                        : 'border-gray-200 dark:border-slate-700'
+                    }`}
+                  >
+                    <div className="text-2xl mb-1">⭐</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                      {uiLanguage === 'fr' ? "Style d'un créateur" : uiLanguage === 'en' ? "Creator's style" : 'Estilo de creador'}
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* URL Input */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
+                  {uiLanguage === 'fr' ? 'URL du profil' : uiLanguage === 'en' ? 'Profile URL' : 'URL del perfil'}
+                </label>
+                <input
+                  type="url"
+                  value={newStyleUrl}
+                  onChange={(e) => setNewStyleUrl(e.target.value)}
+                  placeholder="https://www.linkedin.com/in/..."
+                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-900 dark:text-white"
+                />
+                <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                  {uiLanguage === 'fr'
+                    ? '✅ Supporte: LinkedIn, Instagram, Facebook'
+                    : uiLanguage === 'en'
+                    ? '✅ Supports: LinkedIn, Instagram, Facebook'
+                    : '✅ Soporta: LinkedIn, Instagram, Facebook'}
+                </p>
+              </div>
+
+              {/* Style Name (Optional) */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
+                  {uiLanguage === 'fr' ? 'Nom du style (optionnel)' : uiLanguage === 'en' ? 'Style name (optional)' : 'Nombre del estilo (opcional)'}
+                </label>
+                <input
+                  type="text"
+                  value={newStyleName}
+                  onChange={(e) => setNewStyleName(e.target.value)}
+                  placeholder={
+                    uiLanguage === 'fr'
+                      ? 'Ex: Mon style LinkedIn'
+                      : uiLanguage === 'en'
+                      ? 'Ex: My LinkedIn style'
+                      : 'Ej: Mi estilo LinkedIn'}
+                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-900 dark:text-white"
+                />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowAddStyleModal(false);
+                  setNewStyleUrl('');
+                  setNewStyleName('');
+                  setNewStyleType('personal');
+                }}
+                className="px-4 py-2 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg font-semibold transition-all"
+              >
+                {uiLanguage === 'fr' ? 'Annuler' : uiLanguage === 'en' ? 'Cancel' : 'Cancelar'}
+              </button>
+              <button
+                onClick={async () => {
+                  if (!newStyleUrl.trim()) {
+                    toast.error(uiLanguage === 'fr' ? 'Veuillez entrer une URL' : uiLanguage === 'en' ? 'Please enter a URL' : 'Por favor ingrese una URL');
+                    return;
+                  }
+
+                  setCreatingStyle(true);
+                  try {
+                    const { createStyleProfile } = await import('../services/api');
+                    await createStyleProfile(newStyleType, newStyleUrl, newStyleName || null);
+
+                    toast.success(uiLanguage === 'fr' ? 'Style ajouté ! Analyse en cours...' : uiLanguage === 'en' ? 'Style added! Analyzing...' : 'Estilo añadido! Analizando...');
+
+                    // Recharger les tons
+                    const { getAvailableTones } = await import('../services/api');
+                    const response = await getAvailableTones();
+                    const tones = response.data;
+
+                    const predefinedTones = tones
+                      .filter(t => t.type === 'predefined')
+                      .map(t => ({ value: t.id, label: t.name }));
+
+                    const customTones = tones
+                      .filter(t => t.type === 'custom')
+                      .map(t => ({
+                        value: t.id,
+                        label: t.name,
+                        status: t.status,
+                        platform: t.platform,
+                        isCustom: true
+                      }));
+
+                    setAllTones([...predefinedTones, ...customTones]);
+
+                    setShowAddStyleModal(false);
+                    setNewStyleUrl('');
+                    setNewStyleName('');
+                    setNewStyleType('personal');
+                  } catch (error) {
+                    console.error('Error creating style:', error);
+                    toast.error(uiLanguage === 'fr' ? 'Erreur lors de la création du style' : uiLanguage === 'en' ? 'Error creating style' : 'Error al crear el estilo');
+                  } finally {
+                    setCreatingStyle(false);
+                  }
+                }}
+                disabled={creatingStyle || !newStyleUrl.trim()}
+                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {creatingStyle ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    {uiLanguage === 'fr' ? 'Création...' : uiLanguage === 'en' ? 'Creating...' : 'Creando...'}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" />
+                    {uiLanguage === 'fr' ? 'Créer' : uiLanguage === 'en' ? 'Create' : 'Crear'}
+                  </>
+                )}
               </button>
             </div>
           </div>

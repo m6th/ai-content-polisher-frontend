@@ -346,6 +346,31 @@ export const resetOnboarding = () => {
   return api.post('/onboarding/reset');
 };
 
+// Style Profiles
+export const getAvailableTones = () => {
+  return api.get('/styles/available-tones');
+};
+
+export const getMyStyleProfiles = () => {
+  return api.get('/styles/my-profiles');
+};
+
+export const createStyleProfile = (styleType, sourceUrl, styleName = null) => {
+  return api.post('/styles/create', {
+    style_type: styleType,
+    source_url: sourceUrl,
+    style_name: styleName
+  });
+};
+
+export const deleteStyleProfile = (profileId) => {
+  return api.delete(`/styles/${profileId}`);
+};
+
+export const reanalyzeStyleProfile = (profileId) => {
+  return api.post(`/styles/${profileId}/reanalyze`);
+};
+
 export { API_URL };
 
 export default api;
