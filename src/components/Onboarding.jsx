@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, Check, Linkedin, Twitter, Instagram, Facebook, MessageCircle, Youtube } from 'lucide-react';
+import { Sparkles, ArrowRight, Check, Linkedin, Twitter, Instagram, Facebook, MessageCircle, Youtube, Wand2, Copy, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { saveOnboardingData } from '../services/api';
+import { saveOnboardingData, polishContent } from '../services/api';
 import { useToast } from '../contexts/ToastContext';
 
 function Onboarding({ user }) {
@@ -11,6 +11,12 @@ function Onboarding({ user }) {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  // Step 5: First post creation
+  const [firstPostText, setFirstPostText] = useState('');
+  const [generatedContent, setGeneratedContent] = useState(null);
+  const [generating, setGenerating] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Onboarding data
   const [onboardingData, setOnboardingData] = useState({
@@ -32,7 +38,7 @@ function Onboarding({ user }) {
     consentDataStorage: false
   });
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   // Discovery sources
   const discoverySources = {
@@ -152,6 +158,25 @@ function Onboarding({ user }) {
         fallbackNote: 'Ce style sera utilisé si l\'analyse échoue ou pour les réseaux non supportés (Twitter, TikTok, YouTube)'
       },
       step5: {
+        title: 'Crée ton premier post !',
+        subtitle: 'Teste l\'IA avec une idée simple',
+        placeholder: 'Ex: Je viens de terminer un projet important...\nOu: 3 conseils pour être plus productif...\nOu: Mon avis sur l\'intelligence artificielle...',
+        generateButton: 'Générer mon post',
+        generating: 'Génération en cours...',
+        resultTitle: 'Voici ton post LinkedIn',
+        copyButton: 'Copier',
+        copied: 'Copié !',
+        regenerate: 'Régénérer',
+        skipButton: 'Passer cette étape',
+        continueButton: 'Continuer',
+        emptyError: 'Entre une idée pour ton post',
+        examples: [
+          'Je viens de terminer un projet qui m\'a appris beaucoup',
+          '3 erreurs que je ne ferai plus jamais',
+          'Pourquoi j\'ai décidé de changer de carrière'
+        ]
+      },
+      step6: {
         title: 'Dernière étape !',
         subtitle: 'Tes données sont importantes pour nous',
         consent: 'J\'accepte que mes préférences soient enregistrées pour améliorer mon expérience et personnaliser mes contenus.',
@@ -214,6 +239,25 @@ function Onboarding({ user }) {
         fallbackNote: 'This style will be used if analysis fails or for unsupported networks (Twitter, TikTok, YouTube)'
       },
       step5: {
+        title: 'Create your first post!',
+        subtitle: 'Test the AI with a simple idea',
+        placeholder: 'Ex: I just finished an important project...\nOr: 3 tips to be more productive...\nOr: My thoughts on artificial intelligence...',
+        generateButton: 'Generate my post',
+        generating: 'Generating...',
+        resultTitle: 'Here\'s your LinkedIn post',
+        copyButton: 'Copy',
+        copied: 'Copied!',
+        regenerate: 'Regenerate',
+        skipButton: 'Skip this step',
+        continueButton: 'Continue',
+        emptyError: 'Enter an idea for your post',
+        examples: [
+          'I just finished a project that taught me a lot',
+          '3 mistakes I will never make again',
+          'Why I decided to change careers'
+        ]
+      },
+      step6: {
         title: 'Last step!',
         subtitle: 'Your data matters to us',
         consent: 'I agree to have my preferences saved to improve my experience and personalize my content.',
@@ -276,6 +320,25 @@ function Onboarding({ user }) {
         fallbackNote: 'Este estilo se usará si el análisis falla o para redes no soportadas (Twitter, TikTok, YouTube)'
       },
       step5: {
+        title: '¡Crea tu primera publicación!',
+        subtitle: 'Prueba la IA con una idea simple',
+        placeholder: 'Ej: Acabo de terminar un proyecto importante...\nO: 3 consejos para ser más productivo...\nO: Mi opinión sobre la inteligencia artificial...',
+        generateButton: 'Generar mi post',
+        generating: 'Generando...',
+        resultTitle: 'Aquí está tu post de LinkedIn',
+        copyButton: 'Copiar',
+        copied: '¡Copiado!',
+        regenerate: 'Regenerar',
+        skipButton: 'Omitir este paso',
+        continueButton: 'Continuar',
+        emptyError: 'Ingresa una idea para tu post',
+        examples: [
+          'Acabo de terminar un proyecto que me enseñó mucho',
+          '3 errores que nunca volveré a cometer',
+          'Por qué decidí cambiar de carrera'
+        ]
+      },
+      step6: {
         title: '¡Último paso!',
         subtitle: 'Tus datos son importantes para nosotros',
         consent: 'Acepto que mis preferencias se guarden para mejorar mi experiencia y personalizar mis contenidos.',
@@ -345,6 +408,49 @@ function Onboarding({ user }) {
 
   const handleFallbackStyleSelect = (styleId) => {
     setOnboardingData({ ...onboardingData, fallbackStyle: styleId });
+  };
+
+  // Step 5: Generate first post
+  const handleGenerateFirstPost = async () => {
+    if (!firstPostText.trim()) {
+      toast.error(t.step5.emptyError);
+      return;
+    }
+
+    setGenerating(true);
+    setGeneratedContent(null);
+
+    try {
+      // Utiliser le style choisi à l'étape précédente
+      const toneToUse = onboardingData.preferredStyle || onboardingData.fallbackStyle || 'professional';
+      const response = await polishContent(firstPostText, toneToUse, language);
+
+      // Récupérer le contenu LinkedIn
+      const linkedinFormat = response.data.formats.find(f => f.format === 'linkedin');
+      if (linkedinFormat) {
+        setGeneratedContent(linkedinFormat.content);
+      } else if (response.data.formats.length > 0) {
+        setGeneratedContent(response.data.formats[0].content);
+      }
+    } catch (error) {
+      console.error('Error generating content:', error);
+      toast.error(language === 'fr' ? 'Erreur lors de la génération' : language === 'en' ? 'Generation error' : 'Error de generación');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const handleCopyContent = () => {
+    if (generatedContent) {
+      navigator.clipboard.writeText(generatedContent);
+      setCopied(true);
+      toast.success(t.step5.copied);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleUseExample = (example) => {
+    setFirstPostText(example);
   };
 
   const handleNext = () => {
@@ -758,14 +864,129 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 5: Consent */}
+          {/* Step 5: Create first post */}
           {step === 5 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
                 {t.step5.title}
               </h2>
-              <p className="text-gray-600 dark:text-slate-400 mb-8 text-center">
+              <p className="text-gray-600 dark:text-slate-400 mb-6 text-center">
                 {t.step5.subtitle}
+              </p>
+
+              {/* Examples chips */}
+              <div className="mb-4">
+                <p className="text-xs text-gray-500 dark:text-slate-500 mb-2">
+                  {language === 'fr' ? 'Exemples d\'idées :' : language === 'en' ? 'Example ideas:' : 'Ideas de ejemplo:'}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {t.step5.examples.map((example, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleUseExample(example)}
+                      className="text-xs px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+                    >
+                      {example.length > 40 ? example.substring(0, 40) + '...' : example}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Text input */}
+              <textarea
+                value={firstPostText}
+                onChange={(e) => setFirstPostText(e.target.value)}
+                placeholder={t.step5.placeholder}
+                rows={4}
+                className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none mb-4"
+              />
+
+              {/* Generate button */}
+              <button
+                onClick={handleGenerateFirstPost}
+                disabled={generating || !firstPostText.trim()}
+                className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+              >
+                {generating ? (
+                  <>
+                    <RefreshCw className="h-5 w-5 animate-spin" />
+                    {t.step5.generating}
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-5 w-5" />
+                    {t.step5.generateButton}
+                  </>
+                )}
+              </button>
+
+              {/* Generated content */}
+              {generatedContent && (
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium text-gray-700 dark:text-slate-300">
+                      💼 {t.step5.resultTitle}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleCopyContent}
+                        className="text-xs px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex items-center gap-1"
+                      >
+                        {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                        {copied ? t.step5.copied : t.step5.copyButton}
+                      </button>
+                      <button
+                        onClick={handleGenerateFirstPost}
+                        disabled={generating}
+                        className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-1"
+                      >
+                        <RefreshCw className={`h-3 w-3 ${generating ? 'animate-spin' : ''}`} />
+                        {t.step5.regenerate}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                    <p className="text-gray-800 dark:text-slate-200 whitespace-pre-wrap text-sm">
+                      {generatedContent}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-3 justify-between">
+                <button
+                  onClick={handleBack}
+                  className="px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all"
+                >
+                  {t.back}
+                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleNext}
+                    className="px-6 py-3 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium transition-all"
+                  >
+                    {t.step5.skipButton}
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center gap-2"
+                  >
+                    {t.step5.continueButton}
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Consent */}
+          {step === 6 && (
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                {t.step6.title}
+              </h2>
+              <p className="text-gray-600 dark:text-slate-400 mb-8 text-center">
+                {t.step6.subtitle}
               </p>
 
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 mb-6">
@@ -778,16 +999,16 @@ function Onboarding({ user }) {
                   />
                   <div>
                     <p className="text-gray-900 dark:text-white font-medium mb-3">
-                      {t.step5.consent}
+                      {t.step6.consent}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-slate-400">
-                      {t.step5.privacy}{' '}
+                      {t.step6.privacy}{' '}
                       <a href="/privacy" target="_blank" className="text-purple-600 hover:underline font-semibold">
-                        {t.step5.privacyLink}
+                        {t.step6.privacyLink}
                       </a>{' '}
-                      {t.step5.and}{' '}
+                      {t.step6.and}{' '}
                       <a href="/terms" target="_blank" className="text-purple-600 hover:underline font-semibold">
-                        {t.step5.termsLink}
+                        {t.step6.termsLink}
                       </a>.
                     </p>
                   </div>
@@ -796,7 +1017,7 @@ function Onboarding({ user }) {
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
                 <p className="text-sm text-blue-900 dark:text-blue-300">
-                  🔒 {t.step5.note}
+                  🔒 {t.step6.note}
                 </p>
               </div>
 
@@ -819,7 +1040,7 @@ function Onboarding({ user }) {
                     </>
                   ) : (
                     <>
-                      {t.step5.button}
+                      {t.step6.button}
                       <Check className="h-5 w-5" />
                     </>
                   )}

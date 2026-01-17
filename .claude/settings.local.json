@@ -46,7 +46,13 @@
       "Bash(lsof:*)",
       "Bash(echo \"curl -X POST https://VOTRE-BACKEND.onrender.com/calendar/send-reminders \\\\\"\necho \" -H 'X-Cron-Secret: GR4FsYVXk7se1qWJaDJJf-eGK2J9qfZMoIxomj_W7QU' \")",
       "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"UPDATE alembic_version SET version_num = ''e4140a66fe2c'';\")",
-      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"\\\\dt\")"
+      "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"\\\\dt\")",
+      "Bash(git reset:*)",
+      "Bash(GIT_TERMINAL_PROMPT=0 git push:*)",
+      "Bash(pip3 install:*)"
+    ],
+    "additionalDirectories": [
+      "/home/mathd/backend"
     ]
   }
 }
