@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import {
-  Rocket, Sparkles, Bell, ArrowLeft,
-  Linkedin, Instagram, Palette, Calendar,
-  Zap, Target, Users, BarChart3
+  Rocket, Sparkles, ArrowLeft,
+  Linkedin, Instagram, Palette
 } from 'lucide-react';
 
 function ComingSoon() {
@@ -34,24 +33,6 @@ function ComingSoon() {
           title: "Intégration Instagram",
           description: "Publiez automatiquement sur Instagram avec les hashtags optimisés.",
           status: "Planifié"
-        },
-        {
-          icon: Calendar,
-          title: "Calendrier éditorial avancé",
-          description: "Planifiez vos publications sur plusieurs semaines avec suggestions IA.",
-          status: "Planifié"
-        },
-        {
-          icon: BarChart3,
-          title: "Analytics avancées",
-          description: "Suivez les performances de vos contenus avec des métriques détaillées.",
-          status: "En développement"
-        },
-        {
-          icon: Users,
-          title: "Collaboration équipe",
-          description: "Workflows d'approbation et collaboration en temps réel.",
-          status: "Planifié"
         }
       ]
     },
@@ -79,24 +60,6 @@ function ComingSoon() {
           title: "Instagram Integration",
           description: "Automatically post to Instagram with optimized hashtags.",
           status: "Planned"
-        },
-        {
-          icon: Calendar,
-          title: "Advanced Editorial Calendar",
-          description: "Plan your publications weeks ahead with AI suggestions.",
-          status: "Planned"
-        },
-        {
-          icon: BarChart3,
-          title: "Advanced Analytics",
-          description: "Track your content performance with detailed metrics.",
-          status: "In development"
-        },
-        {
-          icon: Users,
-          title: "Team Collaboration",
-          description: "Approval workflows and real-time collaboration.",
-          status: "Planned"
         }
       ]
     },
@@ -123,24 +86,6 @@ function ComingSoon() {
           icon: Instagram,
           title: "Integración con Instagram",
           description: "Publica automáticamente en Instagram con hashtags optimizados.",
-          status: "Planificado"
-        },
-        {
-          icon: Calendar,
-          title: "Calendario editorial avanzado",
-          description: "Planifica tus publicaciones con semanas de anticipación con sugerencias de IA.",
-          status: "Planificado"
-        },
-        {
-          icon: BarChart3,
-          title: "Analíticas avanzadas",
-          description: "Sigue el rendimiento de tu contenido con métricas detalladas.",
-          status: "En desarrollo"
-        },
-        {
-          icon: Users,
-          title: "Colaboración en equipo",
-          description: "Flujos de aprobación y colaboración en tiempo real.",
           status: "Planificado"
         }
       ]
