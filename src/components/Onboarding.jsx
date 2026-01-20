@@ -108,8 +108,8 @@ function Onboarding({ user }) {
         options: {
           creator: {
             label: 'Style d\'un créateur',
-            description: 'Colle 2-3 posts d\'un créateur que tu admires pour que l\'IA apprenne son style',
-            placeholder: 'Colle ici 2-3 posts du créateur dont tu veux imiter le style...\n\nExemple:\n---\nPost 1:\nAujourd\'hui j\'ai appris quelque chose d\'important...\n---\nPost 2:\nLa clé du succès c\'est...'
+            description: 'Copie le texte de 2-3 posts LinkedIn ou Instagram d\'un créateur que tu admires',
+            placeholder: 'Colle ici le TEXTE de 2-3 posts LinkedIn ou Instagram (pas les URLs)...\n\nExemple:\n---\nPost 1:\nAujourd\'hui j\'ai appris quelque chose d\'important. Après 5 ans dans le marketing, je réalise que...\n---\nPost 2:\nLa clé du succès ? Ce n\'est pas le talent. C\'est la régularité...'
           },
           predefined: {
             label: 'Style prédéfini',
@@ -169,8 +169,8 @@ function Onboarding({ user }) {
         options: {
           creator: {
             label: 'Creator\'s style',
-            description: 'Paste 2-3 posts from a creator you admire so the AI can learn their style',
-            placeholder: 'Paste 2-3 posts from the creator whose style you want to imitate...\n\nExample:\n---\nPost 1:\nToday I learned something important...\n---\nPost 2:\nThe key to success is...'
+            description: 'Copy the text of 2-3 LinkedIn or Instagram posts from a creator you admire',
+            placeholder: 'Paste the TEXT of 2-3 LinkedIn or Instagram posts here (not URLs)...\n\nExample:\n---\nPost 1:\nToday I learned something important. After 5 years in marketing, I realized that...\n---\nPost 2:\nThe key to success? It\'s not talent. It\'s consistency...'
           },
           predefined: {
             label: 'Predefined style',
@@ -230,8 +230,8 @@ function Onboarding({ user }) {
         options: {
           creator: {
             label: 'Estilo de un creador',
-            description: 'Pega 2-3 publicaciones de un creador que admiras para que la IA aprenda su estilo',
-            placeholder: 'Pega aquí 2-3 publicaciones del creador cuyo estilo quieres imitar...\n\nEjemplo:\n---\nPost 1:\nHoy aprendí algo importante...\n---\nPost 2:\nLa clave del éxito es...'
+            description: 'Copia el texto de 2-3 publicaciones de LinkedIn o Instagram de un creador que admiras',
+            placeholder: 'Pega aquí el TEXTO de 2-3 publicaciones de LinkedIn o Instagram (no las URLs)...\n\nEjemplo:\n---\nPost 1:\nHoy aprendí algo importante. Después de 5 años en marketing, me di cuenta de que...\n---\nPost 2:\n¿La clave del éxito? No es el talento. Es la constancia...'
           },
           predefined: {
             label: 'Estilo predefinido',
