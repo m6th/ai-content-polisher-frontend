@@ -19,20 +19,17 @@ function ComingSoon() {
         {
           icon: Palette,
           title: "Style d'écriture personnel",
-          description: "Analysez votre profil LinkedIn ou Instagram pour que l'IA reproduise parfaitement votre style unique.",
-          status: "En développement"
+          description: "Analysez votre profil LinkedIn ou Instagram pour que l'IA reproduise parfaitement votre style unique."
         },
         {
           icon: Linkedin,
           title: "Intégration LinkedIn",
-          description: "Connectez votre compte LinkedIn pour publier directement vos contenus générés.",
-          status: "Planifié"
+          description: "Connectez votre compte LinkedIn pour publier directement vos contenus générés."
         },
         {
           icon: Instagram,
           title: "Intégration Instagram",
-          description: "Publiez automatiquement sur Instagram avec les hashtags optimisés.",
-          status: "Planifié"
+          description: "Publiez automatiquement sur Instagram avec les hashtags optimisés."
         }
       ]
     },
@@ -46,20 +43,17 @@ function ComingSoon() {
         {
           icon: Palette,
           title: "Personal Writing Style",
-          description: "Analyze your LinkedIn or Instagram profile so AI perfectly reproduces your unique style.",
-          status: "In development"
+          description: "Analyze your LinkedIn or Instagram profile so AI perfectly reproduces your unique style."
         },
         {
           icon: Linkedin,
           title: "LinkedIn Integration",
-          description: "Connect your LinkedIn account to publish your generated content directly.",
-          status: "Planned"
+          description: "Connect your LinkedIn account to publish your generated content directly."
         },
         {
           icon: Instagram,
           title: "Instagram Integration",
-          description: "Automatically post to Instagram with optimized hashtags.",
-          status: "Planned"
+          description: "Automatically post to Instagram with optimized hashtags."
         }
       ]
     },
@@ -73,33 +67,23 @@ function ComingSoon() {
         {
           icon: Palette,
           title: "Estilo de escritura personal",
-          description: "Analiza tu perfil de LinkedIn o Instagram para que la IA reproduzca perfectamente tu estilo único.",
-          status: "En desarrollo"
+          description: "Analiza tu perfil de LinkedIn o Instagram para que la IA reproduzca perfectamente tu estilo único."
         },
         {
           icon: Linkedin,
           title: "Integración con LinkedIn",
-          description: "Conecta tu cuenta de LinkedIn para publicar directamente tu contenido generado.",
-          status: "Planificado"
+          description: "Conecta tu cuenta de LinkedIn para publicar directamente tu contenido generado."
         },
         {
           icon: Instagram,
           title: "Integración con Instagram",
-          description: "Publica automáticamente en Instagram con hashtags optimizados.",
-          status: "Planificado"
+          description: "Publica automáticamente en Instagram con hashtags optimizados."
         }
       ]
     }
   };
 
   const t = texts[language] || texts.fr;
-
-  const getStatusColor = (status) => {
-    if (status.includes('développement') || status.includes('development') || status.includes('desarrollo')) {
-      return 'from-yellow-500 to-orange-500';
-    }
-    return 'from-blue-500 to-purple-500';
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-hidden">
@@ -143,13 +127,6 @@ function ComingSoon() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
 
               <div className="relative">
-                {/* Status Badge */}
-                <div className="absolute -top-1 -right-1">
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getStatusColor(feature.status)}`}>
-                    {feature.status}
-                  </span>
-                </div>
-
                 {/* Icon */}
                 <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
                   <feature.icon className="h-7 w-7 text-white" />
