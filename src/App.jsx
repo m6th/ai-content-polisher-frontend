@@ -28,6 +28,7 @@ const JoinTeam = lazy(() => import('./components/JoinTeam'));
 const APIAccess = lazy(() => import('./components/APIAccess'));
 const Onboarding = lazy(() => import('./components/Onboarding'));
 const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
+const ComingSoon = lazy(() => import('./components/ComingSoon'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -224,6 +225,10 @@ function App() {
             <Route
               path="/legal"
               element={<LegalNotice />}
+            />
+            <Route
+              path="/coming-soon"
+              element={<ComingSoon />}
             />
               </Routes>
               </Suspense>

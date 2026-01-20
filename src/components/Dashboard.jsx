@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ContentPolisher from './ContentPolisher';
 import Analytics from './Analytics';
-import { BarChart3, Sparkles, CreditCard, Calendar as CalendarIcon } from 'lucide-react';
+import { BarChart3, Sparkles, CreditCard, Calendar as CalendarIcon, Rocket } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getAnalyticsStats } from '../services/api';
 
@@ -88,6 +88,18 @@ function Dashboard({ user, onUpdateUser }) {
           >
             <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>Analytics</span>
+          </button>
+          <button
+            onClick={() => navigate('/coming-soon')}
+            className="py-2.5 sm:py-3 px-3 sm:px-6 rounded-lg sm:rounded-xl font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-sm sm:text-base text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 relative"
+          >
+            <Rocket className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden sm:inline">{language === 'fr' ? 'Prochainement' : language === 'es' ? 'Próximamente' : 'Coming Soon'}</span>
+            <span className="sm:hidden">{language === 'fr' ? 'Bientôt' : 'Soon'}</span>
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
+            </span>
           </button>
         </div>
 

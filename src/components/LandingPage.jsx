@@ -5,7 +5,7 @@ import {
   Sparkles, Zap, Target, ArrowRight, Check,
   FileText, Mail, Video, Linkedin, Instagram,
   Twitter, BookOpen, Megaphone, GraduationCap,
-  Smile, Drama, Facebook, Image, Send, ChevronDown, UserPlus
+  Smile, Drama, Facebook, Image, Send, ChevronDown, UserPlus, Rocket
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -218,6 +218,18 @@ function LandingPage() {
                   <UserPlus className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
                   Rejoindre une équipe
                 </span>
+              </Link>
+            </div>
+
+            {/* Coming Soon Button */}
+            <div className="pt-2">
+              <Link
+                to="/coming-soon"
+                className="group inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >
+                <Rocket className="h-4 w-4" />
+                <span>{language === 'fr' ? 'Voir les fonctionnalités à venir' : language === 'es' ? 'Ver las próximas funciones' : 'See upcoming features'}</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
