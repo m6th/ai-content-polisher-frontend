@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, Check, Wand2, Copy, RefreshCw } from 'lucide-react';
+import { Sparkles, ArrowRight, Check, Wand2, Copy, RefreshCw, Heart, Edit3, X, Linkedin, Instagram, Twitter } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { saveOnboardingData, polishContent } from '../services/api';
 import { useToast } from '../contexts/ToastContext';
@@ -12,11 +12,30 @@ function Onboarding({ user }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Step 4: First post creation
+  // Step 4: First post creation - sub-steps
+  const [postCreationStep, setPostCreationStep] = useState('topic'); // 'topic', 'hooks', 'posts'
   const [firstPostText, setFirstPostText] = useState('');
-  const [generatedContent, setGeneratedContent] = useState(null);
-  const [generating, setGenerating] = useState(false);
-  const [copied, setCopied] = useState(false);
+
+  // Hooks state
+  const [hooks, setHooks] = useState([]);
+  const [selectedHookIndex, setSelectedHookIndex] = useState(null);
+  const [editingHookIndex, setEditingHookIndex] = useState(null);
+  const [generatingHooks, setGeneratingHooks] = useState(false);
+
+  // Generated posts state
+  const [generatedPosts, setGeneratedPosts] = useState({
+    linkedin: null,
+    instagram: null,
+    twitter: null
+  });
+  const [generatingPosts, setGeneratingPosts] = useState(false);
+  const [copiedPost, setCopiedPost] = useState(null);
+  const [favorites, setFavorites] = useState({});
+
+  // Edit modal state
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingPlatform, setEditingPlatform] = useState(null);
+  const [editingContent, setEditingContent] = useState('');
 
   // Onboarding data
   const [onboardingData, setOnboardingData] = useState({
@@ -120,21 +139,46 @@ function Onboarding({ user }) {
       step4: {
         title: 'Crée ton premier post !',
         subtitle: 'Teste l\'IA avec une idée simple',
+        topicTitle: 'De quoi veux-tu parler ?',
+        topicSubtitle: 'Décris ton sujet ou ton idée',
         placeholder: 'Ex: Je viens de terminer un projet important...\nOu: 3 conseils pour être plus productif...\nOu: Mon avis sur l\'intelligence artificielle...',
-        generateButton: 'Générer mon post',
+        generateHooksButton: 'Générer les hooks',
         generating: 'Génération en cours...',
-        resultTitle: 'Voici ton post LinkedIn',
+        hooksTitle: 'Choisis ton hook',
+        hooksSubtitle: 'Le hook est la première phrase qui capte l\'attention. Sélectionne ou modifie celui que tu préfères.',
+        editHook: 'Modifier',
+        saveHook: 'Enregistrer',
+        cancelEdit: 'Annuler',
+        generatePostsButton: 'Générer les posts',
+        postsTitle: 'Tes posts sont prêts !',
+        postsSubtitle: 'Voici 3 versions adaptées à chaque plateforme',
+        finishButton: 'Finir le tutoriel et accéder à l\'application',
         copyButton: 'Copier',
         copied: 'Copié !',
+        editButton: 'Modifier',
+        favoriteButton: 'Favoris',
+        words: 'mots',
+        characters: 'caractères',
         regenerate: 'Régénérer',
         skipButton: 'Passer cette étape',
         continueButton: 'Continuer',
         emptyError: 'Entre une idée pour ton post',
+        selectHookError: 'Sélectionne un hook pour continuer',
         examples: [
           'Je viens de terminer un projet qui m\'a appris beaucoup',
           '3 erreurs que je ne ferai plus jamais',
           'Pourquoi j\'ai décidé de changer de carrière'
-        ]
+        ],
+        platforms: {
+          linkedin: 'LinkedIn',
+          instagram: 'Instagram',
+          twitter: 'Twitter / X'
+        },
+        editModal: {
+          title: 'Modifier le post',
+          save: 'Enregistrer',
+          cancel: 'Annuler'
+        }
       },
       step5: {
         title: 'Dernière étape !',
@@ -181,21 +225,46 @@ function Onboarding({ user }) {
       step4: {
         title: 'Create your first post!',
         subtitle: 'Test the AI with a simple idea',
+        topicTitle: 'What do you want to talk about?',
+        topicSubtitle: 'Describe your topic or idea',
         placeholder: 'Ex: I just finished an important project...\nOr: 3 tips to be more productive...\nOr: My thoughts on artificial intelligence...',
-        generateButton: 'Generate my post',
+        generateHooksButton: 'Generate hooks',
         generating: 'Generating...',
-        resultTitle: 'Here\'s your LinkedIn post',
+        hooksTitle: 'Choose your hook',
+        hooksSubtitle: 'The hook is the first sentence that grabs attention. Select or modify the one you prefer.',
+        editHook: 'Edit',
+        saveHook: 'Save',
+        cancelEdit: 'Cancel',
+        generatePostsButton: 'Generate posts',
+        postsTitle: 'Your posts are ready!',
+        postsSubtitle: 'Here are 3 versions adapted to each platform',
+        finishButton: 'Finish tutorial and access the app',
         copyButton: 'Copy',
         copied: 'Copied!',
+        editButton: 'Edit',
+        favoriteButton: 'Favorite',
+        words: 'words',
+        characters: 'characters',
         regenerate: 'Regenerate',
         skipButton: 'Skip this step',
         continueButton: 'Continue',
         emptyError: 'Enter an idea for your post',
+        selectHookError: 'Select a hook to continue',
         examples: [
           'I just finished a project that taught me a lot',
           '3 mistakes I will never make again',
           'Why I decided to change careers'
-        ]
+        ],
+        platforms: {
+          linkedin: 'LinkedIn',
+          instagram: 'Instagram',
+          twitter: 'Twitter / X'
+        },
+        editModal: {
+          title: 'Edit post',
+          save: 'Save',
+          cancel: 'Cancel'
+        }
       },
       step5: {
         title: 'Last step!',
@@ -242,21 +311,46 @@ function Onboarding({ user }) {
       step4: {
         title: '¡Crea tu primera publicación!',
         subtitle: 'Prueba la IA con una idea simple',
+        topicTitle: '¿De qué quieres hablar?',
+        topicSubtitle: 'Describe tu tema o idea',
         placeholder: 'Ej: Acabo de terminar un proyecto importante...\nO: 3 consejos para ser más productivo...\nO: Mi opinión sobre la inteligencia artificial...',
-        generateButton: 'Generar mi post',
+        generateHooksButton: 'Generar hooks',
         generating: 'Generando...',
-        resultTitle: 'Aquí está tu post de LinkedIn',
+        hooksTitle: 'Elige tu hook',
+        hooksSubtitle: 'El hook es la primera frase que capta la atención. Selecciona o modifica el que prefieras.',
+        editHook: 'Editar',
+        saveHook: 'Guardar',
+        cancelEdit: 'Cancelar',
+        generatePostsButton: 'Generar posts',
+        postsTitle: '¡Tus posts están listos!',
+        postsSubtitle: 'Aquí tienes 3 versiones adaptadas a cada plataforma',
+        finishButton: 'Terminar tutorial y acceder a la app',
         copyButton: 'Copiar',
         copied: '¡Copiado!',
+        editButton: 'Editar',
+        favoriteButton: 'Favorito',
+        words: 'palabras',
+        characters: 'caracteres',
         regenerate: 'Regenerar',
         skipButton: 'Omitir este paso',
         continueButton: 'Continuar',
         emptyError: 'Ingresa una idea para tu post',
+        selectHookError: 'Selecciona un hook para continuar',
         examples: [
           'Acabo de terminar un proyecto que me enseñó mucho',
           '3 errores que nunca volveré a cometer',
           'Por qué decidí cambiar de carrera'
-        ]
+        ],
+        platforms: {
+          linkedin: 'LinkedIn',
+          instagram: 'Instagram',
+          twitter: 'Twitter / X'
+        },
+        editModal: {
+          title: 'Editar post',
+          save: 'Guardar',
+          cancel: 'Cancelar'
+        }
       },
       step5: {
         title: '¡Último paso!',
@@ -276,6 +370,17 @@ function Onboarding({ user }) {
   };
 
   const t = texts[language] || texts.fr;
+
+  // Utility functions
+  const countWords = (text) => {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  };
+
+  const countCharacters = (text) => {
+    if (!text) return 0;
+    return text.length;
+  };
 
   const handleDiscoverySourceSelect = (sourceId) => {
     setOnboardingData({ ...onboardingData, discoverySource: sourceId });
@@ -298,41 +403,157 @@ function Onboarding({ user }) {
     setOnboardingData({ ...onboardingData, preferredStyle: styleId });
   };
 
-  // Step 4: Generate first post
-  const handleGenerateFirstPost = async () => {
+  // Step 4: Generate hooks
+  const handleGenerateHooks = async () => {
     if (!firstPostText.trim()) {
       toast.error(t.step4.emptyError);
       return;
     }
 
-    setGenerating(true);
-    setGeneratedContent(null);
+    setGeneratingHooks(true);
+    setHooks([]);
+    setSelectedHookIndex(null);
 
     try {
       const toneToUse = onboardingData.preferredStyle || 'professional';
-      const response = await polishContent(firstPostText, toneToUse, language);
 
-      const linkedinFormat = response.data.formats.find(f => f.format === 'linkedin');
-      if (linkedinFormat) {
-        setGeneratedContent(linkedinFormat.content);
-      } else if (response.data.formats.length > 0) {
-        setGeneratedContent(response.data.formats[0].content);
+      // Generate 3 different hooks based on the topic
+      const hookPrompts = [
+        `Génère UN SEUL hook accrocheur (première phrase) pour un post sur: "${firstPostText}". Style: question provocante. Réponds UNIQUEMENT avec le hook, rien d'autre.`,
+        `Génère UN SEUL hook accrocheur (première phrase) pour un post sur: "${firstPostText}". Style: statistique ou fait surprenant. Réponds UNIQUEMENT avec le hook, rien d'autre.`,
+        `Génère UN SEUL hook accrocheur (première phrase) pour un post sur: "${firstPostText}". Style: histoire personnelle. Réponds UNIQUEMENT avec le hook, rien d'autre.`
+      ];
+
+      const generatedHooks = [];
+
+      for (const prompt of hookPrompts) {
+        try {
+          const response = await polishContent(prompt, toneToUse, language);
+          const content = response.data.formats?.[0]?.content || response.data.content;
+          if (content) {
+            // Extract just the first sentence/hook
+            const hook = content.split('\n')[0].trim();
+            generatedHooks.push(hook);
+          }
+        } catch (err) {
+          console.error('Error generating hook:', err);
+        }
       }
+
+      if (generatedHooks.length === 0) {
+        // Fallback hooks if API fails
+        generatedHooks.push(
+          language === 'fr' ? `Et si je vous disais que ${firstPostText.toLowerCase()} a changé ma vie ?` :
+          language === 'es' ? `¿Y si les dijera que ${firstPostText.toLowerCase()} cambió mi vida?` :
+          `What if I told you that ${firstPostText.toLowerCase()} changed my life?`,
+
+          language === 'fr' ? `90% des gens ignorent cette vérité sur ${firstPostText.toLowerCase()}.` :
+          language === 'es' ? `El 90% de las personas ignora esta verdad sobre ${firstPostText.toLowerCase()}.` :
+          `90% of people ignore this truth about ${firstPostText.toLowerCase()}.`,
+
+          language === 'fr' ? `Il y a 3 ans, je ne savais rien sur ${firstPostText.toLowerCase()}. Aujourd'hui...` :
+          language === 'es' ? `Hace 3 años, no sabía nada sobre ${firstPostText.toLowerCase()}. Hoy...` :
+          `3 years ago, I knew nothing about ${firstPostText.toLowerCase()}. Today...`
+        );
+      }
+
+      setHooks(generatedHooks);
+      setPostCreationStep('hooks');
     } catch (error) {
-      console.error('Error generating content:', error);
-      toast.error(language === 'fr' ? 'Erreur lors de la génération' : language === 'en' ? 'Generation error' : 'Error de generación');
+      console.error('Error generating hooks:', error);
+      toast.error(language === 'fr' ? 'Erreur lors de la génération des hooks' : language === 'en' ? 'Error generating hooks' : 'Error al generar los hooks');
     } finally {
-      setGenerating(false);
+      setGeneratingHooks(false);
     }
   };
 
-  const handleCopyContent = () => {
-    if (generatedContent) {
-      navigator.clipboard.writeText(generatedContent);
-      setCopied(true);
-      toast.success(t.step4.copied);
-      setTimeout(() => setCopied(false), 2000);
+  // Update hook
+  const handleUpdateHook = (index, newValue) => {
+    const newHooks = [...hooks];
+    newHooks[index] = newValue;
+    setHooks(newHooks);
+    setEditingHookIndex(null);
+  };
+
+  // Generate posts for all platforms
+  const handleGeneratePosts = async () => {
+    if (selectedHookIndex === null) {
+      toast.error(t.step4.selectHookError);
+      return;
     }
+
+    setGeneratingPosts(true);
+    setGeneratedPosts({ linkedin: null, instagram: null, twitter: null });
+
+    const selectedHook = hooks[selectedHookIndex];
+    const toneToUse = onboardingData.preferredStyle || 'professional';
+
+    try {
+      // Generate LinkedIn post
+      const linkedinPrompt = `Crée un post LinkedIn professionnel complet basé sur ce hook: "${selectedHook}" et ce sujet: "${firstPostText}". Le post doit être engageant, avec des sauts de ligne, et faire environ 150-200 mots. N'inclus PAS de hashtags.`;
+
+      // Generate Instagram post
+      const instagramPrompt = `Crée un post Instagram engageant basé sur ce hook: "${selectedHook}" et ce sujet: "${firstPostText}". Le post doit être plus court et visuellement structuré avec des emojis. Inclus 5-10 hashtags pertinents à la fin.`;
+
+      // Generate Twitter post
+      const twitterPrompt = `Crée un tweet percutant de maximum 280 caractères basé sur ce hook: "${selectedHook}" et ce sujet: "${firstPostText}". Sois concis et impactant.`;
+
+      const [linkedinRes, instagramRes, twitterRes] = await Promise.all([
+        polishContent(linkedinPrompt, toneToUse, language).catch(() => null),
+        polishContent(instagramPrompt, toneToUse, language).catch(() => null),
+        polishContent(twitterPrompt, toneToUse, language).catch(() => null)
+      ]);
+
+      setGeneratedPosts({
+        linkedin: linkedinRes?.data?.formats?.[0]?.content || linkedinRes?.data?.content || `${selectedHook}\n\n${firstPostText}`,
+        instagram: instagramRes?.data?.formats?.[0]?.content || instagramRes?.data?.content || `${selectedHook}\n\n${firstPostText}\n\n#content #social`,
+        twitter: twitterRes?.data?.formats?.[0]?.content || twitterRes?.data?.content || selectedHook.substring(0, 280)
+      });
+
+      setPostCreationStep('posts');
+    } catch (error) {
+      console.error('Error generating posts:', error);
+      toast.error(language === 'fr' ? 'Erreur lors de la génération des posts' : language === 'en' ? 'Error generating posts' : 'Error al generar los posts');
+    } finally {
+      setGeneratingPosts(false);
+    }
+  };
+
+  // Copy post content
+  const handleCopyPost = (platform) => {
+    const content = generatedPosts[platform];
+    if (content) {
+      navigator.clipboard.writeText(content);
+      setCopiedPost(platform);
+      toast.success(t.step4.copied);
+      setTimeout(() => setCopiedPost(null), 2000);
+    }
+  };
+
+  // Toggle favorite
+  const handleToggleFavorite = (platform) => {
+    setFavorites(prev => ({
+      ...prev,
+      [platform]: !prev[platform]
+    }));
+  };
+
+  // Open edit modal
+  const handleOpenEditModal = (platform) => {
+    setEditingPlatform(platform);
+    setEditingContent(generatedPosts[platform]);
+    setEditModalOpen(true);
+  };
+
+  // Save edited post
+  const handleSaveEdit = () => {
+    setGeneratedPosts(prev => ({
+      ...prev,
+      [editingPlatform]: editingContent
+    }));
+    setEditModalOpen(false);
+    setEditingPlatform(null);
+    setEditingContent('');
   };
 
   const handleUseExample = (example) => {
@@ -368,9 +589,33 @@ function Onboarding({ user }) {
   };
 
   const handleBack = () => {
+    if (step === 4) {
+      // Handle sub-steps in step 4
+      if (postCreationStep === 'hooks') {
+        setPostCreationStep('topic');
+        return;
+      } else if (postCreationStep === 'posts') {
+        setPostCreationStep('hooks');
+        return;
+      }
+    }
     if (step > 1) {
       setStep(step - 1);
     }
+  };
+
+  const handleSkipStep4 = () => {
+    setStep(5);
+    setPostCreationStep('topic');
+    setFirstPostText('');
+    setHooks([]);
+    setSelectedHookIndex(null);
+    setGeneratedPosts({ linkedin: null, instagram: null, twitter: null });
+  };
+
+  const handleFinishFromPosts = async () => {
+    // Go directly to finish/consent step
+    setStep(5);
   };
 
   const handleFinish = async () => {
@@ -401,9 +646,95 @@ function Onboarding({ user }) {
     }
   };
 
+  // Platform icon component
+  const PlatformIcon = ({ platform, className }) => {
+    switch (platform) {
+      case 'linkedin':
+        return <Linkedin className={className} />;
+      case 'instagram':
+        return <Instagram className={className} />;
+      case 'twitter':
+        return <Twitter className={className} />;
+      default:
+        return null;
+    }
+  };
+
+  // Post card component
+  const PostCard = ({ platform, content }) => {
+    const platformColors = {
+      linkedin: 'from-blue-500 to-blue-600',
+      instagram: 'from-pink-500 via-purple-500 to-orange-500',
+      twitter: 'from-sky-400 to-sky-500'
+    };
+
+    const platformBgColors = {
+      linkedin: 'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20',
+      instagram: 'from-pink-50 via-purple-50 to-orange-50 dark:from-pink-900/20 dark:via-purple-900/20 dark:to-orange-900/20',
+      twitter: 'from-sky-50 to-sky-100 dark:from-sky-900/20 dark:to-sky-800/20'
+    };
+
+    return (
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
+        {/* Header */}
+        <div className={`bg-gradient-to-r ${platformColors[platform]} px-4 py-3 flex items-center gap-2`}>
+          <PlatformIcon platform={platform} className="h-5 w-5 text-white" />
+          <span className="font-semibold text-white">{t.step4.platforms[platform]}</span>
+        </div>
+
+        {/* Content */}
+        <div className={`bg-gradient-to-br ${platformBgColors[platform]} p-4`}>
+          <p className="text-gray-800 dark:text-slate-200 whitespace-pre-wrap text-sm leading-relaxed">
+            {content}
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="px-4 py-2 bg-gray-50 dark:bg-slate-900/50 border-t border-gray-200 dark:border-slate-700">
+          <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-slate-400">
+            <span>{countWords(content)} {t.step4.words}</span>
+            <span>•</span>
+            <span>{countCharacters(content)} {t.step4.characters}</span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="px-4 py-3 flex flex-wrap gap-2 border-t border-gray-200 dark:border-slate-700">
+          <button
+            onClick={() => handleToggleFavorite(platform)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              favorites[platform]
+                ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+                : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+            }`}
+          >
+            <Heart className={`h-3.5 w-3.5 ${favorites[platform] ? 'fill-current' : ''}`} />
+            {t.step4.favoriteButton}
+          </button>
+
+          <button
+            onClick={() => handleCopyPost(platform)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition-all"
+          >
+            {copiedPost === platform ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            {copiedPost === platform ? t.step4.copied : t.step4.copyButton}
+          </button>
+
+          <button
+            onClick={() => handleOpenEditModal(platform)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-all"
+          >
+            <Edit3 className="h-3.5 w-3.5" />
+            {t.step4.editButton}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4 py-8">
-      <div className="max-w-3xl w-full">
+      <div className="max-w-4xl w-full">
         {/* Progress bar */}
         <div className="mb-8">
           <div className="flex justify-between mb-2">
@@ -422,7 +753,7 @@ function Onboarding({ user }) {
         </div>
 
         {/* Content card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 sm:p-12">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 lg:p-12">
           {/* Step 1: Welcome */}
           {step === 1 && (
             <div className="text-center">
@@ -624,50 +955,179 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 4: Create first post */}
-          {step === 4 && (
+          {/* Step 4: Create first post - Topic */}
+          {step === 4 && postCreationStep === 'topic' && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
                 {t.step4.title}
               </h2>
-              <p className="text-gray-600 dark:text-slate-400 mb-6 text-center">
+              <p className="text-gray-600 dark:text-slate-400 mb-2 text-center">
                 {t.step4.subtitle}
               </p>
 
-              {/* Examples chips */}
-              <div className="mb-4">
-                <p className="text-xs text-gray-500 dark:text-slate-500 mb-2">
-                  {language === 'fr' ? 'Exemples d\'idées :' : language === 'en' ? 'Example ideas:' : 'Ideas de ejemplo:'}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+                  {t.step4.topicTitle}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-slate-400 mb-4">
+                  {t.step4.topicSubtitle}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {t.step4.examples.map((example, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleUseExample(example)}
-                      className="text-xs px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
-                    >
-                      {example.length > 40 ? example.substring(0, 40) + '...' : example}
-                    </button>
-                  ))}
+
+                {/* Examples chips */}
+                <div className="mb-4">
+                  <p className="text-xs text-gray-500 dark:text-slate-500 mb-2">
+                    {language === 'fr' ? 'Exemples d\'idées :' : language === 'en' ? 'Example ideas:' : 'Ideas de ejemplo:'}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {t.step4.examples.map((example, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleUseExample(example)}
+                        className="text-xs px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+                      >
+                        {example.length > 40 ? example.substring(0, 40) + '...' : example}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
+                {/* Text input */}
+                <textarea
+                  value={firstPostText}
+                  onChange={(e) => setFirstPostText(e.target.value)}
+                  placeholder={t.step4.placeholder}
+                  rows={4}
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none mb-4"
+                />
+
+                {/* Generate hooks button */}
+                <button
+                  onClick={handleGenerateHooks}
+                  disabled={generatingHooks || !firstPostText.trim()}
+                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {generatingHooks ? (
+                    <>
+                      <RefreshCw className="h-5 w-5 animate-spin" />
+                      {t.step4.generating}
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="h-5 w-5" />
+                      {t.step4.generateHooksButton}
+                    </>
+                  )}
+                </button>
               </div>
 
-              {/* Text input */}
-              <textarea
-                value={firstPostText}
-                onChange={(e) => setFirstPostText(e.target.value)}
-                placeholder={t.step4.placeholder}
-                rows={4}
-                className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none mb-4"
-              />
+              <div className="flex gap-3 justify-between mt-6">
+                <button
+                  onClick={handleBack}
+                  className="px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all"
+                >
+                  {t.back}
+                </button>
+                <button
+                  onClick={handleSkipStep4}
+                  className="px-6 py-3 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium transition-all"
+                >
+                  {t.step4.skipButton}
+                </button>
+              </div>
+            </div>
+          )}
 
-              {/* Generate button */}
+          {/* Step 4: Create first post - Hooks selection */}
+          {step === 4 && postCreationStep === 'hooks' && (
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                {t.step4.hooksTitle}
+              </h2>
+              <p className="text-gray-600 dark:text-slate-400 mb-6 text-center">
+                {t.step4.hooksSubtitle}
+              </p>
+
+              {/* Hooks list */}
+              <div className="space-y-4 mb-6">
+                {hooks.map((hook, index) => (
+                  <div
+                    key={index}
+                    className={`p-4 rounded-xl border-2 transition-all ${
+                      selectedHookIndex === index
+                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                        : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                    }`}
+                  >
+                    {editingHookIndex === index ? (
+                      <div className="space-y-3">
+                        <textarea
+                          value={hook}
+                          onChange={(e) => {
+                            const newHooks = [...hooks];
+                            newHooks[index] = e.target.value;
+                            setHooks(newHooks);
+                          }}
+                          rows={3}
+                          className="w-full px-3 py-2 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none text-sm"
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleUpdateHook(index, hook)}
+                            className="px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-medium hover:bg-purple-700 transition-colors"
+                          >
+                            {t.step4.saveHook}
+                          </button>
+                          <button
+                            onClick={() => setEditingHookIndex(null)}
+                            className="px-3 py-1.5 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg text-xs font-medium hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
+                          >
+                            {t.step4.cancelEdit}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => setSelectedHookIndex(index)}
+                        className="cursor-pointer"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3 flex-1">
+                            <div className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center mt-0.5 ${
+                              selectedHookIndex === index
+                                ? 'border-purple-600 bg-purple-600'
+                                : 'border-gray-300 dark:border-slate-600'
+                            }`}>
+                              {selectedHookIndex === index && (
+                                <Check className="h-4 w-4 text-white" />
+                              )}
+                            </div>
+                            <p className="text-gray-800 dark:text-slate-200 text-sm leading-relaxed">
+                              {hook}
+                            </p>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingHookIndex(index);
+                            }}
+                            className="px-2 py-1 text-xs text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded transition-colors flex-shrink-0"
+                          >
+                            {t.step4.editHook}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Generate posts button */}
               <button
-                onClick={handleGenerateFirstPost}
-                disabled={generating || !firstPostText.trim()}
+                onClick={handleGeneratePosts}
+                disabled={generatingPosts || selectedHookIndex === null}
                 className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
               >
-                {generating ? (
+                {generatingPosts ? (
                   <>
                     <RefreshCw className="h-5 w-5 animate-spin" />
                     {t.step4.generating}
@@ -675,43 +1135,10 @@ function Onboarding({ user }) {
                 ) : (
                   <>
                     <Wand2 className="h-5 w-5" />
-                    {t.step4.generateButton}
+                    {t.step4.generatePostsButton}
                   </>
                 )}
               </button>
-
-              {/* Generated content */}
-              {generatedContent && (
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-gray-700 dark:text-slate-300">
-                      💼 {t.step4.resultTitle}
-                    </p>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={handleCopyContent}
-                        className="text-xs px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex items-center gap-1"
-                      >
-                        {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                        {copied ? t.step4.copied : t.step4.copyButton}
-                      </button>
-                      <button
-                        onClick={handleGenerateFirstPost}
-                        disabled={generating}
-                        className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-1"
-                      >
-                        <RefreshCw className={`h-3 w-3 ${generating ? 'animate-spin' : ''}`} />
-                        {t.step4.regenerate}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                    <p className="text-gray-800 dark:text-slate-200 whitespace-pre-wrap text-sm">
-                      {generatedContent}
-                    </p>
-                  </div>
-                </div>
-              )}
 
               <div className="flex gap-3 justify-between">
                 <button
@@ -720,21 +1147,65 @@ function Onboarding({ user }) {
                 >
                   {t.back}
                 </button>
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleNext}
-                    className="px-6 py-3 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium transition-all"
-                  >
-                    {t.step4.skipButton}
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center gap-2"
-                  >
-                    {t.step4.continueButton}
-                    <ArrowRight className="h-5 w-5" />
-                  </button>
-                </div>
+                <button
+                  onClick={handleSkipStep4}
+                  className="px-6 py-3 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium transition-all"
+                >
+                  {t.step4.skipButton}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Create first post - Generated posts */}
+          {step === 4 && postCreationStep === 'posts' && (
+            <div>
+              {/* Finish button at top */}
+              <div className="mb-6">
+                <button
+                  onClick={handleFinishFromPosts}
+                  className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                >
+                  <Check className="h-6 w-6" />
+                  {t.step4.finishButton}
+                </button>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                {t.step4.postsTitle}
+              </h2>
+              <p className="text-gray-600 dark:text-slate-400 mb-6 text-center">
+                {t.step4.postsSubtitle}
+              </p>
+
+              {/* Posts grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                {generatedPosts.linkedin && (
+                  <PostCard platform="linkedin" content={generatedPosts.linkedin} />
+                )}
+                {generatedPosts.instagram && (
+                  <PostCard platform="instagram" content={generatedPosts.instagram} />
+                )}
+                {generatedPosts.twitter && (
+                  <PostCard platform="twitter" content={generatedPosts.twitter} />
+                )}
+              </div>
+
+              <div className="flex gap-3 justify-between">
+                <button
+                  onClick={handleBack}
+                  className="px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all"
+                >
+                  {t.back}
+                </button>
+                <button
+                  onClick={handleGeneratePosts}
+                  disabled={generatingPosts}
+                  className="px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all flex items-center gap-2"
+                >
+                  <RefreshCw className={`h-4 w-4 ${generatingPosts ? 'animate-spin' : ''}`} />
+                  {t.step4.regenerate}
+                </button>
               </div>
             </div>
           )}
@@ -818,6 +1289,62 @@ function Onboarding({ user }) {
           </p>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+              <div className="flex items-center gap-3">
+                <PlatformIcon platform={editingPlatform} className="h-5 w-5 text-gray-600 dark:text-slate-400" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {t.step4.editModal.title} - {t.step4.platforms[editingPlatform]}
+                </h3>
+              </div>
+              <button
+                onClick={() => setEditModalOpen(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <X className="h-5 w-5 text-gray-500 dark:text-slate-400" />
+              </button>
+            </div>
+
+            {/* Modal content */}
+            <div className="p-6">
+              <textarea
+                value={editingContent}
+                onChange={(e) => setEditingContent(e.target.value)}
+                rows={12}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              />
+
+              {/* Stats */}
+              <div className="flex items-center gap-4 mt-3 text-sm text-gray-500 dark:text-slate-400">
+                <span>{countWords(editingContent)} {t.step4.words}</span>
+                <span>•</span>
+                <span>{countCharacters(editingContent)} {t.step4.characters}</span>
+              </div>
+            </div>
+
+            {/* Modal footer */}
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700">
+              <button
+                onClick={() => setEditModalOpen(false)}
+                className="px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300 rounded-lg font-medium transition-colors"
+              >
+                {t.step4.editModal.cancel}
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-medium transition-colors"
+              >
+                {t.step4.editModal.save}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
