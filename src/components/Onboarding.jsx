@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, Check, Linkedin, Twitter, Instagram, Facebook, MessageCircle, Youtube, Wand2, Copy, RefreshCw } from 'lucide-react';
+import { Sparkles, ArrowRight, Check, Wand2, Copy, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { saveOnboardingData, polishContent } from '../services/api';
 import { useToast } from '../contexts/ToastContext';
@@ -12,7 +12,7 @@ function Onboarding({ user }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Step 5: First post creation
+  // Step 4: First post creation
   const [firstPostText, setFirstPostText] = useState('');
   const [generatedContent, setGeneratedContent] = useState(null);
   const [generating, setGenerating] = useState(false);
@@ -22,23 +22,13 @@ function Onboarding({ user }) {
   const [onboardingData, setOnboardingData] = useState({
     discoverySource: '',
     discoverySourceOther: '',
-    preferredNetworks: [],
-    socialUrls: {
-      linkedin: '',
-      twitter: '',
-      instagram: '',
-      facebook: '',
-      tiktok: '',
-      youtube: ''
-    },
-    styleOption: '', // 'personal', 'creator', 'predefined'
-    creatorUrl: '',
+    styleOption: '', // 'creator', 'predefined'
+    creatorPosts: '', // Posts collés du créateur pour analyse
     preferredStyle: '',
-    fallbackStyle: '', // Style de secours si le scraping échoue
     consentDataStorage: false
   });
 
-  const totalSteps = 6;
+  const totalSteps = 5;
 
   // Discovery sources
   const discoverySources = {
@@ -67,16 +57,6 @@ function Onboarding({ user }) {
       { id: 'other', label: 'Otro' }
     ]
   };
-
-  // Social networks
-  const socialNetworks = [
-    { id: 'linkedin', label: 'LinkedIn', icon: Linkedin, color: 'from-blue-600 to-blue-700' },
-    { id: 'twitter', label: 'Twitter / X', icon: Twitter, color: 'from-sky-500 to-sky-600' },
-    { id: 'instagram', label: 'Instagram', icon: Instagram, color: 'from-pink-500 to-purple-600' },
-    { id: 'facebook', label: 'Facebook', icon: Facebook, color: 'from-blue-500 to-blue-600' },
-    { id: 'tiktok', label: 'TikTok', icon: MessageCircle, color: 'from-gray-800 to-black' },
-    { id: 'youtube', label: 'YouTube', icon: Youtube, color: 'from-red-500 to-red-600' }
-  ];
 
   // Writing styles
   const writingStyles = {
@@ -123,41 +103,21 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Précise comment tu nous as trouvé...'
       },
       step3: {
-        title: 'Connecte tes réseaux sociaux',
-        subtitle: 'Ajoute les URLs de tes profils pour que l\'IA apprenne ton style d\'écriture (optionnel)',
-        note: 'Ces informations nous permettront de personnaliser les contenus générés selon ton style',
-        placeholders: {
-          linkedin: 'https://linkedin.com/in/ton-profil',
-          twitter: 'https://twitter.com/ton-pseudo',
-          instagram: 'https://instagram.com/ton-pseudo',
-          facebook: 'https://facebook.com/ton-profil',
-          tiktok: 'https://tiktok.com/@ton-pseudo',
-          youtube: 'https://youtube.com/@ta-chaine'
-        }
-      },
-      step4: {
         title: 'Comment veux-tu que l\'IA écrive ?',
         subtitle: 'Choisis la méthode qui te correspond le mieux',
         options: {
-          personal: {
-            label: 'Mon style personnel',
-            description: 'L\'IA analyse tes posts sur LinkedIn/Instagram/Facebook pour apprendre ton style unique',
-            note: 'Nécessite au moins une URL renseignée à l\'étape précédente'
-          },
           creator: {
             label: 'Style d\'un créateur',
-            description: 'Imite le style d\'un créateur que tu admires',
-            placeholder: 'https://linkedin.com/in/createur-inspire'
+            description: 'Colle 2-3 posts d\'un créateur que tu admires pour que l\'IA apprenne son style',
+            placeholder: 'Colle ici 2-3 posts du créateur dont tu veux imiter le style...\n\nExemple:\n---\nPost 1:\nAujourd\'hui j\'ai appris quelque chose d\'important...\n---\nPost 2:\nLa clé du succès c\'est...'
           },
           predefined: {
             label: 'Style prédéfini',
             description: 'Choisis parmi nos styles optimisés pour tous les réseaux'
           }
-        },
-        fallbackLabel: 'Style de secours',
-        fallbackNote: 'Ce style sera utilisé si l\'analyse échoue ou pour les réseaux non supportés (Twitter, TikTok, YouTube)'
+        }
       },
-      step5: {
+      step4: {
         title: 'Crée ton premier post !',
         subtitle: 'Teste l\'IA avec une idée simple',
         placeholder: 'Ex: Je viens de terminer un projet important...\nOu: 3 conseils pour être plus productif...\nOu: Mon avis sur l\'intelligence artificielle...',
@@ -176,7 +136,7 @@ function Onboarding({ user }) {
           'Pourquoi j\'ai décidé de changer de carrière'
         ]
       },
-      step6: {
+      step5: {
         title: 'Dernière étape !',
         subtitle: 'Tes données sont importantes pour nous',
         consent: 'J\'accepte que mes préférences soient enregistrées pour améliorer mon expérience et personnaliser mes contenus.',
@@ -204,41 +164,21 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Specify how you found us...'
       },
       step3: {
-        title: 'Connect your social networks',
-        subtitle: 'Add your profile URLs so the AI can learn your writing style (optional)',
-        note: 'This will help us personalize generated content to match your style',
-        placeholders: {
-          linkedin: 'https://linkedin.com/in/your-profile',
-          twitter: 'https://twitter.com/your-username',
-          instagram: 'https://instagram.com/your-username',
-          facebook: 'https://facebook.com/your-profile',
-          tiktok: 'https://tiktok.com/@your-username',
-          youtube: 'https://youtube.com/@your-channel'
-        }
-      },
-      step4: {
         title: 'How do you want the AI to write?',
         subtitle: 'Choose the method that suits you best',
         options: {
-          personal: {
-            label: 'My personal style',
-            description: 'AI analyzes your posts on LinkedIn/Instagram/Facebook to learn your unique style',
-            note: 'Requires at least one URL from the previous step'
-          },
           creator: {
             label: 'Creator\'s style',
-            description: 'Mimic the style of a creator you admire',
-            placeholder: 'https://linkedin.com/in/inspiring-creator'
+            description: 'Paste 2-3 posts from a creator you admire so the AI can learn their style',
+            placeholder: 'Paste 2-3 posts from the creator whose style you want to imitate...\n\nExample:\n---\nPost 1:\nToday I learned something important...\n---\nPost 2:\nThe key to success is...'
           },
           predefined: {
             label: 'Predefined style',
             description: 'Choose from our styles optimized for all networks'
           }
-        },
-        fallbackLabel: 'Fallback style',
-        fallbackNote: 'This style will be used if analysis fails or for unsupported networks (Twitter, TikTok, YouTube)'
+        }
       },
-      step5: {
+      step4: {
         title: 'Create your first post!',
         subtitle: 'Test the AI with a simple idea',
         placeholder: 'Ex: I just finished an important project...\nOr: 3 tips to be more productive...\nOr: My thoughts on artificial intelligence...',
@@ -257,7 +197,7 @@ function Onboarding({ user }) {
           'Why I decided to change careers'
         ]
       },
-      step6: {
+      step5: {
         title: 'Last step!',
         subtitle: 'Your data matters to us',
         consent: 'I agree to have my preferences saved to improve my experience and personalize my content.',
@@ -285,41 +225,21 @@ function Onboarding({ user }) {
         otherPlaceholder: 'Especifica cómo nos encontraste...'
       },
       step3: {
-        title: 'Conecta tus redes sociales',
-        subtitle: 'Añade las URLs de tus perfiles para que la IA aprenda tu estilo de escritura (opcional)',
-        note: 'Esto nos ayudará a personalizar el contenido generado según tu estilo',
-        placeholders: {
-          linkedin: 'https://linkedin.com/in/tu-perfil',
-          twitter: 'https://twitter.com/tu-usuario',
-          instagram: 'https://instagram.com/tu-usuario',
-          facebook: 'https://facebook.com/tu-perfil',
-          tiktok: 'https://tiktok.com/@tu-usuario',
-          youtube: 'https://youtube.com/@tu-canal'
-        }
-      },
-      step4: {
         title: '¿Cómo quieres que escriba la IA?',
         subtitle: 'Elige el método que mejor te convenga',
         options: {
-          personal: {
-            label: 'Mi estilo personal',
-            description: 'La IA analiza tus publicaciones en LinkedIn/Instagram/Facebook para aprender tu estilo único',
-            note: 'Requiere al menos una URL del paso anterior'
-          },
           creator: {
             label: 'Estilo de un creador',
-            description: 'Imita el estilo de un creador que admiras',
-            placeholder: 'https://linkedin.com/in/creador-inspirador'
+            description: 'Pega 2-3 publicaciones de un creador que admiras para que la IA aprenda su estilo',
+            placeholder: 'Pega aquí 2-3 publicaciones del creador cuyo estilo quieres imitar...\n\nEjemplo:\n---\nPost 1:\nHoy aprendí algo importante...\n---\nPost 2:\nLa clave del éxito es...'
           },
           predefined: {
             label: 'Estilo predefinido',
             description: 'Elige entre nuestros estilos optimizados para todas las redes'
           }
-        },
-        fallbackLabel: 'Estilo de respaldo',
-        fallbackNote: 'Este estilo se usará si el análisis falla o para redes no soportadas (Twitter, TikTok, YouTube)'
+        }
       },
-      step5: {
+      step4: {
         title: '¡Crea tu primera publicación!',
         subtitle: 'Prueba la IA con una idea simple',
         placeholder: 'Ej: Acabo de terminar un proyecto importante...\nO: 3 consejos para ser más productivo...\nO: Mi opinión sobre la inteligencia artificial...',
@@ -338,7 +258,7 @@ function Onboarding({ user }) {
           'Por qué decidí cambiar de carrera'
         ]
       },
-      step6: {
+      step5: {
         title: '¡Último paso!',
         subtitle: 'Tus datos son importantes para nosotros',
         consent: 'Acepto que mis preferencias se guarden para mejorar mi experiencia y personalizar mis contenidos.',
@@ -361,59 +281,27 @@ function Onboarding({ user }) {
     setOnboardingData({ ...onboardingData, discoverySource: sourceId });
   };
 
-  const handleSocialUrlChange = (network, url) => {
-    setOnboardingData({
-      ...onboardingData,
-      socialUrls: {
-        ...onboardingData.socialUrls,
-        [network]: url
-      }
-    });
-
-    // Auto-update preferredNetworks based on which URLs are filled
-    const filledNetworks = Object.entries({
-      ...onboardingData.socialUrls,
-      [network]: url
-    })
-      .filter(([_, url]) => url.trim() !== '')
-      .map(([network, _]) => network);
-
-    setOnboardingData(prev => ({
-      ...prev,
-      socialUrls: {
-        ...prev.socialUrls,
-        [network]: url
-      },
-      preferredNetworks: filledNetworks
-    }));
-  };
-
   const handleStyleOptionSelect = (option) => {
     setOnboardingData({
       ...onboardingData,
       styleOption: option,
-      // Reset other fields when changing option
-      creatorUrl: option === 'creator' ? onboardingData.creatorUrl : '',
+      creatorPosts: option === 'creator' ? onboardingData.creatorPosts : '',
       preferredStyle: option === 'predefined' ? onboardingData.preferredStyle : ''
     });
   };
 
-  const handleCreatorUrlChange = (url) => {
-    setOnboardingData({ ...onboardingData, creatorUrl: url });
+  const handleCreatorPostsChange = (posts) => {
+    setOnboardingData({ ...onboardingData, creatorPosts: posts });
   };
 
   const handleStyleSelect = (styleId) => {
     setOnboardingData({ ...onboardingData, preferredStyle: styleId });
   };
 
-  const handleFallbackStyleSelect = (styleId) => {
-    setOnboardingData({ ...onboardingData, fallbackStyle: styleId });
-  };
-
-  // Step 5: Generate first post
+  // Step 4: Generate first post
   const handleGenerateFirstPost = async () => {
     if (!firstPostText.trim()) {
-      toast.error(t.step5.emptyError);
+      toast.error(t.step4.emptyError);
       return;
     }
 
@@ -421,11 +309,9 @@ function Onboarding({ user }) {
     setGeneratedContent(null);
 
     try {
-      // Utiliser le style choisi à l'étape précédente
-      const toneToUse = onboardingData.preferredStyle || onboardingData.fallbackStyle || 'professional';
+      const toneToUse = onboardingData.preferredStyle || 'professional';
       const response = await polishContent(firstPostText, toneToUse, language);
 
-      // Récupérer le contenu LinkedIn
       const linkedinFormat = response.data.formats.find(f => f.format === 'linkedin');
       if (linkedinFormat) {
         setGeneratedContent(linkedinFormat.content);
@@ -444,7 +330,7 @@ function Onboarding({ user }) {
     if (generatedContent) {
       navigator.clipboard.writeText(generatedContent);
       setCopied(true);
-      toast.success(t.step5.copied);
+      toast.success(t.step4.copied);
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -463,27 +349,17 @@ function Onboarding({ user }) {
       toast.error(language === 'fr' ? 'Merci de préciser comment tu nous as trouvé' : language === 'en' ? 'Please specify how you found us' : 'Por favor especifica cómo nos encontraste');
       return;
     }
-    // Step 3 is optional - no validation needed
-    if (step === 4) {
+    if (step === 3) {
       if (!onboardingData.styleOption) {
         toast.error(language === 'fr' ? 'Choisis une option de style' : language === 'en' ? 'Choose a style option' : 'Elige una opción de estilo');
         return;
       }
-      if (onboardingData.styleOption === 'personal' && onboardingData.preferredNetworks.length === 0) {
-        toast.error(language === 'fr' ? 'Retourne à l\'étape précédente pour ajouter au moins une URL' : language === 'en' ? 'Go back to add at least one URL' : 'Vuelve para añadir al menos una URL');
-        return;
-      }
-      if (onboardingData.styleOption === 'creator' && !onboardingData.creatorUrl.trim()) {
-        toast.error(language === 'fr' ? 'Entre l\'URL du créateur' : language === 'en' ? 'Enter the creator\'s URL' : 'Ingresa la URL del creador');
+      if (onboardingData.styleOption === 'creator' && !onboardingData.creatorPosts.trim()) {
+        toast.error(language === 'fr' ? 'Colle au moins un post du créateur' : language === 'en' ? 'Paste at least one creator post' : 'Pega al menos una publicación del creador');
         return;
       }
       if (onboardingData.styleOption === 'predefined' && !onboardingData.preferredStyle) {
         toast.error(language === 'fr' ? 'Choisis un style prédéfini' : language === 'en' ? 'Choose a predefined style' : 'Elige un estilo predefinido');
-        return;
-      }
-      // Fallback style is required for personal and creator options
-      if ((onboardingData.styleOption === 'personal' || onboardingData.styleOption === 'creator') && !onboardingData.fallbackStyle) {
-        toast.error(language === 'fr' ? 'Choisis un style de secours' : language === 'en' ? 'Choose a fallback style' : 'Elige un estilo de respaldo');
         return;
       }
     }
@@ -508,18 +384,14 @@ function Onboarding({ user }) {
     try {
       await saveOnboardingData({
         discovery_source: onboardingData.discoverySource === 'other' ? onboardingData.discoverySourceOther : onboardingData.discoverySource,
-        preferred_networks: onboardingData.preferredNetworks,
-        social_urls: onboardingData.socialUrls,
         style_option: onboardingData.styleOption,
-        creator_url: onboardingData.creatorUrl,
+        creator_posts: onboardingData.creatorPosts,
         preferred_style: onboardingData.preferredStyle,
-        fallback_style: onboardingData.fallbackStyle,
         consent_data_storage: onboardingData.consentDataStorage
       });
 
       toast.success(language === 'fr' ? 'Configuration terminée ! Bienvenue 🎉' : language === 'en' ? 'Setup complete! Welcome 🎉' : '¡Configuración completa! Bienvenido 🎉');
 
-      // Redirect to dashboard
       navigate('/dashboard');
     } catch (error) {
       console.error('Error saving onboarding data:', error);
@@ -637,7 +509,7 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 3: Social network URLs */}
+          {/* Step 3: Writing style method */}
           {step === 3 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
@@ -647,88 +519,9 @@ function Onboarding({ user }) {
                 {t.step3.subtitle}
               </p>
 
-              <div className="space-y-4 mb-6">
-                {socialNetworks.map((network) => {
-                  const Icon = network.icon;
-                  return (
-                    <div key={network.id} className="relative">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-                        <div className={`bg-gradient-to-r ${network.color} p-2 rounded-lg`}>
-                          <Icon className="h-4 w-4 text-white" />
-                        </div>
-                        {network.label}
-                      </label>
-                      <input
-                        type="url"
-                        value={onboardingData.socialUrls[network.id]}
-                        onChange={(e) => handleSocialUrlChange(network.id, e.target.value)}
-                        placeholder={t.step3.placeholders[network.id]}
-                        className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              <p className="text-xs text-gray-500 dark:text-slate-500 text-center mb-6">
-                {t.step3.note}
-              </p>
-
-              <div className="flex gap-3 justify-between">
-                <button
-                  onClick={handleBack}
-                  className="px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all"
-                >
-                  {t.back}
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center gap-2"
-                >
-                  {t.continue}
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 4: Writing style method */}
-          {step === 4 && (
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-                {t.step4.title}
-              </h2>
-              <p className="text-gray-600 dark:text-slate-400 mb-8 text-center">
-                {t.step4.subtitle}
-              </p>
-
               {/* Style option selection */}
               <div className="space-y-4 mb-6">
-                {/* Option 1: Personal style */}
-                <button
-                  onClick={() => handleStyleOptionSelect('personal')}
-                  className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
-                    onboardingData.styleOption === 'personal'
-                      ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                      : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">👤</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.personal.label}</span>
-                    </div>
-                    {onboardingData.styleOption === 'personal' && (
-                      <Check className="h-5 w-5 text-purple-600" />
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.personal.description}</p>
-                  {onboardingData.preferredNetworks.length === 0 && (
-                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">⚠️ {t.step4.options.personal.note}</p>
-                  )}
-                </button>
-
-                {/* Option 2: Creator style */}
+                {/* Option 1: Creator style */}
                 <div>
                   <button
                     onClick={() => handleStyleOptionSelect('creator')}
@@ -741,26 +534,26 @@ function Onboarding({ user }) {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">⭐</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.creator.label}</span>
+                        <span className="font-semibold text-gray-900 dark:text-white">{t.step3.options.creator.label}</span>
                       </div>
                       {onboardingData.styleOption === 'creator' && (
                         <Check className="h-5 w-5 text-purple-600" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.creator.description}</p>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">{t.step3.options.creator.description}</p>
                   </button>
                   {onboardingData.styleOption === 'creator' && (
-                    <input
-                      type="url"
-                      value={onboardingData.creatorUrl}
-                      onChange={(e) => handleCreatorUrlChange(e.target.value)}
-                      placeholder={t.step4.options.creator.placeholder}
-                      className="w-full mt-3 px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    <textarea
+                      value={onboardingData.creatorPosts}
+                      onChange={(e) => handleCreatorPostsChange(e.target.value)}
+                      placeholder={t.step3.options.creator.placeholder}
+                      rows={6}
+                      className="w-full mt-3 px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                     />
                   )}
                 </div>
 
-                {/* Option 3: Predefined style */}
+                {/* Option 2: Predefined style */}
                 <button
                   onClick={() => handleStyleOptionSelect('predefined')}
                   className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
@@ -772,17 +565,17 @@ function Onboarding({ user }) {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">📝</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{t.step4.options.predefined.label}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{t.step3.options.predefined.label}</span>
                     </div>
                     {onboardingData.styleOption === 'predefined' && (
                       <Check className="h-5 w-5 text-purple-600" />
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-slate-400">{t.step4.options.predefined.description}</p>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">{t.step3.options.predefined.description}</p>
                 </button>
               </div>
 
-              {/* Show style selection based on option */}
+              {/* Show style selection for predefined option */}
               {onboardingData.styleOption === 'predefined' && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">
@@ -813,39 +606,6 @@ function Onboarding({ user }) {
                 </div>
               )}
 
-              {/* Fallback style selection for personal and creator options */}
-              {(onboardingData.styleOption === 'personal' || onboardingData.styleOption === 'creator') && (
-                <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                    {t.step4.fallbackLabel}
-                  </label>
-                  <p className="text-xs text-gray-600 dark:text-slate-400 mb-3">
-                    {t.step4.fallbackNote}
-                  </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {writingStyles[language].map((style) => (
-                      <button
-                        key={style.id}
-                        onClick={() => handleFallbackStyleSelect(style.id)}
-                        className={`p-2 rounded-lg border-2 transition-all ${
-                          onboardingData.fallbackStyle === style.id
-                            ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                            : 'border-gray-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
-                        }`}
-                      >
-                        <div className="flex flex-col items-center gap-1">
-                          <span className="text-lg">{style.emoji}</span>
-                          <span className="text-xs font-medium text-gray-900 dark:text-white text-center">{style.label}</span>
-                          {onboardingData.fallbackStyle === style.id && (
-                            <Check className="h-3 w-3 text-purple-600" />
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="flex gap-3 justify-between">
                 <button
                   onClick={handleBack}
@@ -864,14 +624,14 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 5: Create first post */}
-          {step === 5 && (
+          {/* Step 4: Create first post */}
+          {step === 4 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-                {t.step5.title}
+                {t.step4.title}
               </h2>
               <p className="text-gray-600 dark:text-slate-400 mb-6 text-center">
-                {t.step5.subtitle}
+                {t.step4.subtitle}
               </p>
 
               {/* Examples chips */}
@@ -880,7 +640,7 @@ function Onboarding({ user }) {
                   {language === 'fr' ? 'Exemples d\'idées :' : language === 'en' ? 'Example ideas:' : 'Ideas de ejemplo:'}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {t.step5.examples.map((example, index) => (
+                  {t.step4.examples.map((example, index) => (
                     <button
                       key={index}
                       onClick={() => handleUseExample(example)}
@@ -896,7 +656,7 @@ function Onboarding({ user }) {
               <textarea
                 value={firstPostText}
                 onChange={(e) => setFirstPostText(e.target.value)}
-                placeholder={t.step5.placeholder}
+                placeholder={t.step4.placeholder}
                 rows={4}
                 className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none mb-4"
               />
@@ -910,12 +670,12 @@ function Onboarding({ user }) {
                 {generating ? (
                   <>
                     <RefreshCw className="h-5 w-5 animate-spin" />
-                    {t.step5.generating}
+                    {t.step4.generating}
                   </>
                 ) : (
                   <>
                     <Wand2 className="h-5 w-5" />
-                    {t.step5.generateButton}
+                    {t.step4.generateButton}
                   </>
                 )}
               </button>
@@ -925,7 +685,7 @@ function Onboarding({ user }) {
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-gray-700 dark:text-slate-300">
-                      💼 {t.step5.resultTitle}
+                      💼 {t.step4.resultTitle}
                     </p>
                     <div className="flex gap-2">
                       <button
@@ -933,7 +693,7 @@ function Onboarding({ user }) {
                         className="text-xs px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex items-center gap-1"
                       >
                         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                        {copied ? t.step5.copied : t.step5.copyButton}
+                        {copied ? t.step4.copied : t.step4.copyButton}
                       </button>
                       <button
                         onClick={handleGenerateFirstPost}
@@ -941,7 +701,7 @@ function Onboarding({ user }) {
                         className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-1"
                       >
                         <RefreshCw className={`h-3 w-3 ${generating ? 'animate-spin' : ''}`} />
-                        {t.step5.regenerate}
+                        {t.step4.regenerate}
                       </button>
                     </div>
                   </div>
@@ -965,13 +725,13 @@ function Onboarding({ user }) {
                     onClick={handleNext}
                     className="px-6 py-3 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium transition-all"
                   >
-                    {t.step5.skipButton}
+                    {t.step4.skipButton}
                   </button>
                   <button
                     onClick={handleNext}
                     className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center gap-2"
                   >
-                    {t.step5.continueButton}
+                    {t.step4.continueButton}
                     <ArrowRight className="h-5 w-5" />
                   </button>
                 </div>
@@ -979,14 +739,14 @@ function Onboarding({ user }) {
             </div>
           )}
 
-          {/* Step 6: Consent */}
-          {step === 6 && (
+          {/* Step 5: Consent */}
+          {step === 5 && (
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-                {t.step6.title}
+                {t.step5.title}
               </h2>
               <p className="text-gray-600 dark:text-slate-400 mb-8 text-center">
-                {t.step6.subtitle}
+                {t.step5.subtitle}
               </p>
 
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 mb-6">
@@ -999,16 +759,16 @@ function Onboarding({ user }) {
                   />
                   <div>
                     <p className="text-gray-900 dark:text-white font-medium mb-3">
-                      {t.step6.consent}
+                      {t.step5.consent}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-slate-400">
-                      {t.step6.privacy}{' '}
+                      {t.step5.privacy}{' '}
                       <a href="/privacy" target="_blank" className="text-purple-600 hover:underline font-semibold">
-                        {t.step6.privacyLink}
+                        {t.step5.privacyLink}
                       </a>{' '}
-                      {t.step6.and}{' '}
+                      {t.step5.and}{' '}
                       <a href="/terms" target="_blank" className="text-purple-600 hover:underline font-semibold">
-                        {t.step6.termsLink}
+                        {t.step5.termsLink}
                       </a>.
                     </p>
                   </div>
@@ -1017,7 +777,7 @@ function Onboarding({ user }) {
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
                 <p className="text-sm text-blue-900 dark:text-blue-300">
-                  🔒 {t.step6.note}
+                  🔒 {t.step5.note}
                 </p>
               </div>
 
@@ -1040,7 +800,7 @@ function Onboarding({ user }) {
                     </>
                   ) : (
                     <>
-                      {t.step6.button}
+                      {t.step5.button}
                       <Check className="h-5 w-5" />
                     </>
                   )}
