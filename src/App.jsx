@@ -1,7 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 import { getCurrentUser } from './services/api';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ToastProvider } from './contexts/ToastContext';
@@ -30,16 +29,27 @@ const Onboarding = lazy(() => import('./components/Onboarding'));
 const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
 const ComingSoon = lazy(() => import('./components/ComingSoon'));
 
-// Wrapper component to conditionally render Navbar
-function NavbarWrapper({ user, onLogout }) {
+// Layout wrapper component that handles sidebar visibility and content positioning
+function LayoutWrapper({ user, onLogout, children }) {
   const location = useLocation();
-  const hideNavbarRoutes = ['/onboarding'];
 
-  if (hideNavbarRoutes.includes(location.pathname)) {
-    return null;
+  // Pages where sidebar should be hidden (full-screen pages)
+  const hideSidebarRoutes = ['/onboarding', '/login', '/register', '/verify-email'];
+  const hideSidebar = hideSidebarRoutes.includes(location.pathname);
+
+  if (hideSidebar) {
+    return <>{children}</>;
   }
 
-  return <Navbar user={user} onLogout={onLogout} />;
+  return (
+    <>
+      <Sidebar user={user} onLogout={onLogout} />
+      {/* Main content with left margin for sidebar on desktop, top margin for mobile header */}
+      <div className="lg:ml-64 min-h-screen pt-14 lg:pt-0">
+        {children}
+      </div>
+    </>
+  );
 }
 
 function App() {
@@ -88,7 +98,6 @@ function App() {
         <ToastProvider>
           <Router>
             <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors">
-              <NavbarWrapper user={user} onLogout={handleLogout} />
               <Suspense fallback={
                 <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
                   <div className="relative">
@@ -97,154 +106,155 @@ function App() {
                   </div>
                 </div>
               }>
-                <Routes>
-            <Route
-              path="/"
-              element={user ? <Navigate to="/dashboard" /> : <LandingPage />}
-            />
-            <Route
-              path="/login"
-              element={user ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
-            />
-            <Route
-              path="/register"
-              element={user ? <Navigate to="/dashboard" /> : <Register />}
-            />
-            <Route
-              path="/verify-email"
-              element={<VerifyEmail />}
-            />
-            <Route
-              path="/pricing"
-              element={<Pricing user={user} onUpdateUser={checkAuth} />}
-            />
-            <Route
-              path="/checkout"
-              element={
-                user ? (
-                  <Checkout />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/onboarding"
-              element={
-                user ? (
-                  <Onboarding user={user} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                user ? (
-                  <DashboardWrapper user={user} onUpdateUser={checkAuth} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                user && user.is_admin === 1 ? (
-                  <AdminDashboard />
-                ) : (
-                  <Navigate to="/dashboard" />
-                )
-              }
-            />
-            <Route
-              path="/history"
-              element={
-                user ? (
-                  <History />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/analytics"
-              element={
-                user ? (
-                  <AnalyticsDashboard user={user} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/calendar"
-              element={
-                user ? (
-                  <EditorialCalendar user={user} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/team"
-              element={
-                user ? (
-                  <TeamManagement user={user} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/api-access"
-              element={
-                user ? (
-                  <APIAccess user={user} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/accept-invitation"
-              element={<AcceptInvitation />}
-            />
-            <Route
-              path="/join-team"
-              element={<JoinTeam />}
-            />
-            <Route
-              path="/account"
-              element={
-                user ? (
-                  <Account user={user} onUpdateUser={checkAuth} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/privacy"
-              element={<PrivacyPolicy />}
-            />
-            <Route
-              path="/terms"
-              element={<TermsOfService />}
-            />
-            <Route
-              path="/legal"
-              element={<LegalNotice />}
-            />
-            <Route
-              path="/coming-soon"
-              element={<ComingSoon />}
-            />
-              </Routes>
+                <LayoutWrapper user={user} onLogout={handleLogout}>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={user ? <Navigate to="/dashboard" /> : <LandingPage />}
+                    />
+                    <Route
+                      path="/login"
+                      element={user ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
+                    />
+                    <Route
+                      path="/register"
+                      element={user ? <Navigate to="/dashboard" /> : <Register />}
+                    />
+                    <Route
+                      path="/verify-email"
+                      element={<VerifyEmail />}
+                    />
+                    <Route
+                      path="/pricing"
+                      element={<Pricing user={user} onUpdateUser={checkAuth} />}
+                    />
+                    <Route
+                      path="/checkout"
+                      element={
+                        user ? (
+                          <Checkout />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/onboarding"
+                      element={
+                        user ? (
+                          <Onboarding user={user} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/dashboard"
+                      element={
+                        user ? (
+                          <DashboardWrapper user={user} onUpdateUser={checkAuth} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/admin"
+                      element={
+                        user && user.is_admin === 1 ? (
+                          <AdminDashboard />
+                        ) : (
+                          <Navigate to="/dashboard" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/history"
+                      element={
+                        user ? (
+                          <History />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/analytics"
+                      element={
+                        user ? (
+                          <AnalyticsDashboard user={user} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/calendar"
+                      element={
+                        user ? (
+                          <EditorialCalendar user={user} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/team"
+                      element={
+                        user ? (
+                          <TeamManagement user={user} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/api-access"
+                      element={
+                        user ? (
+                          <APIAccess user={user} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/accept-invitation"
+                      element={<AcceptInvitation />}
+                    />
+                    <Route
+                      path="/join-team"
+                      element={<JoinTeam />}
+                    />
+                    <Route
+                      path="/account"
+                      element={
+                        user ? (
+                          <Account user={user} onUpdateUser={checkAuth} />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/privacy"
+                      element={<PrivacyPolicy />}
+                    />
+                    <Route
+                      path="/terms"
+                      element={<TermsOfService />}
+                    />
+                    <Route
+                      path="/legal"
+                      element={<LegalNotice />}
+                    />
+                    <Route
+                      path="/coming-soon"
+                      element={<ComingSoon />}
+                    />
+                  </Routes>
+                </LayoutWrapper>
               </Suspense>
-              <Footer />
             </div>
           </Router>
         </ToastProvider>
