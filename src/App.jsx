@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { getCurrentUser } from './services/api';
@@ -29,6 +29,18 @@ const APIAccess = lazy(() => import('./components/APIAccess'));
 const Onboarding = lazy(() => import('./components/Onboarding'));
 const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
 const ComingSoon = lazy(() => import('./components/ComingSoon'));
+
+// Wrapper component to conditionally render Navbar
+function NavbarWrapper({ user, onLogout }) {
+  const location = useLocation();
+  const hideNavbarRoutes = ['/onboarding'];
+
+  if (hideNavbarRoutes.includes(location.pathname)) {
+    return null;
+  }
+
+  return <Navbar user={user} onLogout={onLogout} />;
+}
 
 function App() {
   const [user, setUser] = useState(null);
@@ -76,7 +88,7 @@ function App() {
         <ToastProvider>
           <Router>
             <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors">
-              <Navbar user={user} onLogout={handleLogout} />
+              <NavbarWrapper user={user} onLogout={handleLogout} />
               <Suspense fallback={
                 <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
                   <div className="relative">
