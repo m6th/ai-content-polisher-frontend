@@ -55,8 +55,7 @@ function ContentPolisher({ user, onUpdateUser }) {
 
   // Custom style modal states
   const [showAddStyleModal, setShowAddStyleModal] = useState(false);
-  const [newStyleType, setNewStyleType] = useState('personal'); // 'personal' or 'creator'
-  const [newStyleUrl, setNewStyleUrl] = useState('');
+  const [newStyleUrl, setNewStyleUrl] = useState(''); // Posts collés du créateur
   const [newStyleName, setNewStyleName] = useState('');
   const [creatingStyle, setCreatingStyle] = useState(false);
 
@@ -1450,20 +1449,19 @@ function ContentPolisher({ user, onUpdateUser }) {
       {/* Add Custom Style Modal */}
       {showAddStyleModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full shadow-2xl">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-purple-600" />
-                  {uiLanguage === 'fr' ? 'Ajouter un style personnel' : uiLanguage === 'en' ? 'Add personal style' : 'Añadir estilo personal'}
+                  {uiLanguage === 'fr' ? "Style d'un créateur" : uiLanguage === 'en' ? "Creator's style" : 'Estilo de creador'}
                 </h3>
                 <button
                   onClick={() => {
                     setShowAddStyleModal(false);
                     setNewStyleUrl('');
                     setNewStyleName('');
-                    setNewStyleType('personal');
                   }}
                   className="text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
                 >
@@ -1474,62 +1472,52 @@ function ContentPolisher({ user, onUpdateUser }) {
 
             {/* Modal Body */}
             <div className="px-6 py-4 space-y-4">
-              {/* Style Type Selection */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
-                  {uiLanguage === 'fr' ? 'Type de style' : uiLanguage === 'en' ? 'Style type' : 'Tipo de estilo'}
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setNewStyleType('personal')}
-                    className={`p-3 rounded-lg border-2 transition-all ${
-                      newStyleType === 'personal'
-                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                        : 'border-gray-200 dark:border-slate-700'
-                    }`}
-                  >
-                    <div className="text-2xl mb-1">👤</div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {uiLanguage === 'fr' ? 'Mon style' : uiLanguage === 'en' ? 'My style' : 'Mi estilo'}
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setNewStyleType('creator')}
-                    className={`p-3 rounded-lg border-2 transition-all ${
-                      newStyleType === 'creator'
-                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                        : 'border-gray-200 dark:border-slate-700'
-                    }`}
-                  >
-                    <div className="text-2xl mb-1">⭐</div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {uiLanguage === 'fr' ? "Style d'un créateur" : uiLanguage === 'en' ? "Creator's style" : 'Estilo de creador'}
-                    </div>
-                  </button>
+              {/* Description */}
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">⭐</span>
+                  <div>
+                    <p className="text-sm text-gray-700 dark:text-slate-300">
+                      {uiLanguage === 'fr'
+                        ? "Copie le texte de 2-3 posts d'un créateur que tu admires. L'IA analysera son style d'écriture pour générer du contenu similaire."
+                        : uiLanguage === 'en'
+                        ? "Copy the text of 2-3 posts from a creator you admire. The AI will analyze their writing style to generate similar content."
+                        : "Copia el texto de 2-3 publicaciones de un creador que admiras. La IA analizará su estilo de escritura para generar contenido similar."}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* URL Input */}
+              {/* Posts Textarea */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
-                  {uiLanguage === 'fr' ? 'URL du profil' : uiLanguage === 'en' ? 'Profile URL' : 'URL del perfil'}
+                  {uiLanguage === 'fr' ? 'Colle le texte des posts ici' : uiLanguage === 'en' ? 'Paste the posts text here' : 'Pega el texto de las publicaciones aquí'}
                 </label>
-                <input
-                  type="url"
+                <textarea
                   value={newStyleUrl}
                   onChange={(e) => setNewStyleUrl(e.target.value)}
-                  placeholder="https://www.linkedin.com/in/..."
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-900 dark:text-white"
+                  rows={8}
+                  placeholder={
+                    uiLanguage === 'fr'
+                      ? `Colle ici le TEXTE de 2-3 posts LinkedIn, Instagram ou Facebook (pas les URLs)...\n\nExemple:\n---\nPost 1:\nAujourd'hui j'ai appris quelque chose d'important. Après 5 ans dans le marketing, je réalise que...\n---\nPost 2:\nLa clé du succès ? Ce n'est pas le talent. C'est la régularité...`
+                      : uiLanguage === 'en'
+                      ? `Paste the TEXT of 2-3 LinkedIn, Instagram or Facebook posts here (not URLs)...\n\nExample:\n---\nPost 1:\nToday I learned something important. After 5 years in marketing, I realized that...\n---\nPost 2:\nThe key to success? It's not talent. It's consistency...`
+                      : `Pega aquí el TEXTO de 2-3 publicaciones de LinkedIn, Instagram o Facebook (no las URLs)...\n\nEjemplo:\n---\nPost 1:\nHoy aprendí algo importante. Después de 5 años en marketing, me di cuenta de que...\n---\nPost 2:\n¿La clave del éxito? No es el talento. Es la constancia...`
+                  }
+                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-900 dark:text-white resize-none"
                 />
-                <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
-                  {uiLanguage === 'fr'
-                    ? '✅ Supporte: LinkedIn, Instagram, Facebook'
-                    : uiLanguage === 'en'
-                    ? '✅ Supports: LinkedIn, Instagram, Facebook'
-                    : '✅ Soporta: LinkedIn, Instagram, Facebook'}
-                </p>
+                <div className="flex items-center justify-between mt-2">
+                  <p className="text-xs text-gray-500 dark:text-slate-400">
+                    {uiLanguage === 'fr'
+                      ? '✅ Supports: LinkedIn, Instagram, Facebook'
+                      : uiLanguage === 'en'
+                      ? '✅ Platforms: LinkedIn, Instagram, Facebook'
+                      : '✅ Plataformas: LinkedIn, Instagram, Facebook'}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">
+                    {newStyleUrl.length} {uiLanguage === 'fr' ? 'caractères' : uiLanguage === 'en' ? 'characters' : 'caracteres'}
+                  </p>
+                </div>
               </div>
 
               {/* Style Name (Optional) */}
@@ -1543,10 +1531,10 @@ function ContentPolisher({ user, onUpdateUser }) {
                   onChange={(e) => setNewStyleName(e.target.value)}
                   placeholder={
                     uiLanguage === 'fr'
-                      ? 'Ex: Mon style LinkedIn'
+                      ? 'Ex: Style de Gary Vee'
                       : uiLanguage === 'en'
-                      ? 'Ex: My LinkedIn style'
-                      : 'Ej: Mi estilo LinkedIn'}
+                      ? 'Ex: Gary Vee style'
+                      : 'Ej: Estilo de Gary Vee'}
                   className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-slate-900 dark:text-white"
                 />
               </div>
@@ -1559,7 +1547,6 @@ function ContentPolisher({ user, onUpdateUser }) {
                   setShowAddStyleModal(false);
                   setNewStyleUrl('');
                   setNewStyleName('');
-                  setNewStyleType('personal');
                 }}
                 className="px-4 py-2 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg font-semibold transition-all"
               >
@@ -1568,14 +1555,19 @@ function ContentPolisher({ user, onUpdateUser }) {
               <button
                 onClick={async () => {
                   if (!newStyleUrl.trim()) {
-                    toast.error(uiLanguage === 'fr' ? 'Veuillez entrer une URL' : uiLanguage === 'en' ? 'Please enter a URL' : 'Por favor ingrese una URL');
+                    toast.error(uiLanguage === 'fr' ? 'Veuillez coller au moins un post' : uiLanguage === 'en' ? 'Please paste at least one post' : 'Por favor pegue al menos una publicación');
+                    return;
+                  }
+
+                  if (newStyleUrl.trim().length < 100) {
+                    toast.error(uiLanguage === 'fr' ? 'Le contenu est trop court. Ajoutez plus de posts.' : uiLanguage === 'en' ? 'Content is too short. Add more posts.' : 'El contenido es muy corto. Añade más publicaciones.');
                     return;
                   }
 
                   setCreatingStyle(true);
                   try {
                     const { createStyleProfile } = await import('../services/api');
-                    await createStyleProfile(newStyleType, newStyleUrl, newStyleName || null);
+                    await createStyleProfile('creator', newStyleUrl, newStyleName || null);
 
                     toast.success(uiLanguage === 'fr' ? 'Style ajouté ! Analyse en cours...' : uiLanguage === 'en' ? 'Style added! Analyzing...' : 'Estilo añadido! Analizando...');
 
@@ -1603,7 +1595,6 @@ function ContentPolisher({ user, onUpdateUser }) {
                     setShowAddStyleModal(false);
                     setNewStyleUrl('');
                     setNewStyleName('');
-                    setNewStyleType('personal');
                   } catch (error) {
                     console.error('Error creating style:', error);
                     toast.error(uiLanguage === 'fr' ? 'Erreur lors de la création du style' : uiLanguage === 'en' ? 'Error creating style' : 'Error al crear el estilo');
@@ -1622,7 +1613,7 @@ function ContentPolisher({ user, onUpdateUser }) {
                 ) : (
                   <>
                     <Sparkles className="h-4 w-4" />
-                    {uiLanguage === 'fr' ? 'Créer' : uiLanguage === 'en' ? 'Create' : 'Crear'}
+                    {uiLanguage === 'fr' ? 'Créer le style' : uiLanguage === 'en' ? 'Create style' : 'Crear estilo'}
                   </>
                 )}
               </button>
