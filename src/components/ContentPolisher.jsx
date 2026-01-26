@@ -776,9 +776,9 @@ function ContentPolisher({ user, onUpdateUser }) {
                     })}
                   </optgroup>
 
-                  {/* Styles personnalisés */}
+                  {/* Styles de créateurs */}
                   {allTones.some(t => t.isCustom) && (
-                    <optgroup label={uiLanguage === 'fr' ? '✨ Mes styles personnels' : uiLanguage === 'en' ? '✨ My personal styles' : '✨ Mis estilos personales'}>
+                    <optgroup label={uiLanguage === 'fr' ? "⭐ Styles d'un créateur" : uiLanguage === 'en' ? "⭐ Creator's styles" : '⭐ Estilos de creador'}>
                       {allTones.filter(t => t.isCustom).map((toneOption) => {
                         const statusIcon = toneOption.status === 'ready' ? '✅' :
                                           toneOption.status === 'analyzing' ? '⏳' :
