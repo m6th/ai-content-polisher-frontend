@@ -203,19 +203,19 @@ function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
                 to="/register"
-                className="group inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
               >
                 <span className="relative z-10 flex items-center">
                   {t.landing.hero.cta}
-                  <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-2 transition-transform duration-300 flex-shrink-0" />
                 </span>
               </Link>
               <Link
                 to="/join-team"
-                className="group inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-base sm:text-lg font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl hover:border-green-500 dark:hover:border-green-500 transform hover:scale-105 transition-all duration-300"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl hover:border-green-500 dark:hover:border-green-500 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
               >
                 <span className="relative z-10 flex items-center">
-                  <UserPlus className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
+                  <UserPlus className="mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                   Rejoindre une équipe
                 </span>
               </Link>
