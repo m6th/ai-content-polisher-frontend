@@ -10,6 +10,7 @@ export const translations = {
       getStarted: 'Commencer gratuitement',
       history: 'Historique',
       account: 'Compte',
+      ideas: 'Trouver une idée',
     },
 
     // Landing Page
@@ -287,6 +288,7 @@ export const translations = {
       getStarted: 'Get Started Free',
       history: 'History',
       account: 'Account',
+      ideas: 'Find an idea',
     },
 
     // Landing Page
@@ -564,6 +566,7 @@ export const translations = {
       getStarted: 'Comenzar gratis',
       history: 'Historial',
       account: 'Cuenta',
+      ideas: 'Encontrar una idea',
     },
 
     // Landing Page

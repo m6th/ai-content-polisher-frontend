@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import { getOnboardingStatus } from '../services/api';
 
 function DashboardWrapper({ user, onUpdateUser }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [checkingOnboarding, setCheckingOnboarding] = useState(true);
+
+  // Get prefilled text from navigation state (from IdeaFinder)
+  const prefillText = location.state?.prefillText || '';
 
   useEffect(() => {
     checkOnboardingStatus();
@@ -39,7 +43,7 @@ function DashboardWrapper({ user, onUpdateUser }) {
     );
   }
 
-  return <Dashboard user={user} onUpdateUser={onUpdateUser} />;
+  return <Dashboard user={user} onUpdateUser={onUpdateUser} initialText={prefillText} />;
 }
 
 export default DashboardWrapper;

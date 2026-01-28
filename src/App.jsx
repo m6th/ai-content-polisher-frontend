@@ -28,6 +28,7 @@ const APIAccess = lazy(() => import('./components/APIAccess'));
 const Onboarding = lazy(() => import('./components/Onboarding'));
 const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
 const ComingSoon = lazy(() => import('./components/ComingSoon'));
+const IdeaFinder = lazy(() => import('./components/IdeaFinder'));
 
 // Layout wrapper component that handles sidebar visibility and content positioning
 function LayoutWrapper({ user, onLogout, children }) {
@@ -251,6 +252,16 @@ function App() {
                     <Route
                       path="/coming-soon"
                       element={<ComingSoon />}
+                    />
+                    <Route
+                      path="/ideas"
+                      element={
+                        user ? (
+                          <IdeaFinder />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
                     />
                   </Routes>
                 </LayoutWrapper>

@@ -6,7 +6,7 @@ import { BarChart3, Sparkles, CreditCard, Calendar as CalendarIcon, Rocket } fro
 import { useLanguage } from '../contexts/LanguageContext';
 import { getAnalyticsStats } from '../services/api';
 
-function Dashboard({ user, onUpdateUser }) {
+function Dashboard({ user, onUpdateUser, initialText = '' }) {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('polisher'); // 'polisher' ou 'analytics'
@@ -150,7 +150,7 @@ function Dashboard({ user, onUpdateUser }) {
 
         {/* Contenu selon l'onglet actif */}
         {activeTab === 'polisher' ? (
-          <ContentPolisher user={user} onUpdateUser={onUpdateUser} />
+          <ContentPolisher user={user} onUpdateUser={onUpdateUser} initialText={initialText} />
         ) : (
           <Analytics user={user} />
         )}

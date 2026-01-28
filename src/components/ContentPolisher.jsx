@@ -11,13 +11,13 @@ import VariantSelector from './VariantSelector';
 import AIFeatures from './AIFeatures';
 import ProTrialComparisonModal from './ProTrialComparisonModal';
 
-function ContentPolisher({ user, onUpdateUser }) {
+function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
   const { language: uiLanguage } = useLanguage();
   const t = useTranslation(uiLanguage);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [originalText, setOriginalText] = useState('');
+  const [originalText, setOriginalText] = useState(initialText);
   const [tone, setTone] = useState('professional');
   const [contentLanguage, setContentLanguage] = useState('fr');
   const [generatedFormats, setGeneratedFormats] = useState([]);
@@ -240,6 +240,15 @@ function ContentPolisher({ user, onUpdateUser }) {
 
     return () => clearInterval(interval);
   }, [t]);
+
+  // Update originalText when initialText prop changes (from IdeaFinder)
+  useEffect(() => {
+    if (initialText) {
+      setOriginalText(initialText);
+      setCharCount(initialText.length);
+      setTextQuality(updateTextQuality(initialText));
+    }
+  }, [initialText]);
 
   // Mise à jour du countdown toutes les minutes
   useEffect(() => {

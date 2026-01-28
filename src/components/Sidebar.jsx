@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut, Sparkles, Globe, Shield, History, User, BarChart3,
   Calendar, Users, UserPlus, Key, Menu, X, Home, Rocket,
-  CreditCard, ChevronLeft, ChevronRight, Sun, Moon
+  CreditCard, ChevronLeft, ChevronRight, Sun, Moon, Lightbulb
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../locales/translations';
@@ -36,6 +36,7 @@ function Sidebar({ user, onLogout }) {
   // Navigation items for logged-in users
   const navItems = [
     { path: '/dashboard', icon: Home, label: t.navbar.dashboard || 'Dashboard' },
+    { path: '/ideas', icon: Lightbulb, label: t.navbar.ideas || 'Trouver une idée' },
     { path: '/history', icon: History, label: t.navbar.history || 'Historique' },
     { path: '/analytics', icon: BarChart3, label: t.navbar.analytics || 'Analytics' },
     { path: '/calendar', icon: Calendar, label: t.navbar.calendar || 'Calendrier' },
