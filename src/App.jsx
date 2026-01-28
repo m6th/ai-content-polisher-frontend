@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 import { getCurrentUser } from './services/api';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ToastProvider } from './contexts/ToastContext';
@@ -30,34 +31,37 @@ const DashboardWrapper = lazy(() => import('./components/DashboardWrapper'));
 const ComingSoon = lazy(() => import('./components/ComingSoon'));
 const IdeaFinder = lazy(() => import('./components/IdeaFinder'));
 
-// Layout wrapper component that handles sidebar visibility and content positioning
+// Layout wrapper component that handles navigation visibility and content positioning
 function LayoutWrapper({ user, onLogout, children }) {
   const location = useLocation();
 
-  // Pages where sidebar should always be hidden (full-screen pages for logged-in users)
-  const hideSidebarRoutes = ['/onboarding', '/login', '/register', '/verify-email'];
+  // Pages where navigation should be completely hidden (full-screen pages)
+  const hideNavRoutes = ['/onboarding', '/login', '/register', '/verify-email'];
+  const hideNav = hideNavRoutes.includes(location.pathname);
 
-  // Public pages where sidebar should not appear (non-logged in users)
-  const publicRoutes = ['/', '/pricing', '/privacy', '/terms', '/legal', '/accept-invitation', '/join-team'];
-
-  // Hide sidebar if:
-  // 1. User is not logged in (show public pages without sidebar)
-  // 2. User is on specific routes that should be full-screen
-  const isPublicPage = publicRoutes.includes(location.pathname);
-  const isHiddenRoute = hideSidebarRoutes.includes(location.pathname);
-  const hideSidebar = !user || isHiddenRoute || (isPublicPage && !user);
-
-  if (hideSidebar) {
+  // If navigation should be hidden, just render children
+  if (hideNav) {
     return <>{children}</>;
   }
 
+  // If user is logged in: show Sidebar
+  if (user) {
+    return (
+      <>
+        <Sidebar user={user} onLogout={onLogout} />
+        {/* Main content with left margin for sidebar on desktop, top margin for mobile header */}
+        <div className="lg:ml-64 min-h-screen pt-14 lg:pt-0">
+          {children}
+        </div>
+      </>
+    );
+  }
+
+  // If user is not logged in: show top Navbar
   return (
     <>
-      <Sidebar user={user} onLogout={onLogout} />
-      {/* Main content with left margin for sidebar on desktop, top margin for mobile header */}
-      <div className="lg:ml-64 min-h-screen pt-14 lg:pt-0">
-        {children}
-      </div>
+      <Navbar user={null} onLogout={onLogout} />
+      {children}
     </>
   );
 }
