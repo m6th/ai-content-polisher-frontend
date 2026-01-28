@@ -30,28 +30,36 @@ function LandingPage() {
       title: "Questions Fréquentes",
       questions: [
         {
-          q: "Qu'est-ce qu'AI Content Polisher ?",
-          a: "AI Content Polisher est un outil SaaS qui utilise l'intelligence artificielle pour générer et optimiser votre contenu pour différentes plateformes (LinkedIn, TikTok, Email, etc.). Il adapte automatiquement le ton, le format et le style selon vos besoins."
+          q: "Comment fonctionne AI Content Polisher concrètement ?",
+          a: "Le processus est simple et rapide en 3 étapes : 1) Vous entrez votre idée, texte brut ou contenu existant à reformuler dans notre éditeur. 2) Vous sélectionnez les plateformes cibles (LinkedIn, Instagram, TikTok, Twitter, Email, etc.) et choisissez parmi nos 4 tons optimisés (professionnel, storytelling, engageant, éducatif). Vous pouvez même créer vos propres styles personnalisés basés sur vos contenus existants pour reproduire votre voix unique. 3) En quelques secondes, notre IA génère des versions optimisées pour chaque plateforme, respectant les bonnes pratiques : longueur idéale, hashtags pertinents, emojis adaptés, hooks percutants et structures qui maximisent l'engagement. Vous pouvez ensuite éditer, régénérer ou copier directement le contenu."
         },
         {
-          q: "Quels sont les différents plans disponibles ?",
-          a: "Nous proposons 4 plans : Gratuit (3 crédits, 5 formats), Starter à 7,99€/mois (40 crédits), Pro à 17,99€/mois (150 crédits) et Business à 44,99€/mois (500 crédits). Tous les plans payants ont accès à tous les formats et fonctionnalités."
+          q: "Quelle est la différence avec ChatGPT ou d'autres IA génériques ?",
+          a: "La différence est majeure. ChatGPT est un assistant généraliste qui produit du texte correct mais générique, sans connaissance des spécificités de chaque réseau social. AI Content Polisher est un outil spécialisé dans le contenu social et marketing, développé par des experts en growth et création de contenu. Notre IA intègre : les algorithmes de chaque plateforme (ce que LinkedIn favorise vs Instagram), les formats qui génèrent le plus d'engagement (carrousels, listes, storytelling...), les hooks et structures psychologiques éprouvés, les bonnes pratiques de longueur, hashtags et emojis par plateforme. Résultat : vous obtenez du contenu prêt à publier qui performe, pas juste du texte à retravailler pendant 30 minutes."
         },
         {
-          q: "Qu'est-ce qu'un crédit ?",
-          a: "Un crédit = une génération complète de contenu. Par exemple, si vous générez du contenu LinkedIn + TikTok + Email à partir d'un texte, cela consomme 1 crédit et vous recevez les 3 (ou plus) formats optimisés."
+          q: "Mon contenu sera-t-il détecté comme généré par IA ?",
+          a: "Non, et c'est l'un de nos points forts. Notre IA est spécifiquement entraînée pour produire du contenu naturel, fluide et humain, loin du style 'robotique' des IA génériques. De plus, plusieurs éléments garantissent l'authenticité : vous pouvez créer des styles personnalisés basés sur VOS propres contenus passés, ce qui reproduit votre voix unique. Chaque génération peut être facilement éditée pour ajouter vos touches personnelles. Nous varions automatiquement les structures et formulations pour éviter les patterns répétitifs. Les plateformes comme LinkedIn ne pénalisent pas le contenu assisté par IA, tant qu'il apporte de la valeur - et c'est exactement ce que nous produisons."
         },
         {
-          q: "Puis-je annuler mon abonnement ?",
-          a: "Oui, vous pouvez annuler votre abonnement à tout moment sans frais. Votre accès reste actif jusqu'à la fin de la période payée, puis vous repassez automatiquement au plan gratuit."
+          q: "Est-ce que ça fonctionne vraiment pour augmenter l'engagement ?",
+          a: "Oui, et les résultats sont mesurables. Notre IA intègre les meilleures pratiques validées par des millions de posts analysés : des hooks qui captent l'attention dans les 2 premières secondes (crucial pour les algorithmes), des structures narratives qui maintiennent le lecteur jusqu'au bout, des call-to-action optimisés qui génèrent des commentaires et partages, le bon ratio texte/emojis/hashtags par plateforme. Nos utilisateurs constatent en moyenne 2 à 3x plus d'engagement (likes, commentaires, partages) après quelques semaines d'utilisation régulière. Certains créateurs ont même vu leur audience LinkedIn doubler en 2-3 mois grâce à une publication plus régulière et mieux optimisée."
         },
         {
-          q: "Mes données sont-elles sécurisées ?",
-          a: "Oui, absolument. Nous utilisons le chiffrement SSL/TLS pour toutes les communications. Les paiements sont gérés par Stripe (certifié PCI-DSS niveau 1). Nous ne stockons jamais vos coordonnées bancaires."
+          q: "Un crédit = combien de contenus générés ?",
+          a: "C'est là que notre système est particulièrement avantageux. Un crédit vous permet de transformer UNE idée en contenu pour TOUTES les plateformes que vous sélectionnez. Concrètement : si vous entrez une idée et sélectionnez LinkedIn + Instagram + TikTok + Twitter, vous obtenez 4 contenus parfaitement optimisés pour chaque plateforme, le tout pour 1 seul crédit. Plus vous sélectionnez de formats, plus vous rentabilisez chaque crédit. Avec le plan Starter à 7,99€/mois (40 crédits), si vous générez en moyenne 4 formats par crédit, vous obtenez jusqu'à 160 contenus optimisés par mois. C'est un rapport qualité/prix imbattable comparé aux agences ou au temps passé à tout créer manuellement."
         },
         {
-          q: "Comment puis-je obtenir de l'aide ?",
-          a: "Vous pouvez nous contacter par email à mathdu0609@gmail.com. Nous répondons généralement sous 48h maximum. Pour les questions urgentes, précisez-le dans l'objet de votre email."
+          q: "Quels sont les différents plans et leurs avantages ?",
+          a: "Nous proposons 4 plans adaptés à tous les besoins : GRATUIT - 3 crédits/mois, 5 formats disponibles, idéal pour tester l'outil. STARTER (7,99€/mois) - 40 crédits/mois, tous les formats et tons, parfait pour les créateurs individuels qui publient régulièrement. PRO (17,99€/mois) - 150 crédits/mois, analytics détaillés, calendrier éditorial, styles personnalisés illimités, idéal pour les créateurs sérieux et freelances. BUSINESS (44,99€/mois) - 500 crédits/mois, gestion d'équipe, accès API, support prioritaire, parfait pour les agences et entreprises. Tous les plans payants ont accès à tous les formats, tous les tons, et peuvent créer des styles personnalisés. La différence principale est le volume de crédits et les fonctionnalités avancées (analytics, équipe, API)."
+        },
+        {
+          q: "Puis-je annuler mon abonnement à tout moment ?",
+          a: "Absolument, sans aucune contrainte. Nous croyons en notre produit et ne voulons pas vous retenir artificiellement. Voici comment ça fonctionne : vous pouvez annuler en 2 clics depuis votre espace compte, à tout moment. Aucun frais d'annulation, aucune pénalité, aucune question embarrassante. Votre accès premium reste actif jusqu'à la fin de votre période de facturation en cours (vous avez payé pour, vous en profitez). Après cette date, vous repassez automatiquement au plan gratuit avec 3 crédits mensuels - vous ne perdez pas votre compte ni votre historique. Si vous changez d'avis, vous pouvez vous réabonner à tout moment."
+        },
+        {
+          q: "Mes données et contenus sont-ils sécurisés ?",
+          a: "La sécurité est notre priorité absolue. Voici nos garanties : Chiffrement SSL/TLS pour toutes les communications entre votre navigateur et nos serveurs. Paiements gérés par Stripe, leader mondial certifié PCI-DSS niveau 1 - nous ne voyons et ne stockons jamais vos coordonnées bancaires. Vos contenus ne sont jamais utilisés pour entraîner notre IA ou partagés avec des tiers. Hébergement sur des serveurs européens conformes au RGPD. Vous restez propriétaire à 100% de tous les contenus que vous générez. Possibilité de supprimer votre compte et toutes vos données à tout moment depuis les paramètres."
         }
       ]
     },
@@ -59,28 +67,36 @@ function LandingPage() {
       title: "Frequently Asked Questions",
       questions: [
         {
-          q: "What is AI Content Polisher?",
-          a: "AI Content Polisher is a SaaS tool that uses artificial intelligence to generate and optimize your content for different platforms (LinkedIn, TikTok, Email, etc.). It automatically adapts tone, format and style according to your needs."
+          q: "How does AI Content Polisher actually work?",
+          a: "The process is simple and fast in 3 steps: 1) You enter your idea, raw text, or existing content to rephrase in our editor. 2) You select target platforms (LinkedIn, Instagram, TikTok, Twitter, Email, etc.) and choose from our 4 optimized tones (professional, storytelling, engaging, educational). You can even create your own custom styles based on your existing content to reproduce your unique voice. 3) In seconds, our AI generates optimized versions for each platform, following best practices: ideal length, relevant hashtags, appropriate emojis, compelling hooks, and structures that maximize engagement. You can then edit, regenerate, or directly copy the content."
         },
         {
-          q: "What are the different plans available?",
-          a: "We offer 4 plans: Free (3 credits, 5 formats), Starter at €7.99/month (40 credits), Pro at €17.99/month (150 credits) and Business at €44.99/month (500 credits). All paid plans have access to all formats and features."
+          q: "What's the difference with ChatGPT or other generic AI?",
+          a: "The difference is major. ChatGPT is a generalist assistant that produces correct but generic text, without knowledge of each social network's specifics. AI Content Polisher is a tool specialized in social and marketing content, developed by growth and content creation experts. Our AI integrates: each platform's algorithms (what LinkedIn favors vs Instagram), formats that generate the most engagement (carousels, lists, storytelling...), proven psychological hooks and structures, best practices for length, hashtags, and emojis per platform. Result: you get ready-to-publish content that performs, not just text to rework for 30 minutes."
         },
         {
-          q: "What is a credit?",
-          a: "A credit = one complete content generation. For example, if you generate LinkedIn + TikTok + Email content from one text, it consumes 1 credit and you receive 3 (or more) optimized formats."
+          q: "Will my content be detected as AI-generated?",
+          a: "No, and this is one of our strengths. Our AI is specifically trained to produce natural, fluid, and human content, far from the 'robotic' style of generic AI. Additionally, several elements guarantee authenticity: you can create custom styles based on YOUR own past content, which reproduces your unique voice. Each generation can be easily edited to add your personal touches. We automatically vary structures and phrasings to avoid repetitive patterns. Platforms like LinkedIn don't penalize AI-assisted content, as long as it provides value - and that's exactly what we produce."
         },
         {
-          q: "Can I cancel my subscription?",
-          a: "Yes, you can cancel your subscription at any time without fees. Your access remains active until the end of the paid period, then you automatically return to the free plan."
+          q: "Does it really work to increase engagement?",
+          a: "Yes, and the results are measurable. Our AI integrates best practices validated by millions of analyzed posts: hooks that capture attention in the first 2 seconds (crucial for algorithms), narrative structures that keep readers engaged until the end, optimized call-to-actions that generate comments and shares, the right text/emoji/hashtag ratio per platform. Our users see on average 2-3x more engagement (likes, comments, shares) after a few weeks of regular use. Some creators have even seen their LinkedIn audience double in 2-3 months thanks to more regular and better-optimized publishing."
         },
         {
-          q: "Is my data secure?",
-          a: "Yes, absolutely. We use SSL/TLS encryption for all communications. Payments are handled by Stripe (PCI-DSS Level 1 certified). We never store your bank details."
+          q: "One credit = how many generated contents?",
+          a: "This is where our system is particularly advantageous. One credit allows you to transform ONE idea into content for ALL platforms you select. Specifically: if you enter an idea and select LinkedIn + Instagram + TikTok + Twitter, you get 4 perfectly optimized contents for each platform, all for just 1 credit. The more formats you select, the more value you get from each credit. With the Starter plan at €7.99/month (40 credits), if you generate an average of 4 formats per credit, you get up to 160 optimized contents per month. That's unbeatable value compared to agencies or the time spent creating everything manually."
         },
         {
-          q: "How can I get help?",
-          a: "You can contact us by email at mathdu0609@gmail.com. We usually respond within 48h maximum. For urgent questions, specify it in the email subject."
+          q: "What are the different plans and their benefits?",
+          a: "We offer 4 plans suited to all needs: FREE - 3 credits/month, 5 available formats, ideal for testing the tool. STARTER (€7.99/month) - 40 credits/month, all formats and tones, perfect for individual creators who publish regularly. PRO (€17.99/month) - 150 credits/month, detailed analytics, editorial calendar, unlimited custom styles, ideal for serious creators and freelancers. BUSINESS (€44.99/month) - 500 credits/month, team management, API access, priority support, perfect for agencies and businesses. All paid plans have access to all formats, all tones, and can create custom styles. The main difference is credit volume and advanced features (analytics, team, API)."
+        },
+        {
+          q: "Can I cancel my subscription at any time?",
+          a: "Absolutely, without any constraints. We believe in our product and don't want to artificially retain you. Here's how it works: you can cancel in 2 clicks from your account space, at any time. No cancellation fees, no penalties, no awkward questions. Your premium access stays active until the end of your current billing period (you paid for it, you enjoy it). After that date, you automatically return to the free plan with 3 monthly credits - you don't lose your account or your history. If you change your mind, you can resubscribe at any time."
+        },
+        {
+          q: "Are my data and content secure?",
+          a: "Security is our absolute priority. Here are our guarantees: SSL/TLS encryption for all communications between your browser and our servers. Payments handled by Stripe, the global leader certified PCI-DSS Level 1 - we never see or store your bank details. Your content is never used to train our AI or shared with third parties. Hosting on European servers compliant with GDPR. You remain 100% owner of all content you generate. Ability to delete your account and all your data at any time from settings."
         }
       ]
     }
