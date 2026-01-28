@@ -137,22 +137,22 @@ function Navbar({ user, onLogout }) {
 
               <Link
                 to="/join-team"
-                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hidden md:flex"
+                className="flex items-center gap-1.5 px-2 lg:px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs lg:text-sm font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hidden md:flex whitespace-nowrap"
               >
-                <UserPlus className="h-4 w-4" />
-                <span className="hidden lg:inline">Rejoindre une équipe</span>
+                <UserPlus className="h-4 w-4 flex-shrink-0" />
+                <span className="hidden lg:inline">Rejoindre</span>
               </Link>
 
               <Link
                 to="/login"
-                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden md:block"
+                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-medium transition-colors hidden lg:block whitespace-nowrap"
               >
                 {t.navbar.login}
               </Link>
 
               <Link
                 to="/register"
-                className="px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm sm:text-base font-bold rounded-lg sm:rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 hidden md:inline-flex"
+                className="px-3 lg:px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs lg:text-sm font-bold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl hidden md:inline-flex whitespace-nowrap"
               >
                 {t.navbar.getStarted}
               </Link>
