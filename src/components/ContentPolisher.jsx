@@ -62,8 +62,9 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
   // Dynamic tones (predefined + custom styles)
   const [allTones, setAllTones] = useState([
     { value: 'professional', label: t.polisher.tones.professional },
-    { value: 'engaging', label: t.polisher.tones.engaging },
     { value: 'storytelling', label: t.polisher.tones.storytelling },
+    { value: 'engaging', label: t.polisher.tones.engaging },
+    { value: 'educational', label: t.polisher.tones.educational },
   ]);
 
   const languages = [

@@ -8,7 +8,8 @@ export const translations = {
       pricing: 'Tarifs',
       login: 'Se connecter',
       getStarted: 'Commencer gratuitement',
-      history: 'Historique',
+      history: 'Mes posts',
+      dashboard: 'Nouveau post',
       account: 'Compte',
       ideas: 'Trouver une idée',
     },
@@ -161,8 +162,9 @@ export const translations = {
       },
       tones: {
         professional: '💼 Professionnel',
-        engaging: '🔥 Engageant',
         storytelling: '📖 Storytelling',
+        engaging: '🔥 Engageant',
+        educational: '🎓 Éducatif',
       },
       languages: {
         fr: 'Français 🇫🇷',
@@ -286,7 +288,8 @@ export const translations = {
       pricing: 'Pricing',
       login: 'Log in',
       getStarted: 'Get Started Free',
-      history: 'History',
+      history: 'My posts',
+      dashboard: 'New post',
       account: 'Account',
       ideas: 'Find an idea',
     },
@@ -439,8 +442,9 @@ export const translations = {
       },
       tones: {
         professional: '💼 Professional',
-        engaging: '🔥 Engaging',
         storytelling: '📖 Storytelling',
+        engaging: '🔥 Engaging',
+        educational: '🎓 Educational',
       },
       languages: {
         fr: 'Français 🇫🇷',
@@ -564,7 +568,8 @@ export const translations = {
       pricing: 'Precios',
       login: 'Iniciar sesión',
       getStarted: 'Comenzar gratis',
-      history: 'Historial',
+      history: 'Mis posts',
+      dashboard: 'Nuevo post',
       account: 'Cuenta',
       ideas: 'Encontrar una idea',
     },
@@ -717,8 +722,9 @@ export const translations = {
       },
       tones: {
         professional: '💼 Profesional',
-        engaging: '🔥 Atractivo',
         storytelling: '📖 Storytelling',
+        engaging: '🔥 Atractivo',
+        educational: '🎓 Educativo',
       },
       languages: {
         fr: 'Français 🇫🇷',
