@@ -34,9 +34,18 @@ const IdeaFinder = lazy(() => import('./components/IdeaFinder'));
 function LayoutWrapper({ user, onLogout, children }) {
   const location = useLocation();
 
-  // Pages where sidebar should be hidden (full-screen pages)
+  // Pages where sidebar should always be hidden (full-screen pages for logged-in users)
   const hideSidebarRoutes = ['/onboarding', '/login', '/register', '/verify-email'];
-  const hideSidebar = hideSidebarRoutes.includes(location.pathname);
+
+  // Public pages where sidebar should not appear (non-logged in users)
+  const publicRoutes = ['/', '/pricing', '/privacy', '/terms', '/legal', '/accept-invitation', '/join-team'];
+
+  // Hide sidebar if:
+  // 1. User is not logged in (show public pages without sidebar)
+  // 2. User is on specific routes that should be full-screen
+  const isPublicPage = publicRoutes.includes(location.pathname);
+  const isHiddenRoute = hideSidebarRoutes.includes(location.pathname);
+  const hideSidebar = !user || isHiddenRoute || (isPublicPage && !user);
 
   if (hideSidebar) {
     return <>{children}</>;
