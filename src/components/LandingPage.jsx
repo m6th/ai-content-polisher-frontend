@@ -31,7 +31,7 @@ function LandingPage() {
       questions: [
         {
           q: "Comment fonctionne AI Content Polisher concrètement ?",
-          a: "Le processus est simple et rapide en 3 étapes : 1) Vous entrez votre idée, texte brut ou contenu existant à reformuler dans notre éditeur. 2) Vous sélectionnez les plateformes cibles (LinkedIn, Instagram, TikTok, Twitter, Email, etc.) et choisissez parmi nos 4 tons optimisés (professionnel, storytelling, engageant, éducatif). Vous pouvez même créer vos propres styles personnalisés basés sur vos contenus existants pour reproduire votre voix unique. 3) En quelques secondes, notre IA génère des versions optimisées pour chaque plateforme, respectant les bonnes pratiques : longueur idéale, hashtags pertinents, emojis adaptés, hooks percutants et structures qui maximisent l'engagement. Vous pouvez ensuite éditer, régénérer ou copier directement le contenu."
+          a: "Le processus est simple et rapide en 3 étapes : 1) Vous entrez votre idée, texte brut ou contenu existant à reformuler dans notre éditeur. 2) Vous choisissez parmi nos 4 tons optimisés (professionnel, storytelling, engageant, éducatif). Bientôt, vous pourrez également créer vos propres styles personnalisés basés sur vos contenus existants. 3) Notre IA génère automatiquement 6 versions optimisées pour chaque plateforme majeure (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité), respectant les bonnes pratiques : longueur idéale, hashtags pertinents, emojis adaptés, hooks percutants et structures qui maximisent l'engagement. Vous pouvez ensuite éditer, régénérer ou copier directement le contenu."
         },
         {
           q: "Quelle est la différence avec ChatGPT ou d'autres IA génériques ?",
@@ -39,7 +39,7 @@ function LandingPage() {
         },
         {
           q: "Mon contenu sera-t-il détecté comme généré par IA ?",
-          a: "Non, et c'est l'un de nos points forts. Notre IA est spécifiquement entraînée pour produire du contenu naturel, fluide et humain, loin du style 'robotique' des IA génériques. De plus, plusieurs éléments garantissent l'authenticité : vous pouvez créer des styles personnalisés basés sur VOS propres contenus passés, ce qui reproduit votre voix unique. Chaque génération peut être facilement éditée pour ajouter vos touches personnelles. Nous varions automatiquement les structures et formulations pour éviter les patterns répétitifs. Les plateformes comme LinkedIn ne pénalisent pas le contenu assisté par IA, tant qu'il apporte de la valeur - et c'est exactement ce que nous produisons."
+          a: "Non, et c'est l'un de nos points forts. Notre IA est spécifiquement entraînée pour produire du contenu naturel, fluide et humain, loin du style 'robotique' des IA génériques. De plus, plusieurs éléments garantissent l'authenticité : chaque génération peut être facilement éditée pour ajouter vos touches personnelles, et nous varions automatiquement les structures et formulations pour éviter les patterns répétitifs. Prochainement, vous pourrez créer des styles personnalisés basés sur vos propres contenus pour reproduire votre voix unique. Les plateformes comme LinkedIn ne pénalisent pas le contenu assisté par IA, tant qu'il apporte de la valeur - et c'est exactement ce que nous produisons."
         },
         {
           q: "Est-ce que ça fonctionne vraiment pour augmenter l'engagement ?",
@@ -47,11 +47,11 @@ function LandingPage() {
         },
         {
           q: "Un crédit = combien de contenus générés ?",
-          a: "C'est là que notre système est particulièrement avantageux. Un crédit vous permet de transformer UNE idée en contenu pour TOUTES les plateformes que vous sélectionnez. Concrètement : si vous entrez une idée et sélectionnez LinkedIn + Instagram + TikTok + Twitter, vous obtenez 4 contenus parfaitement optimisés pour chaque plateforme, le tout pour 1 seul crédit. Plus vous sélectionnez de formats, plus vous rentabilisez chaque crédit. Avec le plan Starter à 7,99€/mois (40 crédits), si vous générez en moyenne 4 formats par crédit, vous obtenez jusqu'à 160 contenus optimisés par mois. C'est un rapport qualité/prix imbattable comparé aux agences ou au temps passé à tout créer manuellement."
+          a: "C'est là que notre système est particulièrement avantageux. Un crédit vous permet de transformer UNE idée en 6 contenus optimisés pour toutes les plateformes majeures (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité). Concrètement : vous entrez une idée et vous obtenez instantanément 6 versions parfaitement adaptées à chaque plateforme, le tout pour 1 seul crédit. Avec le plan Starter à 7,99€/mois (40 crédits), vous obtenez jusqu'à 240 contenus optimisés par mois. C'est un rapport qualité/prix imbattable comparé aux agences ou au temps passé à tout créer manuellement."
         },
         {
           q: "Quels sont les différents plans et leurs avantages ?",
-          a: "Nous proposons 4 plans adaptés à tous les besoins : GRATUIT - 3 crédits/mois, 5 formats disponibles, idéal pour tester l'outil. STARTER (7,99€/mois) - 40 crédits/mois, tous les formats et tons, parfait pour les créateurs individuels qui publient régulièrement. PRO (17,99€/mois) - 150 crédits/mois, analytics détaillés, calendrier éditorial, styles personnalisés illimités, idéal pour les créateurs sérieux et freelances. BUSINESS (44,99€/mois) - 500 crédits/mois, gestion d'équipe, accès API, support prioritaire, parfait pour les agences et entreprises. Tous les plans payants ont accès à tous les formats, tous les tons, et peuvent créer des styles personnalisés. La différence principale est le volume de crédits et les fonctionnalités avancées (analytics, équipe, API)."
+          a: "Nous proposons 4 plans adaptés à tous les besoins : GRATUIT - 3 crédits/mois, 5 formats disponibles, idéal pour tester l'outil. STARTER (7,99€/mois) - 40 crédits/mois, tous les formats et tons, parfait pour les créateurs individuels qui publient régulièrement. PRO (17,99€/mois) - 150 crédits/mois, analytics détaillés, calendrier éditorial, idéal pour les créateurs sérieux et freelances. BUSINESS (44,99€/mois) - 500 crédits/mois, gestion d'équipe, accès API, support prioritaire, parfait pour les agences et entreprises. Tous les plans payants ont accès à tous les formats et tous les tons. La différence principale est le volume de crédits et les fonctionnalités avancées (analytics, équipe, API)."
         },
         {
           q: "Puis-je annuler mon abonnement à tout moment ?",
@@ -68,7 +68,7 @@ function LandingPage() {
       questions: [
         {
           q: "How does AI Content Polisher actually work?",
-          a: "The process is simple and fast in 3 steps: 1) You enter your idea, raw text, or existing content to rephrase in our editor. 2) You select target platforms (LinkedIn, Instagram, TikTok, Twitter, Email, etc.) and choose from our 4 optimized tones (professional, storytelling, engaging, educational). You can even create your own custom styles based on your existing content to reproduce your unique voice. 3) In seconds, our AI generates optimized versions for each platform, following best practices: ideal length, relevant hashtags, appropriate emojis, compelling hooks, and structures that maximize engagement. You can then edit, regenerate, or directly copy the content."
+          a: "The process is simple and fast in 3 steps: 1) You enter your idea, raw text, or existing content to rephrase in our editor. 2) You choose from our 4 optimized tones (professional, storytelling, engaging, educational). Soon, you'll also be able to create your own custom styles based on your existing content. 3) Our AI automatically generates 6 optimized versions for each major platform (LinkedIn, Instagram, TikTok, Twitter, Email, Ads), following best practices: ideal length, relevant hashtags, appropriate emojis, compelling hooks, and structures that maximize engagement. You can then edit, regenerate, or directly copy the content."
         },
         {
           q: "What's the difference with ChatGPT or other generic AI?",
@@ -76,7 +76,7 @@ function LandingPage() {
         },
         {
           q: "Will my content be detected as AI-generated?",
-          a: "No, and this is one of our strengths. Our AI is specifically trained to produce natural, fluid, and human content, far from the 'robotic' style of generic AI. Additionally, several elements guarantee authenticity: you can create custom styles based on YOUR own past content, which reproduces your unique voice. Each generation can be easily edited to add your personal touches. We automatically vary structures and phrasings to avoid repetitive patterns. Platforms like LinkedIn don't penalize AI-assisted content, as long as it provides value - and that's exactly what we produce."
+          a: "No, and this is one of our strengths. Our AI is specifically trained to produce natural, fluid, and human content, far from the 'robotic' style of generic AI. Additionally, several elements guarantee authenticity: each generation can be easily edited to add your personal touches, and we automatically vary structures and phrasings to avoid repetitive patterns. Coming soon, you'll be able to create custom styles based on your own content to reproduce your unique voice. Platforms like LinkedIn don't penalize AI-assisted content, as long as it provides value - and that's exactly what we produce."
         },
         {
           q: "Does it really work to increase engagement?",
@@ -84,11 +84,11 @@ function LandingPage() {
         },
         {
           q: "One credit = how many generated contents?",
-          a: "This is where our system is particularly advantageous. One credit allows you to transform ONE idea into content for ALL platforms you select. Specifically: if you enter an idea and select LinkedIn + Instagram + TikTok + Twitter, you get 4 perfectly optimized contents for each platform, all for just 1 credit. The more formats you select, the more value you get from each credit. With the Starter plan at €7.99/month (40 credits), if you generate an average of 4 formats per credit, you get up to 160 optimized contents per month. That's unbeatable value compared to agencies or the time spent creating everything manually."
+          a: "This is where our system is particularly advantageous. One credit allows you to transform ONE idea into 6 optimized contents for all major platforms (LinkedIn, Instagram, TikTok, Twitter, Email, Ads). Specifically: you enter an idea and instantly get 6 versions perfectly adapted to each platform, all for just 1 credit. With the Starter plan at €7.99/month (40 credits), you get up to 240 optimized contents per month. That's unbeatable value compared to agencies or the time spent creating everything manually."
         },
         {
           q: "What are the different plans and their benefits?",
-          a: "We offer 4 plans suited to all needs: FREE - 3 credits/month, 5 available formats, ideal for testing the tool. STARTER (€7.99/month) - 40 credits/month, all formats and tones, perfect for individual creators who publish regularly. PRO (€17.99/month) - 150 credits/month, detailed analytics, editorial calendar, unlimited custom styles, ideal for serious creators and freelancers. BUSINESS (€44.99/month) - 500 credits/month, team management, API access, priority support, perfect for agencies and businesses. All paid plans have access to all formats, all tones, and can create custom styles. The main difference is credit volume and advanced features (analytics, team, API)."
+          a: "We offer 4 plans suited to all needs: FREE - 3 credits/month, 5 available formats, ideal for testing the tool. STARTER (€7.99/month) - 40 credits/month, all formats and tones, perfect for individual creators who publish regularly. PRO (€17.99/month) - 150 credits/month, detailed analytics, editorial calendar, ideal for serious creators and freelancers. BUSINESS (€44.99/month) - 500 credits/month, team management, API access, priority support, perfect for agencies and businesses. All paid plans have access to all formats and all tones. The main difference is credit volume and advanced features (analytics, team, API)."
         },
         {
           q: "Can I cancel my subscription at any time?",
