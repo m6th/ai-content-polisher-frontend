@@ -82,14 +82,12 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
     persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', recommended: true },
   };
 
-  // Platform selection state - all selected by default
-  const [selectedFormats, setSelectedFormats] = useState(Object.keys(formatLabels));
+  // Platform selection state - none selected by default
+  const [selectedFormats, setSelectedFormats] = useState([]);
 
   const toggleFormat = (formatKey) => {
     setSelectedFormats(prev => {
       if (prev.includes(formatKey)) {
-        // Prevent deselecting all formats
-        if (prev.length === 1) return prev;
         return prev.filter(f => f !== formatKey);
       }
       return [...prev, formatKey];
@@ -1035,6 +1033,20 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
             </div>
           )}
 
+          {/* No Platform Selected Warning */}
+          {selectedFormats.length === 0 && originalText.trim() && (
+            <div className="bg-orange-50 dark:bg-orange-900/20 border-2 border-orange-200 dark:border-orange-800 rounded-xl p-4 flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+              <p className="text-sm text-orange-700 dark:text-orange-300 font-medium">
+                {uiLanguage === 'fr'
+                  ? 'Veuillez sélectionner au moins une plateforme cible pour générer du contenu.'
+                  : uiLanguage === 'en'
+                  ? 'Please select at least one target platform to generate content.'
+                  : 'Por favor seleccione al menos una plataforma objetivo para generar contenido.'}
+              </p>
+            </div>
+          )}
+
           {/* Submit Buttons */}
           <div className="space-y-2 sm:space-y-3">
             {/* Pro Trial Button - Only for Free/Starter who can use trial */}
@@ -1042,7 +1054,7 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
               <button
                 type="button"
                 onClick={handleProTrialGeneration}
-                disabled={loading || !originalText.trim()}
+                disabled={loading || !originalText.trim() || selectedFormats.length === 0}
                 className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-bold text-sm sm:text-base lg:text-lg hover:from-yellow-600 hover:via-orange-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
@@ -1065,7 +1077,7 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
             {/* Regular Submit Button */}
             <button
               type="submit"
-              disabled={loading || !originalText.trim()}
+              disabled={loading || !originalText.trim() || selectedFormats.length === 0}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-bold text-sm sm:text-base lg:text-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {loading ? (
