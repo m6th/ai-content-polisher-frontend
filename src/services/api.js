@@ -71,13 +71,14 @@ export const getCurrentUser = () => {
 };
 
 // Contenu
-export const polishContent = (originalText, tone, language, useProTrial = false) => {
+export const polishContent = (originalText, tone, language, useProTrial = false, formats = null) => {
   return api.post('/content/polish', {
     original_text: originalText,
     platform: 'multi_format', // On n'utilise plus platform
     tone,
     language,
     use_pro_trial: useProTrial,  // Paramètre pour l'essai Pro
+    formats: formats,  // Liste des formats à générer (null = tous)
   });
 };
 

@@ -82,6 +82,37 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
     persuasive: { name: 'Publicité', icon: '🎯', color: 'from-orange-500 to-orange-600', recommended: true },
   };
 
+  // Platform selection state - all selected by default
+  const [selectedFormats, setSelectedFormats] = useState(Object.keys(formatLabels));
+
+  const toggleFormat = (formatKey) => {
+    setSelectedFormats(prev => {
+      if (prev.includes(formatKey)) {
+        // Prevent deselecting all formats
+        if (prev.length === 1) return prev;
+        return prev.filter(f => f !== formatKey);
+      }
+      return [...prev, formatKey];
+    });
+  };
+
+  const selectAllFormats = () => {
+    const allFormats = Object.keys(formatLabels);
+    // For free plan, only select available formats
+    if (user?.current_plan === 'free') {
+      setSelectedFormats(['linkedin', 'instagram', 'tiktok']);
+    } else {
+      setSelectedFormats(allFormats);
+    }
+  };
+
+  const isFormatAvailable = (formatKey) => {
+    if (user?.current_plan === 'free') {
+      return ['linkedin', 'instagram', 'tiktok'].includes(formatKey);
+    }
+    return true;
+  };
+
   // Helper functions for new features
   const updateTextQuality = (text) => {
     const len = text.length;
@@ -353,7 +384,7 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
     }, 300);
 
     try {
-      const response = await polishContent(originalText, tone, contentLanguage, true); // use_pro_trial = true
+      const response = await polishContent(originalText, tone, contentLanguage, true, selectedFormats); // use_pro_trial = true
       clearInterval(progressInterval);
       setGenerationStep(100);
 
@@ -445,7 +476,7 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
     }, 300);
 
     try {
-      const response = await polishContent(originalText, tone, contentLanguage);
+      const response = await polishContent(originalText, tone, contentLanguage, false, selectedFormats);
       clearInterval(progressInterval);
       setGenerationStep(100);
 
@@ -868,6 +899,80 @@ function ContentPolisher({ user, onUpdateUser, initialText = '' }) {
                 })()}
               </div>
             )}
+          </div>
+
+          {/* Platform Selection */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-gray-700 dark:text-slate-300 font-semibold text-sm sm:text-base lg:text-lg">
+                {uiLanguage === 'fr' ? '🎯 Plateformes cibles' : uiLanguage === 'en' ? '🎯 Target platforms' : '🎯 Plataformas objetivo'}
+              </label>
+              <button
+                type="button"
+                onClick={selectAllFormats}
+                className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium transition-colors"
+              >
+                {uiLanguage === 'fr' ? 'Tout sélectionner' : uiLanguage === 'en' ? 'Select all' : 'Seleccionar todo'}
+              </button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+              {Object.entries(formatLabels).map(([key, format]) => {
+                const isSelected = selectedFormats.includes(key);
+                const isAvailable = isFormatAvailable(key);
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => isAvailable && toggleFormat(key)}
+                    disabled={!isAvailable}
+                    className={`relative flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border-2 transition-all ${
+                      !isAvailable
+                        ? 'border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 opacity-50 cursor-not-allowed'
+                        : isSelected
+                        ? `border-transparent bg-gradient-to-br ${format.color} text-white shadow-lg`
+                        : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-md'
+                    }`}
+                  >
+                    {!isAvailable && (
+                      <div className="absolute top-1 right-1">
+                        <Lock className="h-3 w-3 text-gray-400" />
+                      </div>
+                    )}
+                    {isSelected && isAvailable && (
+                      <div className="absolute top-1 right-1">
+                        <Check className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </div>
+                    )}
+                    <span className="text-xl sm:text-2xl mb-1">{format.icon}</span>
+                    <span className={`text-xs sm:text-sm font-medium text-center leading-tight ${
+                      isSelected && isAvailable ? 'text-white' : 'text-gray-700 dark:text-slate-300'
+                    }`}>
+                      {format.name}
+                    </span>
+                    {format.recommended && isAvailable && (
+                      <span className={`mt-1 text-xs px-1.5 py-0.5 rounded-full ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                      }`}>
+                        ⭐
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-xs text-gray-500 dark:text-slate-400">
+              {uiLanguage === 'fr'
+                ? `${selectedFormats.length} format${selectedFormats.length > 1 ? 's' : ''} sélectionné${selectedFormats.length > 1 ? 's' : ''}`
+                : uiLanguage === 'en'
+                ? `${selectedFormats.length} format${selectedFormats.length > 1 ? 's' : ''} selected`
+                : `${selectedFormats.length} formato${selectedFormats.length > 1 ? 's' : ''} seleccionado${selectedFormats.length > 1 ? 's' : ''}`
+              }
+              {user?.current_plan === 'free' && (
+                <span className="ml-2 text-purple-600 dark:text-purple-400">
+                  • {uiLanguage === 'fr' ? '3 plateformes max (Plan Free)' : uiLanguage === 'en' ? '3 platforms max (Free Plan)' : '3 plataformas máx (Plan Free)'}
+                </span>
+              )}
+            </p>
           </div>
 
           {/* Pro Trial Info Box */}

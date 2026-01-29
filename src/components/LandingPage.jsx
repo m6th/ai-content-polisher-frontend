@@ -31,7 +31,7 @@ function LandingPage() {
       questions: [
         {
           q: "Comment fonctionne AI Content Polisher concrètement ?",
-          a: "Le processus est simple et rapide en 3 étapes : 1) Vous entrez votre idée, texte brut ou contenu existant à reformuler dans notre éditeur. 2) Vous choisissez parmi nos 4 tons optimisés (professionnel, storytelling, engageant, éducatif). Bientôt, vous pourrez également créer vos propres styles personnalisés basés sur vos contenus existants. 3) Notre IA génère automatiquement 6 versions optimisées pour chaque plateforme majeure (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité), respectant les bonnes pratiques : longueur idéale, hashtags pertinents, emojis adaptés, hooks percutants et structures qui maximisent l'engagement. Vous pouvez ensuite éditer, régénérer ou copier directement le contenu."
+          a: "Le processus est simple et rapide en 3 étapes : 1) Vous entrez votre idée, texte brut ou contenu existant à reformuler dans notre éditeur. 2) Vous choisissez parmi nos 4 tons optimisés (professionnel, storytelling, engageant, éducatif) et vous sélectionnez les plateformes cibles parmi les 6 disponibles (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité). Bientôt, vous pourrez également créer vos propres styles personnalisés basés sur vos contenus existants. 3) Notre IA génère les versions optimisées uniquement pour les plateformes que vous avez sélectionnées, respectant les bonnes pratiques de chacune : longueur idéale, hashtags pertinents, emojis adaptés, hooks percutants et structures qui maximisent l'engagement. Vous pouvez ensuite éditer, régénérer ou copier directement le contenu."
         },
         {
           q: "Quelle est la différence avec ChatGPT ou d'autres IA génériques ?",
@@ -47,7 +47,7 @@ function LandingPage() {
         },
         {
           q: "Un crédit = combien de contenus générés ?",
-          a: "C'est là que notre système est particulièrement avantageux. Un crédit vous permet de transformer UNE idée en 6 contenus optimisés pour toutes les plateformes majeures (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité). Concrètement : vous entrez une idée et vous obtenez instantanément 6 versions parfaitement adaptées à chaque plateforme, le tout pour 1 seul crédit. Avec le plan Starter à 7,99€/mois (40 crédits), vous obtenez jusqu'à 240 contenus optimisés par mois. C'est un rapport qualité/prix imbattable comparé aux agences ou au temps passé à tout créer manuellement."
+          a: "C'est là que notre système est particulièrement avantageux. Un crédit vous permet de transformer UNE idée en contenus optimisés pour les plateformes de votre choix (LinkedIn, Instagram, TikTok, Twitter, Email, Publicité). Vous sélectionnez les plateformes qui vous intéressent et l'IA génère uniquement ces formats - 1 crédit par génération, quel que soit le nombre de formats choisis. Besoin uniquement de LinkedIn et Instagram ? Sélectionnez-les et obtenez 2 contenus parfaitement optimisés. Vous voulez les 6 ? C'est toujours 1 crédit. Avec le plan Starter à 7,99€/mois (40 crédits), vous pouvez générer jusqu'à 240 contenus optimisés par mois. C'est un rapport qualité/prix imbattable comparé aux agences ou au temps passé à tout créer manuellement."
         },
         {
           q: "Quels sont les différents plans et leurs avantages ?",
@@ -68,7 +68,7 @@ function LandingPage() {
       questions: [
         {
           q: "How does AI Content Polisher actually work?",
-          a: "The process is simple and fast in 3 steps: 1) You enter your idea, raw text, or existing content to rephrase in our editor. 2) You choose from our 4 optimized tones (professional, storytelling, engaging, educational). Soon, you'll also be able to create your own custom styles based on your existing content. 3) Our AI automatically generates 6 optimized versions for each major platform (LinkedIn, Instagram, TikTok, Twitter, Email, Ads), following best practices: ideal length, relevant hashtags, appropriate emojis, compelling hooks, and structures that maximize engagement. You can then edit, regenerate, or directly copy the content."
+          a: "The process is simple and fast in 3 steps: 1) You enter your idea, raw text, or existing content to rephrase in our editor. 2) You choose from our 4 optimized tones (professional, storytelling, engaging, educational) and select your target platforms from the 6 available (LinkedIn, Instagram, TikTok, Twitter, Email, Ads). Soon, you'll also be able to create your own custom styles based on your existing content. 3) Our AI generates optimized versions only for the platforms you've selected, following each platform's best practices: ideal length, relevant hashtags, appropriate emojis, compelling hooks, and structures that maximize engagement. You can then edit, regenerate, or directly copy the content."
         },
         {
           q: "What's the difference with ChatGPT or other generic AI?",
@@ -84,7 +84,7 @@ function LandingPage() {
         },
         {
           q: "One credit = how many generated contents?",
-          a: "This is where our system is particularly advantageous. One credit allows you to transform ONE idea into 6 optimized contents for all major platforms (LinkedIn, Instagram, TikTok, Twitter, Email, Ads). Specifically: you enter an idea and instantly get 6 versions perfectly adapted to each platform, all for just 1 credit. With the Starter plan at €7.99/month (40 credits), you get up to 240 optimized contents per month. That's unbeatable value compared to agencies or the time spent creating everything manually."
+          a: "This is where our system is particularly advantageous. One credit allows you to transform ONE idea into optimized content for the platforms of your choice (LinkedIn, Instagram, TikTok, Twitter, Email, Ads). You select the platforms you want and the AI generates only those formats - 1 credit per generation, regardless of how many formats you choose. Only need LinkedIn and Instagram? Select them and get 2 perfectly optimized contents. Want all 6? Still just 1 credit. With the Starter plan at €7.99/month (40 credits), you can generate up to 240 optimized contents per month. That's unbeatable value compared to agencies or the time spent creating everything manually."
         },
         {
           q: "What are the different plans and their benefits?",
