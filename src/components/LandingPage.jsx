@@ -43,7 +43,7 @@ function LandingPage() {
         },
         {
           q: "Est-ce que ça fonctionne vraiment pour augmenter l'engagement ?",
-          a: "Oui, et les résultats sont mesurables. Notre IA intègre les meilleures pratiques validées par des millions de posts analysés : des hooks qui captent l'attention dans les 2 premières secondes (crucial pour les algorithmes), des structures narratives qui maintiennent le lecteur jusqu'au bout, des call-to-action optimisés qui génèrent des commentaires et partages, le bon ratio texte/emojis/hashtags par plateforme. Nos utilisateurs constatent en moyenne 2 à 3x plus d'engagement (likes, commentaires, partages) après quelques semaines d'utilisation régulière. Certains créateurs ont même vu leur audience LinkedIn doubler en 2-3 mois grâce à une publication plus régulière et mieux optimisée."
+          a: "Personne ne peut garantir qu'un post deviendra viral, et aucune IA ne peut l'assurer. Cependant, AI Content Polisher augmente vos chances en utilisant des techniques inspirées des meilleurs créateurs : hooks percutants, structures narratives éprouvées, call-to-action optimisés et le bon ratio texte/emojis/hashtags par plateforme. De nombreux créateurs et rédacteurs utilisent déjà l'IA pour accélérer leur workflow et gagner du temps, l'intégrant comme un outil essentiel dans leur méthodologie. En structurant efficacement vos idées et en vous fournissant du contenu bien cadré, notre outil vous aide à créer des posts plus susceptibles d'engager votre audience cible."
         },
         {
           q: "Un crédit = combien de contenus générés ?",
@@ -80,7 +80,7 @@ function LandingPage() {
         },
         {
           q: "Does it really work to increase engagement?",
-          a: "Yes, and the results are measurable. Our AI integrates best practices validated by millions of analyzed posts: hooks that capture attention in the first 2 seconds (crucial for algorithms), narrative structures that keep readers engaged until the end, optimized call-to-actions that generate comments and shares, the right text/emoji/hashtag ratio per platform. Our users see on average 2-3x more engagement (likes, comments, shares) after a few weeks of regular use. Some creators have even seen their LinkedIn audience double in 2-3 months thanks to more regular and better-optimized publishing."
+          a: "No one can guarantee that a post will go viral, and no AI can ensure it. However, AI Content Polisher increases your chances by using techniques inspired by top creators: compelling hooks, proven narrative structures, optimized call-to-actions, and the right text/emoji/hashtag ratio per platform. Many creators and writers already use AI to accelerate their workflow and save time, integrating it as an essential tool in their methodology. By effectively structuring your ideas and providing well-framed content, our tool helps you create posts that are more likely to engage your target audience."
         },
         {
           q: "One credit = how many generated contents?",
