@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Calendar, CreditCard, Shield, Check, Eye, EyeOff, Sparkles, RefreshCw } from 'lucide-react';
-import { updateProfile, changePassword, changeEmail, getAnalyticsStats, resetOnboarding } from '../services/api';
+import { User, Mail, Lock, Calendar, CreditCard, Shield, Check, Eye, EyeOff, Sparkles, RefreshCw, Trash2, AlertTriangle } from 'lucide-react';
+import { updateProfile, changePassword, changeEmail, getAnalyticsStats, resetOnboarding, deleteAccount } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 
@@ -31,6 +31,11 @@ function Account({ user, onUpdateUser }) {
 
   // Stats state
   const [stats, setStats] = useState(null);
+
+  // Delete account state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     loadStats();
@@ -176,6 +181,39 @@ function Account({ user, onUpdateUser }) {
   };
 
   const isGoogleAccount = !user?.password_hash;
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmation !== 'DELETE') {
+      toast.error(
+        language === 'fr' ? 'Veuillez taper DELETE pour confirmer' :
+        language === 'en' ? 'Please type DELETE to confirm' :
+        'Por favor escribe DELETE para confirmar'
+      );
+      return;
+    }
+
+    setDeleteLoading(true);
+
+    try {
+      await deleteAccount('DELETE');
+      toast.success(
+        language === 'fr' ? 'Compte supprimé avec succès' :
+        language === 'en' ? 'Account deleted successfully' :
+        'Cuenta eliminada con éxito'
+      );
+      // Clear token and redirect to home
+      localStorage.removeItem('token');
+      window.location.href = '/';
+    } catch (error) {
+      const errorMsg = error.response?.data?.detail ||
+        (language === 'fr' ? 'Erreur lors de la suppression du compte' :
+         language === 'en' ? 'Failed to delete account' :
+         'Error al eliminar la cuenta');
+      toast.error(errorMsg);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-6 sm:py-8 lg:py-12 px-3 sm:px-4 lg:px-6">
@@ -531,7 +569,91 @@ function Account({ user, onUpdateUser }) {
             </form>
           </div>
         )}
+
+        {/* Delete Account Section */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 mt-4 sm:mt-6 border-2 border-red-200 dark:border-red-900">
+          <h2 className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400 mb-4 sm:mb-6 flex items-center">
+            <Trash2 className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
+            {language === 'fr' ? 'Zone dangereuse' : language === 'en' ? 'Danger Zone' : 'Zona peligrosa'}
+          </h2>
+
+          <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 sm:p-6 border border-red-200 dark:border-red-800">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-red-900 dark:text-red-300 mb-2">
+                  {language === 'fr' ? 'Supprimer mon compte' : language === 'en' ? 'Delete my account' : 'Eliminar mi cuenta'}
+                </h3>
+                <p className="text-sm text-red-700 dark:text-red-400">
+                  {language === 'fr'
+                    ? 'Cette action est irréversible. Toutes vos données, contenus générés et historique seront définitivement supprimés.'
+                    : language === 'en'
+                    ? 'This action is irreversible. All your data, generated content and history will be permanently deleted.'
+                    : 'Esta acción es irreversible. Todos tus datos, contenido generado e historial serán eliminados permanentemente.'}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="shrink-0 w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                <Trash2 className="h-5 w-5" />
+                {language === 'fr' ? 'Supprimer le compte' : language === 'en' ? 'Delete account' : 'Eliminar cuenta'}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full mx-auto mb-4">
+              <AlertTriangle className="h-8 w-8 text-red-600 dark:text-red-400" />
+            </div>
+
+            <h3 className="text-xl font-bold text-center text-gray-900 dark:text-white mb-2">
+              {language === 'fr' ? 'Confirmer la suppression' : language === 'en' ? 'Confirm deletion' : 'Confirmar eliminación'}
+            </h3>
+
+            <p className="text-center text-gray-600 dark:text-slate-400 mb-6">
+              {language === 'fr'
+                ? 'Cette action supprimera définitivement votre compte et toutes vos données. Tapez DELETE pour confirmer.'
+                : language === 'en'
+                ? 'This will permanently delete your account and all your data. Type DELETE to confirm.'
+                : 'Esto eliminará permanentemente tu cuenta y todos tus datos. Escribe DELETE para confirmar.'}
+            </p>
+
+            <input
+              type="text"
+              value={deleteConfirmation}
+              onChange={(e) => setDeleteConfirmation(e.target.value)}
+              placeholder="DELETE"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-900 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4 text-center font-mono text-lg"
+            />
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDeleteConfirmation('');
+                }}
+                className="flex-1 px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-xl font-semibold transition-all"
+              >
+                {language === 'fr' ? 'Annuler' : language === 'en' ? 'Cancel' : 'Cancelar'}
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteLoading || deleteConfirmation !== 'DELETE'}
+                className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {deleteLoading
+                  ? (language === 'fr' ? 'Suppression...' : language === 'en' ? 'Deleting...' : 'Eliminando...')
+                  : (language === 'fr' ? 'Supprimer' : language === 'en' ? 'Delete' : 'Eliminar')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

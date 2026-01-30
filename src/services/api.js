@@ -205,6 +205,12 @@ export const changeEmail = (newEmail, password) => {
   });
 };
 
+export const deleteAccount = (confirmation) => {
+  return api.delete('/users/account', {
+    data: { confirmation }
+  });
+};
+
 // AI Features
 export const generateHashtags = (content, platform, language = 'fr') => {
   return api.post('/ai/hashtags', {
