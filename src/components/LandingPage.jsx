@@ -4,7 +4,7 @@ import { useTranslation } from '../locales/translations';
 import {
   Zap, Target, ArrowRight, Check,
   FileText, Mail, Video, Linkedin, Instagram,
-  Twitter, Megaphone, ChevronDown, UserPlus
+  Twitter, Megaphone, ChevronDown, UserPlus, Layers
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './ui/button';
@@ -95,37 +95,37 @@ function LandingPage() {
     {
       name: 'LinkedIn Post',
       icon: Linkedin,
-      color: 'bg-slate-900',
+      color: 'bg-[#0A66C2]',
       desc: t.landing.formats.linkedin
     },
     {
       name: 'Instagram Caption',
       icon: Instagram,
-      color: 'bg-slate-900',
+      color: 'bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737]',
       desc: t.landing.formats.instagram
     },
     {
       name: 'Script TikTok',
       icon: Video,
-      color: 'bg-slate-900',
+      color: 'bg-black',
       desc: t.landing.formats.tiktok
     },
     {
       name: 'Tweet / Thread',
       icon: Twitter,
-      color: 'bg-slate-900',
+      color: 'bg-black',
       desc: t.landing.formats.twitter
     },
     {
       name: 'Email Pro',
       icon: Mail,
-      color: 'bg-slate-900',
+      color: 'bg-blue-600',
       desc: t.landing.formats.email
     },
     {
       name: 'Publicité',
       icon: Megaphone,
-      color: 'bg-slate-900',
+      color: 'bg-amber-500',
       desc: t.landing.formats.copywriting
     }
   ];
@@ -134,33 +134,40 @@ function LandingPage() {
     {
       icon: Zap,
       title: t.landing.features.feature1Title,
-      description: t.landing.features.feature1Desc
+      description: t.landing.features.feature1Desc,
+      iconColor: 'text-amber-500'
     },
     {
       icon: Target,
       title: t.landing.features.feature2Title,
-      description: t.landing.features.feature2Desc
+      description: t.landing.features.feature2Desc,
+      iconColor: 'text-blue-600'
+    },
+    {
+      icon: Layers,
+      title: t.landing.features.feature3Title,
+      description: t.landing.features.feature3Desc,
+      iconColor: 'text-emerald-500'
     },
     {
       icon: FileText,
-      title: t.landing.features.feature3Title,
-      description: t.landing.features.feature3Desc
-    },
-    {
-      icon: Target,
       title: t.landing.features.feature4Title,
-      description: t.landing.features.feature4Desc
+      description: t.landing.features.feature4Desc,
+      iconColor: 'text-violet-500'
     }
   ];
 
   return (
     <div className="bg-background">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-[90vh] flex items-center">
+        {/* Subtle background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent dark:from-blue-950/20 dark:to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            <Badge variant="secondary" className="text-sm">
+            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-100">
               {t.landing.hero.badge}
             </Badge>
 
@@ -169,7 +176,7 @@ function LandingPage() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight mb-6">
                 {t.landing.hero.title1}
                 <br />
-                <span className="text-muted-foreground">
+                <span className="text-blue-600 dark:text-blue-400">
                   {t.landing.hero.title2}
                 </span>
                 <br />
@@ -183,7 +190,7 @@ function LandingPage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="text-base">
+              <Button asChild size="lg" className="text-base bg-blue-600 hover:bg-blue-700">
                 <Link to="/register">
                   {t.landing.hero.cta}
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -200,10 +207,10 @@ function LandingPage() {
 
           {/* Right Content - Preview Card */}
           <div className="hidden lg:block">
-            <Card className="p-8">
+            <Card className="p-8 shadow-xl border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-background" />
+                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <div className="font-semibold text-foreground">AI Content Polisher</div>
@@ -213,7 +220,7 @@ function LandingPage() {
 
               <div className="space-y-3 mb-8">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="h-3 bg-muted rounded" style={{ width: `${100 - i * 10}%` }} />
+                  <div key={i} className="h-3 bg-slate-100 dark:bg-slate-800 rounded" style={{ width: `${100 - i * 10}%` }} />
                 ))}
               </div>
 
@@ -222,7 +229,7 @@ function LandingPage() {
                   <div className="w-8 h-8 bg-[#0A66C2] rounded flex items-center justify-center">
                     <Linkedin className="w-4 h-4 text-white" />
                   </div>
-                  <div className="w-8 h-8 bg-[#E4405F] rounded flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] rounded flex items-center justify-center">
                     <Instagram className="w-4 h-4 text-white" />
                   </div>
                   <div className="w-8 h-8 bg-black rounded flex items-center justify-center">
@@ -232,7 +239,9 @@ function LandingPage() {
                     <Twitter className="w-4 h-4 text-white" />
                   </div>
                 </div>
-                <Badge variant="secondary">{t.landing.stats.formats}</Badge>
+                <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                  {t.landing.stats.formats}
+                </Badge>
               </div>
             </Card>
           </div>
@@ -240,23 +249,23 @@ function LandingPage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="py-16 bg-muted/50 border-b border-border">
+      <section className="py-16 bg-slate-50 dark:bg-slate-900/50 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
                 {t.landing.stats.formats}
               </div>
               <div className="text-muted-foreground">{t.landing.stats.formatsDesc}</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
                 {t.landing.stats.languages}
               </div>
               <div className="text-muted-foreground">{t.landing.stats.languagesDesc}</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-foreground">
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
                 {t.landing.stats.speed}
               </div>
               <div className="text-muted-foreground">{t.landing.stats.speedDesc}</div>
@@ -266,7 +275,7 @@ function LandingPage() {
       </section>
 
       {/* Formats Grid */}
-      <section className="py-20 border-b border-border">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -279,9 +288,9 @@ function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {formats.map((format, idx) => (
-              <Card key={idx} className="p-6 hover:shadow-md transition-shadow">
+              <Card key={idx} className="p-6 hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700">
                 <CardContent className="p-0">
-                  <div className={`w-12 h-12 ${format.color} rounded-lg flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 ${format.color} rounded-xl flex items-center justify-center mb-4`}>
                     <format.icon className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">{format.name}</h3>
@@ -294,7 +303,7 @@ function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-muted/50 border-b border-border">
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -311,30 +320,33 @@ function LandingPage() {
                 step: '01',
                 title: t.landing.howItWorks.step1Title,
                 desc: t.landing.howItWorks.step1Desc,
-                icon: FileText
+                icon: FileText,
+                color: 'bg-blue-600'
               },
               {
                 step: '02',
                 title: t.landing.howItWorks.step2Title,
                 desc: t.landing.howItWorks.step2Desc,
-                icon: Target
+                icon: Target,
+                color: 'bg-violet-600'
               },
               {
                 step: '03',
                 title: t.landing.howItWorks.step3Title,
                 desc: t.landing.howItWorks.step3Desc,
-                icon: Zap
+                icon: Zap,
+                color: 'bg-emerald-600'
               }
             ].map((item, idx) => (
-              <Card key={idx} className="p-8 relative">
+              <Card key={idx} className="p-8 relative border-slate-200 dark:border-slate-700">
                 <div className="absolute -top-3 left-6">
-                  <Badge variant="default" className="text-sm font-mono">
+                  <Badge className={`${item.color} text-white text-sm font-mono`}>
                     {item.step}
                   </Badge>
                 </div>
                 <CardContent className="p-0 pt-4">
-                  <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center mb-6">
-                    <item.icon className="h-6 w-6 text-foreground" />
+                  <div className={`w-12 h-12 ${item.color} rounded-xl flex items-center justify-center mb-6`}>
+                    <item.icon className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -346,7 +358,7 @@ function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="py-20 border-b border-border">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -359,10 +371,10 @@ function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {features.map((feature, idx) => (
-              <Card key={idx} className="p-8 hover:shadow-md transition-shadow">
+              <Card key={idx} className="p-8 hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700">
                 <CardContent className="p-0">
-                  <div className="w-14 h-14 bg-muted rounded-lg flex items-center justify-center mb-6">
-                    <feature.icon className="h-7 w-7 text-foreground" />
+                  <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6">
+                    <feature.icon className={`h-7 w-7 ${feature.iconColor}`} />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
@@ -374,7 +386,7 @@ function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 bg-muted/50 border-b border-border">
+      <section id="faq" className="py-20 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
@@ -387,16 +399,16 @@ function LandingPage() {
               const isOpen = openFaq === index;
 
               return (
-                <Card key={index} className="overflow-hidden">
+                <Card key={index} className="overflow-hidden border-slate-200 dark:border-slate-700">
                   <button
                     onClick={() => toggleFaq(index)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-muted/50 transition-colors"
+                    className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                   >
                     <span className="font-medium text-foreground pr-8">
                       {item.q}
                     </span>
                     <ChevronDown
-                      className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform ${
+                      className={`w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 transition-transform ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                     />
@@ -419,34 +431,34 @@ function LandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20">
+      <section className="py-20 bg-blue-600 dark:bg-blue-700">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             {t.landing.finalCta.title}
           </h2>
 
-          <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+          <p className="text-lg text-blue-100 mb-10 max-w-xl mx-auto">
             {t.landing.finalCta.subtitle}
           </p>
 
-          <Button asChild size="lg" className="text-base mb-8">
+          <Button asChild size="lg" className="text-base bg-white text-blue-600 hover:bg-blue-50 mb-8">
             <Link to="/register">
               {t.landing.finalCta.cta}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
 
-          <div className="flex flex-wrap items-center justify-center gap-6 text-muted-foreground text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-blue-100 text-sm">
             <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-foreground" />
+              <Check className="h-4 w-4 text-white" />
               <span>{t.landing.finalCta.feature1}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-foreground" />
+              <Check className="h-4 w-4 text-white" />
               <span>{t.landing.finalCta.feature2}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-foreground" />
+              <Check className="h-4 w-4 text-white" />
               <span>{t.landing.finalCta.feature3}</span>
             </div>
           </div>
