@@ -49,7 +49,9 @@
       "Bash(PGPASSWORD='Rm6epEPSAh4Xh3GyZLYUpj9Cr3EcFtAz' psql -h dpg-d502av1r0fns739vuerg-a.frankfurt-postgres.render.com -U ai_content_polisher_db_user -d ai_content_polisher_db -c \"\\\\dt\")",
       "Bash(git reset:*)",
       "Bash(GIT_TERMINAL_PROMPT=0 git push:*)",
-      "Bash(pip3 install:*)"
+      "Bash(pip3 install:*)",
+      "Bash(vercel:*)",
+      "Bash(npx vercel:*)"
     ],
     "additionalDirectories": [
       "/home/mathd/backend"
